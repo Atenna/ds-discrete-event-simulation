@@ -11,11 +11,11 @@ namespace Automobilka.Simulations
     {
         private LinkedList<Vehicle> cars;
 
-        public SimulationVariantB() : base()
+        public SimulationVariantB(double maxTime, int replications) : base(maxTime, replications)
         {
-            cars.AddLast((Vehicle)new CarA());
-            cars.AddLast((Vehicle)new CarC());
-            cars.AddLast((Vehicle)new CarE());
+            //cars.AddLast((Vehicle)new CarA());
+            //cars.AddLast((Vehicle)new CarC());
+            //cars.AddLast((Vehicle)new CarE());
 
         }
     }

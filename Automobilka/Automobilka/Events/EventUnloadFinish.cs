@@ -31,6 +31,13 @@ namespace Automobilka
                 expectedTime += car.getTimeOfRepair();
             }
 
+            core.materialB += car.getVolume();
+            if(core.materialB >= 5000)
+            {
+                core.materialB = 5000;
+                return;
+            }
+
             Event arrivalC = new EventArrivalToC(core, expectedTime, car);
             core.updateEventCalendar(arrivalC);
         }

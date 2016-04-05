@@ -30,8 +30,10 @@ namespace Automobilka.Simulations
             {
                 preSetup();
                 resetVariables();
-                while (timeActual <= timeUntil && eventCalendar.Any<Event>())
+                while (timeActual <= timeUntil && eventCalendar.Any<Event>() && condition())
                 {
+                    //refresh();    
+                      
                     actualEvent = eventCalendar.First<Event>();
                     timeActual = actualEvent.Time();
                     if (timeActual <= timeUntil)
@@ -57,6 +59,16 @@ namespace Automobilka.Simulations
         }
 
         public virtual void preSetup() {
+
+        }
+
+        public virtual bool condition()
+        {
+            return true;
+        }
+
+        public virtual void refresh()
+        {
 
         }
     }

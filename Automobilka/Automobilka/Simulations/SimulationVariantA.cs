@@ -14,8 +14,9 @@ namespace Automobilka.Simulations
         // vytvorit novu triedu na rad aut 
         
 
-        public SimulationVariantA(Random gCarA, Random gCarB, Random gCarC, Random gCarD) : base()
+        public SimulationVariantA(Random gCarA, Random gCarB, Random gCarC, Random gCarD, double maxTime, int replications) : base(maxTime, replications)
         {
+            cars = new Vehicle[4];
             cars[0] = (Vehicle)new CarA(gCarA);
             cars[1] = (Vehicle)new CarB(gCarB);
             cars[2] = (Vehicle)new CarC(gCarC);

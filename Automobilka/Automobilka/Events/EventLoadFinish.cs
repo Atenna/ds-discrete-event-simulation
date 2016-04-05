@@ -23,11 +23,17 @@ namespace Automobilka
         }
         public override void execute()
         {
+
             double expectedTime = ( lengthOfWay / ( car.getSpeed() / 60 )) + time ; // ocakavany cas - kolko by autu trava cesta
 
             expectedTime = core.wayAB.realTime(expectedTime);
             Event arrivalB = new EventArrivalToB(core, expectedTime, car);
             core.updateEventCalendar(arrivalB);
+
+            if (core.materialA <= 0)
+            {
+                return;
+            }
 
             Vehicle carInFront = core.getFirstBeforeDepo();
             if (carInFront != null)

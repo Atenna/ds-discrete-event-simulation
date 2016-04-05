@@ -21,14 +21,28 @@ namespace Automobilka
         }
         public override void execute()
         {
+            
+            if (core.materialA > 0)
+            {
+                double rest = core.materialA - car.getVolume();
+                if(rest < 0)
+                {
+                    core.materialA = 0;
+                } else
+                {
+                    core.materialA -= car.getVolume();
+                }
+            } else
+            {
+                return;
+            }
+
+            double timeOfLoading = car.getVolume() / speedOfLoading; // v minutach
+
             // nastavi nakladac ze pracuje
             core.loadMachineWorking = true;
-
             // nastavi cas koniec cakania v rade
             car.setEndOfWaitingOnDepo(time);
-
-            // TO-DO vypocita cas nakladania
-            double timeOfLoading = car.getVolume() / speedOfLoading; // v minutach
 
             // vytvori koniec nakladania
             Event loadEnd = new EventLoadFinish(core, timeOfLoading + time, car);

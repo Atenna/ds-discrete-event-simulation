@@ -26,7 +26,7 @@ namespace Automobilka.Vehicles
             this.probabilityOfCrash = pProbability;
             this.timeOfRepair = pTime;
             this.failureGenerator = generator;
-        };
+        }
 
         public int getVolume()
         {
