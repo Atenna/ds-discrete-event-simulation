@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Automobilka.Vehicles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,30 @@ namespace Automobilka
 {
     class EventUnloadFinish : Event
     {
+        private SimulationCore core;
+        private double time;
+        private Vehicle car;
+        private int lengthOfWay;
+
+        public EventUnloadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
+        {
+            this.core = actualSimulation;
+            this.time = scheduledTime;
+            this.car = car;
+            this.lengthOfWay = 15;
+        }
         public override void execute()
         {
-            throw new NotImplementedException();
+            double expectedTime = (lengthOfWay / (car.getSpeed() / 60)) + time; // ocakavany cas - kolko autu trava cesta
+
+            // poruchovost
+            if(car.hasFailed())
+            {
+                expectedTime += car.getTimeOfRepair();
+            }
+
+            Event arrivalC = new EventArrivalToC(core, expectedTime, car);
+            core.updateEventCalendar(arrivalC);
         }
     }
 }

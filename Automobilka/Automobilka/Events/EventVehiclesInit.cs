@@ -21,12 +21,11 @@ namespace Automobilka.Events
         }
         public override void execute()
         {
-            foreach (Vehicle car in cars)
-            {
-                core.updteListBeforeDepo(car);
-            }
-            Event loadStart = new EventLoadStart(core, time, cars);
-            core.updateEventCalendar(loadStart);
+            // vsetky poslem aby prisli pred depo v case 0
+            
+
+            Event arrivalToA = new EventArrivalToA(core, time, cars);
+            core.updateEventCalendar(arrivalToA);
         }
     }
 }

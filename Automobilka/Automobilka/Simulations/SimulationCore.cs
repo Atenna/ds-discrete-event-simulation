@@ -1,4 +1,5 @@
-﻿using Automobilka.Vehicles;
+﻿using Automobilka.Simulations;
+using Automobilka.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,40 +7,30 @@ using System.Text;
 
 namespace Automobilka
 {
-    public class SimulationCore
+    public class SimulationCore : SimulationCoreAbstract
     {
-        private double timeActual;
-        // maxsimulacny cas
-
-        private LinkedList<Event> eventCalendar;
+       
         private LinkedList<Vehicle> carsBeforeDepo; //auta pred skladkou
         private LinkedList<Vehicle> carsBeforeBuilding; // auta pred stavbou
 
-        public SimulationCore()
+        public NarrowWay wayAB { get; }
+        public NarrowWay wayCA { get; }
+
+        public bool loadMachineWorking {get; set;}
+        public bool unloadMachineWorking {get; set;}
+
+        public SimulationCore(double maxTime, int replications) : base(maxTime, replications)
         {
-            this.eventCalendar = new LinkedList<Event>();
+            unloadMachineWorking = false;
+            loadMachineWorking = false;
         }
 
-        public void simulation(double timeUntil)
+        public override void preSetup()
         {
-            Event actualEvent;
-            while (timeActual <= timeUntil && eventCalendar.Any<Event>())
-            {
-                actualEvent = eventCalendar.First<Event>();
-                timeActual = actualEvent.Time();
-                if (timeActual <= timeUntil)
-                {
-                    actualEvent.execute();
-                }
-            }
+           wayAB  = new NarrowWay(); // depo - stavba
+           wayCA  = new NarrowWay(); // prejazd - depo
         }
-
-        // prida do zoznamu novy event podla casu
-        public void updateEventCalendar(Event evt)
-        {
-            // najst poradie a potom ho pridat na spravne miesto
-            eventCalendar.AddLast(evt);
-        }
+        
 
         public void updteListBeforeDepo(Vehicle car)
         {
@@ -58,7 +49,9 @@ namespace Automobilka
 
         public Vehicle getFirstBeforeBuilding()
         {
-            return carsBeforeBuilding.First();
+            Vehicle car = carsBeforeBuilding.First();
+            carsBeforeBuilding.RemoveFirst();
+            return car;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Automobilka
         public Event(SimulationCore actualSimulationCore, double scheduledTime)
         {
             this.mySimulation = actualSimulationCore;
+            this.timeExecution = scheduledTime;
         }
 
         public double Time()

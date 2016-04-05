@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Automobilka.Vehicles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,26 @@ namespace Automobilka
 {
     class EventArrivalToC : Event
     {
+
+        private SimulationCore core;
+        private double time;
+        private Vehicle car;
+        private int lengthOfWay;
+
+        public EventArrivalToC(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
+        {
+            this.core = actualSimulation;
+            this.time = scheduledTime;
+            this.car = car;
+            this.lengthOfWay = 35;
+        }
         public override void execute()
         {
-            throw new NotImplementedException();
+            double expectedTime = (lengthOfWay / (car.getSpeed() / 60)) + time; // ocakavany cas - kolko by autu trava cesta
+
+            expectedTime = core.wayCA.realTime(expectedTime);
+            Event arrivalA = new EventArrivalToA(core, expectedTime, car);
+            core.updateEventCalendar(arrivalA);
         }
     }
 }
