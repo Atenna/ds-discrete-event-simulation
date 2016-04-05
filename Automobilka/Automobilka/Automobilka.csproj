@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\EventVehiclesInit.cs" />
     <Compile Include="Simulations\SimulationVariantB.cs" />
     <Compile Include="Simulations\SimulationVariantC.cs" />
     <Compile Include="Vehicles\CarD.cs" />

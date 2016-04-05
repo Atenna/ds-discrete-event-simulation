@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automobilka
+namespace Automobilka.Events
 {
-    class EventLoadStart : Event
+    class EventVehiclesInit : Event
     {
         private SimulationCore core;
         private double time;
         private Vehicle[] cars;
 
-        public EventLoadStart(SimulationCore actualSimulation, double scheduledTime, params Vehicle[] cars) : base(actualSimulation, scheduledTime)
+        public EventVehiclesInit(SimulationCore actualSimulation, double scheduledTime, params Vehicle[] cars) : base(actualSimulation, 0)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
@@ -21,8 +21,12 @@ namespace Automobilka
         }
         public override void execute()
         {
-            
-            throw new NotImplementedException();
+            foreach (Vehicle car in cars)
+            {
+                core.updteListBeforeDepo(car);
+            }
+            Event loadStart = new EventLoadStart(core, time, cars);
+            core.updateEventCalendar(loadStart);
         }
     }
 }

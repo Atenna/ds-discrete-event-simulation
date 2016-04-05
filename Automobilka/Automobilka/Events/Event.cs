@@ -10,6 +10,13 @@ namespace Automobilka
     {
 
         private double timeExecution;
+        protected SimulationCore mySimulation { get; set; }
+
+        // plus do parametrov Vehicle 
+        public Event(SimulationCore actualSimulationCore, double scheduledTime)
+        {
+            this.mySimulation = actualSimulationCore;
+        }
 
         public double Time()
         {

@@ -1,4 +1,5 @@
-﻿using Automobilka.Simulations;
+﻿using Automobilka.Events;
+using Automobilka.Simulations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,9 +37,19 @@ namespace Automobilka
             generatorCarE = new Random(seedGenerator.Next());
 
             // vytvorenie simulacie pre kazdu moznost s generatormi pre auta
-            SimulationCore simulationA = new SimulationVariantA();
-            SimulationCore simulationB = new SimulationVariantB();
-            SimulationCore simulationC = new SimulationVariantC();
+            SimulationVariantA simulationA = new SimulationVariantA(generatorCarA, generatorCarB, generatorCarC, generatorCarD);
+            Event initialEvent = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
+            simulationA.simulation(10000);
+
+            // resetovacia metoda na vymazanie statistik
+            SimulationVariantB simulationB = new SimulationVariantB();
+            initialEvent = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
+            simulationA.simulation(10000);
+
+            // resetovacia metoda na vymazanie statistik
+            SimulationVariantC simulationC = new SimulationVariantC();
+            initialEvent = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
+            simulationA.simulation(10000);
         }
     }
 }

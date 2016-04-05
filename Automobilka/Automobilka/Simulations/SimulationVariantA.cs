@@ -1,4 +1,5 @@
-﻿using Automobilka.Vehicles;
+﻿using Automobilka.Events;
+using Automobilka.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,23 @@ namespace Automobilka.Simulations
 {
     class SimulationVariantA : SimulationCore
     {
-        private LinkedList<Vehicle> cars;
+        private Vehicle[] cars;
+        // vytvorit novu triedu na rad aut 
+        
 
-        public SimulationVariantA() : base()
+        public SimulationVariantA(Random gCarA, Random gCarB, Random gCarC, Random gCarD) : base()
         {
-            cars.AddLast((Vehicle)new CarA());
-            cars.AddLast((Vehicle)new CarB());
-            cars.AddLast((Vehicle)new CarC());
-            cars.AddLast((Vehicle)new CarD());
+            cars[0] = (Vehicle)new CarA(gCarA);
+            cars[1] = (Vehicle)new CarB(gCarB);
+            cars[2] = (Vehicle)new CarC(gCarC);
+            cars[3] = (Vehicle)new CarD(gCarD);
         }
         
-        
+        public Vehicle[] getCarsInitial()
+        {
+            return cars;
+        }
+
 
     }
 }
