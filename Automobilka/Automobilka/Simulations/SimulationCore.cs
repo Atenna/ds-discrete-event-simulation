@@ -13,8 +13,8 @@ namespace Automobilka
         private LinkedList<Vehicle> carsBeforeDepo; //auta pred skladkou
         private LinkedList<Vehicle> carsBeforeBuilding; // auta pred stavbou
 
-        public NarrowWay wayAB { get; }
-        public NarrowWay wayCA { get; }
+        public NarrowWay wayAB { get; set; }
+        public NarrowWay wayCA { get; set; }
 
         public bool loadMachineWorking {get; set;}
         public bool unloadMachineWorking {get; set;}
