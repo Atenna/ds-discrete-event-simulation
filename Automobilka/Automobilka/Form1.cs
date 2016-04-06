@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Threading;
 
 namespace Automobilka
 {
@@ -66,6 +67,8 @@ namespace Automobilka
             InitializeComponent();
             seedGenerator = (seed != 0) ? new Random() : new Random(seed);
             variant = -1;
+            maxTime = 1000;
+            replications = 100;
 
             // inicializacia generatorov
             generatorCarA = new Random(seedGenerator.Next());
@@ -86,6 +89,7 @@ namespace Automobilka
             // the simulation background thread can start, if we don't have any errors
             if (!backgroundWorker1.IsBusy && isReadyToSimulate())
             {
+                Console.WriteLine("Priputajte sa");
                 backgroundWorker1.RunWorkerAsync();
             }
         }
@@ -119,7 +123,8 @@ namespace Automobilka
             {
                 label1.Text += "Error: Select a variant";
             }
-
+            string check = label1.Text == "" ? "True" : "False";
+            Console.WriteLine("Ready to simulate " + check);
             return label1.Text == "";
         }
 
@@ -128,6 +133,7 @@ namespace Automobilka
             // tu pobezi simulacia vytvorena niekde vyssie, jej instancia bude volat v ProgressChanged
             // Simulaca test = new Simulacia(backgroundWorker1);
             // test.simulate();
+            Console.WriteLine("Odlietame");
             simulationA.backgroundProcess();
             //
             if (backgroundWorker1.CancellationPending)
@@ -139,6 +145,8 @@ namespace Automobilka
         public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
+            progressBar1.Value = e.ProgressPercentage;
+            Console.WriteLine("Tu by sme sa mali dostat");
         }
 
         public void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

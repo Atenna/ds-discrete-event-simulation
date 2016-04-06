@@ -7,26 +7,15 @@ using System.Threading.Tasks;
 
 namespace Automobilka.Responsivity
 {
-    public class ResponsiveCore
+    public abstract class ResponsiveCore
     {
-        protected BackgroundWorker worker { get; }
+        public BackgroundWorker worker { get; }
         public ResponsiveCore(BackgroundWorker worker)
         {
             this.worker = worker;
         }
 
-        public virtual void backgroundProcess()
-        {
-            int iterator = 1;
-            while (iterator < 100)
-            {
-                // your code here
-
-                // update GUI
-                worker.ReportProgress(iterator / 10);
-                iterator++;
-            }
-        }
+        public abstract void backgroundProcess();
 
     }
 }

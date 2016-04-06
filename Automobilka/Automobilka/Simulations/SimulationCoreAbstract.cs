@@ -54,15 +54,35 @@ namespace Automobilka.Simulations
 
         public override void backgroundProcess()
         {
-            int iterator = 1;
-            while (iterator < 100)
-            {
-                // your code here
+            Event actualEvent;
+            int iterator = 0;
+            double progress;
 
-                // update GUI
-                worker.ReportProgress(iterator / 10);
+            while (iterator < numberOfReplications)
+            {
+                preSetup();
+                resetVariables();
+                //progress = (iterator / numberOfReplications)*100;
+                Console.WriteLine("Vonkajsi cyklus " + iterator);
+                worker.ReportProgress(iterator);
+
+                while (timeActual <= maxTime && eventCalendar.Any<Event>() && condition())
+                {
+                    //refresh();
+
+                    Console.WriteLine("Vnutorny cyklus "+ iterator / numberOfReplications);
+
+                    actualEvent = eventCalendar.First<Event>();
+                    timeActual = actualEvent.Time();
+                    if (timeActual <= maxTime)
+                    {
+                        actualEvent.execute();
+                    }
+                }
                 iterator++;
+                Console.WriteLine("Replikacia #" + iterator);
             }
+            isFinished = true;
         }
 
         private void resetVariables()
