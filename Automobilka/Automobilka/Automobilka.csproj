@@ -52,6 +52,8 @@
     <Compile Include="Simulations\SimulationCoreAbstract.cs" />
     <Compile Include="Simulations\SimulationVariantB.cs" />
     <Compile Include="Simulations\SimulationVariantC.cs" />
+    <Compile Include="Thread.cs" />
+    <Compile Include="ThreadStart.cs" />
     <Compile Include="Vehicles\CarD.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventArrivalToA.cs" />

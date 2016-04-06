@@ -28,6 +28,8 @@ namespace Automobilka
             loadMachineWorking = false;
             materialA = 5000;
             materialB = 0;
+            carsBeforeBuilding = new LinkedList<Vehicle>();
+            carsBeforeDepo = new LinkedList<Vehicle>();
     }
 
         public override void preSetup()

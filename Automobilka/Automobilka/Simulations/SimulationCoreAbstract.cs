@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Threading;
 
 namespace Automobilka.Simulations
 {
@@ -11,7 +13,8 @@ namespace Automobilka.Simulations
         private LinkedList<Event> eventCalendar;
         protected double timeActual;
         protected double maxTime;
-        private int numberOfReplications;
+        private int numberOfReplications { get; set; }
+        public bool isFinished { get; set; }
         
         public SimulationCoreAbstract(double maxTime, int numberOfReplications)
         {
@@ -19,6 +22,12 @@ namespace Automobilka.Simulations
             this.maxTime = maxTime;
             this.eventCalendar = new LinkedList<Event>();
             this.numberOfReplications = numberOfReplications;
+            this.isFinished = false;
+        }
+
+        public void Simulation()
+        {
+            simulation(100000);
         }
 
         public void simulation(double timeUntil)
@@ -33,7 +42,6 @@ namespace Automobilka.Simulations
                 while (timeActual <= timeUntil && eventCalendar.Any<Event>() && condition())
                 {
                     //refresh();    
-                      
                     actualEvent = eventCalendar.First<Event>();
                     timeActual = actualEvent.Time();
                     if (timeActual <= timeUntil)
@@ -42,7 +50,9 @@ namespace Automobilka.Simulations
                     }
                 }
                 iterator++;
+                Console.WriteLine("Replikacia #" + iterator);
             }
+            isFinished = true;
         }
 
         private void resetVariables()
