@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using Automobilka.Responsivity;
+using System.ComponentModel;
 
 namespace Automobilka.Simulations
 {
-    public class SimulationCoreAbstract
+    public class SimulationCoreAbstract : ResponsiveCore
     {
         private LinkedList<Event> eventCalendar;
         protected double timeActual;
@@ -16,7 +18,7 @@ namespace Automobilka.Simulations
         private int numberOfReplications { get; set; }
         public bool isFinished { get; set; }
         
-        public SimulationCoreAbstract(double maxTime, int numberOfReplications)
+        public SimulationCoreAbstract(double maxTime, int numberOfReplications, BackgroundWorker worker) : base(worker)
         {
             this.timeActual = 0.0;
             this.maxTime = maxTime;
@@ -25,12 +27,7 @@ namespace Automobilka.Simulations
             this.isFinished = false;
         }
 
-        public void Simulation()
-        {
-            simulation(100000);
-        }
-
-        public void simulation(double timeUntil)
+        public void simulation()
         {
             Event actualEvent;
             int iterator = 0;
@@ -39,12 +36,12 @@ namespace Automobilka.Simulations
             {
                 preSetup();
                 resetVariables();
-                while (timeActual <= timeUntil && eventCalendar.Any<Event>() && condition())
+                while (timeActual <= maxTime && eventCalendar.Any<Event>() && condition())
                 {
                     //refresh();    
                     actualEvent = eventCalendar.First<Event>();
                     timeActual = actualEvent.Time();
-                    if (timeActual <= timeUntil)
+                    if (timeActual <= maxTime)
                     {
                         actualEvent.execute();
                     }
@@ -53,6 +50,19 @@ namespace Automobilka.Simulations
                 Console.WriteLine("Replikacia #" + iterator);
             }
             isFinished = true;
+        }
+
+        public override void backgroundProcess()
+        {
+            int iterator = 1;
+            while (iterator < 100)
+            {
+                // your code here
+
+                // update GUI
+                worker.ReportProgress(iterator / 10);
+                iterator++;
+            }
         }
 
         private void resetVariables()

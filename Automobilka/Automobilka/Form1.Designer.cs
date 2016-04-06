@@ -34,6 +34,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -126,6 +127,7 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

@@ -2,6 +2,7 @@
 using Automobilka.Vehicles;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Automobilka.Simulations
         // vytvorit novu triedu na rad aut 
         
 
-        public SimulationVariantA(Random gCarA, Random gCarB, Random gCarC, Random gCarD, double maxTime, int replications) : base(maxTime, replications)
+        public SimulationVariantA(Random gCarA, Random gCarB, Random gCarC, Random gCarD, double maxTime, int replications, BackgroundWorker worker) : base(maxTime, replications, worker)
         {
             cars = new Vehicle[4];
             cars[0] = (Vehicle)new CarA(gCarA);

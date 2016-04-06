@@ -52,6 +52,15 @@
     <Compile Include="Simulations\SimulationCoreAbstract.cs" />
     <Compile Include="Simulations\SimulationVariantB.cs" />
     <Compile Include="Simulations\SimulationVariantC.cs" />
+    <Compile Include="Responsivity\ClassTest.cs" />
+    <Compile Include="Responsivity\FormTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Responsivity\FormTest.Designer.cs">
+      <DependentUpon>FormTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Responsivity\Responsible.cs" />
+    <Compile Include="Responsivity\ResponsiveCore.cs" />
     <Compile Include="Vehicles\CarD.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventArrivalToA.cs" />
@@ -89,6 +98,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Responsivity\FormTest.resx">
+      <DependentUpon>FormTest.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -2,6 +2,7 @@
 using Automobilka.Vehicles;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -22,7 +23,7 @@ namespace Automobilka
         public bool loadMachineWorking {get; set;}
         public bool unloadMachineWorking {get; set;}
 
-        public SimulationCore(double maxTime, int replications) : base(maxTime, replications)
+        public SimulationCore(double maxTime, int replications, BackgroundWorker worker) : base(maxTime, replications, worker)
         {
             unloadMachineWorking = false;
             loadMachineWorking = false;

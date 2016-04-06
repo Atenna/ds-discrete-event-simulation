@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Automobilka.Simulations
 {
     class SimulationVariantC : SimulationCore
     {
-        private LinkedList<Vehicle> cars;
+        //private LinkedList<Vehicle> cars;
 
-        public SimulationVariantC(double maxTime, int replications) : base(maxTime, replications)
+        public SimulationVariantC(double maxTime, int replications, BackgroundWorker worker) : base(maxTime, replications, worker)
         {
             //cars.AddLast((Vehicle)new CarB());
             //cars.AddLast((Vehicle)new CarC());
