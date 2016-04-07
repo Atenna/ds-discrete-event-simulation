@@ -23,7 +23,23 @@ namespace Automobilka.Simulations
             cars[2] = (Vehicle)new CarC(gCarC);
             cars[3] = (Vehicle)new CarD(gCarD);
         }
-        
+
+        public override void resetCars()
+        {
+            foreach(Vehicle car in cars)
+            {
+                car.resetAttributes();
+            }
+        }
+
+        public override void addCars()
+        {
+            foreach (Vehicle v in cars)
+            {
+                cruelStats.addVehicleToStats(v);
+            }
+        }
+
         public Vehicle[] getCarsInitial()
         {
             return cars;

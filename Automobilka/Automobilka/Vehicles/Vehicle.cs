@@ -15,9 +15,9 @@ namespace Automobilka.Vehicles
         private double probabilityOfCrash;
         private int timeOfRepair;
 
-        private double timeOfWaitingOnDepo = -1;
-        private double timeOfWaitingOnBuilding = -1;
-        private double startOfWaiting = -1;
+        private double timeOfWaitingOnDepo = 0;
+        private double timeOfWaitingOnBuilding = 0;
+        private double startOfWaiting = 0;
 
         public Vehicle(int pVolume, int pSpeed, double pProbability, int pTime, Random generator)
         {
@@ -55,15 +55,24 @@ namespace Automobilka.Vehicles
 
         public void setEndOfWaitingOnDepo(double time)
         {
-            this.timeOfWaitingOnDepo = time - startOfWaiting;
+            this.timeOfWaitingOnDepo += (time - startOfWaiting);
             // kedze premenna sa pouzije este pri cakani pred uzlom B, treba vynulovat
-            this.startOfWaiting = -1;
+            this.startOfWaiting = 0;
+        }
+
+        public double getWaitingOnDepo()
+        {
+            return timeOfWaitingOnDepo;
+        }
+        public double getWaitingOnBuilding()
+        {
+            return timeOfWaitingOnBuilding;
         }
 
         public void setEndOfWaitingOnBuilding(double time)
         {
-            this.timeOfWaitingOnBuilding = time - startOfWaiting;
-            this.startOfWaiting = -1;
+            this.timeOfWaitingOnBuilding += (time - startOfWaiting);
+            this.startOfWaiting = 0;
         }
 
         // vrati true ak sa auto pokazi
@@ -72,6 +81,13 @@ namespace Automobilka.Vehicles
             double failed = failureGenerator.NextDouble();
 
             return failed < probabilityOfCrash;
+        }
+
+        public void resetAttributes()
+        {
+            timeOfWaitingOnDepo = 0;
+            timeOfWaitingOnBuilding = 0;
+            startOfWaiting = 0;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automobilka
+namespace Automobilka.SimulationObjects
 {
     public class NarrowWay
     {

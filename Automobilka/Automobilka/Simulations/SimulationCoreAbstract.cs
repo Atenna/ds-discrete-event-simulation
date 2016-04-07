@@ -13,8 +13,11 @@ namespace Automobilka.Simulations
     public class SimulationCoreAbstract : ResponsiveCore
     {
         private LinkedList<Event> eventCalendar;
+
+        public Event init { set; get; }
         protected double timeActual;
         protected double maxTime;
+
         private int numberOfReplications { get; set; }
         public bool isFinished { get; set; }
         
@@ -51,6 +54,11 @@ namespace Automobilka.Simulations
             }
             isFinished = true;
         }
+        // vytvori statistiky, init. .. etc
+        public virtual void prePreSetup()
+        {
+
+        }
 
         public override void backgroundProcess()
         {
@@ -58,31 +66,47 @@ namespace Automobilka.Simulations
             int iterator = 0;
             double progress;
 
+            prePreSetup();
             while (iterator < numberOfReplications)
             {
-                preSetup();
                 resetVariables();
+                preSetup();
                 //progress = (iterator / numberOfReplications)*100;
-                Console.WriteLine("Vonkajsi cyklus " + iterator);
+                //Console.WriteLine("Vonkajsi cyklus " + iterator);
                 worker.ReportProgress(iterator);
 
                 while (timeActual <= maxTime && eventCalendar.Any<Event>() && condition())
                 {
                     //refresh();
 
-                    Console.WriteLine("Vnutorny cyklus "+ iterator / numberOfReplications);
+                    //Console.WriteLine("Vnutorny cyklus "+ iterator / numberOfReplications);
 
                     actualEvent = eventCalendar.First<Event>();
+                    eventCalendar.RemoveFirst();
                     timeActual = actualEvent.Time();
                     if (timeActual <= maxTime)
                     {
                         actualEvent.execute();
                     }
                 }
+                postSetup();
                 iterator++;
-                Console.WriteLine("Replikacia #" + iterator);
+                //Console.WriteLine("Replikacia #" + iterator);
             }
+            worker.ReportProgress(100);
             isFinished = true;
+            postPostSetup();
+        }
+
+        public virtual void postSetup()
+        {
+
+        }
+
+        // vypis statistik na konci simulacie
+        public virtual void postPostSetup()
+        {
+
         }
 
         private void resetVariables()
@@ -99,7 +123,7 @@ namespace Automobilka.Simulations
         }
 
         public virtual void preSetup() {
-
+            updateEventCalendar(init);
         }
 
         public virtual bool condition()
@@ -107,9 +131,5 @@ namespace Automobilka.Simulations
             return true;
         }
 
-        public virtual void refresh()
-        {
-
-        }
     }
 }

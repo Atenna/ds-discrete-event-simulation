@@ -82,6 +82,7 @@ namespace Automobilka
 
             Event initialEvent = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
 
+            simulationA.init = initialEvent;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -124,7 +125,7 @@ namespace Automobilka
                 label1.Text += "Error: Select a variant";
             }
             string check = label1.Text == "" ? "True" : "False";
-            Console.WriteLine("Ready to simulate " + check);
+            //Console.WriteLine("Ready to simulate " + check);
             return label1.Text == "";
         }
 
@@ -133,7 +134,8 @@ namespace Automobilka
             // tu pobezi simulacia vytvorena niekde vyssie, jej instancia bude volat v ProgressChanged
             // Simulaca test = new Simulacia(backgroundWorker1);
             // test.simulate();
-            Console.WriteLine("Odlietame");
+            //Console.WriteLine("Odlietame");
+            
             simulationA.backgroundProcess();
             //
             if (backgroundWorker1.CancellationPending)
@@ -146,7 +148,7 @@ namespace Automobilka
         {
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
             progressBar1.Value = e.ProgressPercentage;
-            Console.WriteLine("Tu by sme sa mali dostat");
+            //Console.WriteLine("Tu by sme sa mali dostat");
         }
 
         public void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

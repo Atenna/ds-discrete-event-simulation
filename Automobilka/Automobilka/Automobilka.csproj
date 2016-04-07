@@ -48,7 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\EventVehiclesInit.cs" />
-    <Compile Include="NarrowWay.cs" />
+    <Compile Include="SimulationObjects\NarrowWay.cs" />
+    <Compile Include="SimulationObjects\Queue.cs" />
+    <Compile Include="SimulationObjects\Statistics.cs" />
     <Compile Include="Simulations\SimulationCoreAbstract.cs" />
     <Compile Include="Simulations\SimulationVariantB.cs" />
     <Compile Include="Simulations\SimulationVariantC.cs" />

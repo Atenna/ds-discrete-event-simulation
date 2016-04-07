@@ -1,4 +1,5 @@
-﻿using Automobilka.Simulations;
+﻿using Automobilka.SimulationObjects;
+using Automobilka.Simulations;
 using Automobilka.Vehicles;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,15 @@ namespace Automobilka
     public class SimulationCore : SimulationCoreAbstract
     {
         Application smernik;
-        private LinkedList<Vehicle> carsBeforeDepo; //auta pred skladkou
-        private LinkedList<Vehicle> carsBeforeBuilding; // auta pred stavbou
+        private Queue carsBeforeDepo; //auta pred skladkou
+        private Queue carsBeforeBuilding; // auta pred stavbou
         public double materialA { get; set; }
         public double materialB { get; set; }
 
         public NarrowWay wayAB { get; set; }
         public NarrowWay wayCA { get; set; }
+
+        protected Statistics cruelStats;
 
         public bool loadMachineWorking {get; set;}
         public bool unloadMachineWorking {get; set;}
@@ -27,18 +30,53 @@ namespace Automobilka
         {
             unloadMachineWorking = false;
             loadMachineWorking = false;
-            materialA = 5000;
-            materialB = 0;
-            carsBeforeBuilding = new LinkedList<Vehicle>();
-            carsBeforeDepo = new LinkedList<Vehicle>();
-    }
+            carsBeforeBuilding = new Queue();
+            carsBeforeDepo = new Queue();
+        }
+
+        public override void prePreSetup()
+        {
+            cruelStats = new Statistics();
+            cruelStats.setLoad(carsBeforeDepo);
+            cruelStats.setUnload(carsBeforeBuilding);
+
+            addCars();
+        }
+
+        public virtual void addCars()
+        {
+
+        }
+
+        public override void postSetup()
+        {
+            cruelStats.updateStatistics(timeActual);
+        }
+
+        public override void postPostSetup()
+        {
+            Console.WriteLine("Priemerna dlzka radu - Nakladka: " + cruelStats.getStatsMeanLoadQueueLength());
+            Console.WriteLine("Priemerna dlzka radu - Vykladka: " + cruelStats.getStatsMeanUnloadQueueLength());
+
+            Console.WriteLine("Priemerna dlzka cakania - Nakladka: " + cruelStats.getStatsMeanLoadQueueTime());
+            Console.WriteLine("Priemerna dlzka cakania - Vykladka: " + cruelStats.getStatsMeanUnloadQueueTime());
+        }
 
         public override void preSetup()
         {
-           wayAB  = new NarrowWay(); // depo - stavba
-           wayCA  = new NarrowWay(); // prejazd - depo
-           materialA = 5000;
-           materialB = 0;
+            base.preSetup();
+            wayAB  = new NarrowWay(); // depo - stavba
+            wayCA  = new NarrowWay(); // prejazd - depo
+            materialA = 5000;
+            materialB = 0;
+            carsBeforeBuilding.reset();
+            carsBeforeDepo.reset();
+            resetCars();
+        }
+
+        public virtual void resetCars()
+        {
+
         }
 
         public override bool condition()
@@ -47,34 +85,23 @@ namespace Automobilka
         }
         public void updteListBeforeDepo(Vehicle car)
         {
-            carsBeforeDepo.AddLast(car);
+            carsBeforeDepo.addVehicleToEnd(car, timeActual);
         }
 
         public void updteListBeforeBuilding(Vehicle car)
         {
-            carsBeforeBuilding.AddLast(car);
+            carsBeforeBuilding.addVehicleToEnd(car, timeActual);
         }
 
         public Vehicle getFirstBeforeDepo()
         {
-            return carsBeforeDepo.First();
+            return carsBeforeDepo.getVehicleFromQueue(timeActual);
         }
 
         public Vehicle getFirstBeforeBuilding()
         {
-            Vehicle car = carsBeforeBuilding.First();
-            carsBeforeBuilding.RemoveFirst();
-            return car;
+            return carsBeforeBuilding.getVehicleFromQueue(timeActual);
         }
 
-        public override void refresh()
-        {
-            Application.DoEvents();
-        }
-
-        public void setApp(Application app)
-        {
-            this.smernik = app;
-        }
     }
 }
