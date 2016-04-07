@@ -13,15 +13,11 @@ namespace Automobilka.Simulations
     {
         private Vehicle[] cars;
         // vytvorit novu triedu na rad aut 
-        
+        Random gCarA, gCarB, gCarC, gCarD;
 
         public SimulationVariantA(Random gCarA, Random gCarB, Random gCarC, Random gCarD, double maxTime, int replications, BackgroundWorker worker) : base(maxTime, replications, worker)
         {
             cars = new Vehicle[4];
-            cars[0] = (Vehicle)new CarA(gCarA);
-            cars[1] = (Vehicle)new CarB(gCarB);
-            cars[2] = (Vehicle)new CarC(gCarC);
-            cars[3] = (Vehicle)new CarD(gCarD);
         }
 
         public override void resetCars()
@@ -38,6 +34,10 @@ namespace Automobilka.Simulations
             {
                 cruelStats.addVehicleToStats(v);
             }
+            cars[0] = (Vehicle)new CarA(gCarA);
+            cars[1] = (Vehicle)new CarB(gCarB);
+            cars[2] = (Vehicle)new CarC(gCarC);
+            cars[3] = (Vehicle)new CarD(gCarD);
         }
 
         public Vehicle[] getCarsInitial()

@@ -29,10 +29,16 @@ namespace Automobilka.SimulationObjects
         public Vehicle getVehicleFromQueue(double simulationTime)
         {
             updateQueue(simulationTime);
-            Vehicle toReturn = queue.First();
-            queue.Remove(queue.First());
-       
-            return toReturn;
+
+            if (queue.Any())
+            {
+                Vehicle toReturn = queue.First();
+
+                queue.RemoveAt(0);
+                return toReturn;
+            }
+            else return null;
+            
         }
 
         public void updateQueue(double simulationTime)

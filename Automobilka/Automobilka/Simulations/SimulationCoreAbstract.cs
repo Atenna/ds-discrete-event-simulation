@@ -12,7 +12,7 @@ namespace Automobilka.Simulations
 {
     public class SimulationCoreAbstract : ResponsiveCore
     {
-        private LinkedList<Event> eventCalendar;
+        private List<Event> eventCalendar;
 
         public Event init { set; get; }
         protected double timeActual;
@@ -25,7 +25,7 @@ namespace Automobilka.Simulations
         {
             this.timeActual = 0.0;
             this.maxTime = maxTime;
-            this.eventCalendar = new LinkedList<Event>();
+            this.eventCalendar = new List<Event>();
             this.numberOfReplications = numberOfReplications;
             this.isFinished = false;
         }
@@ -66,6 +66,7 @@ namespace Automobilka.Simulations
             int iterator = 0;
             double progress;
 
+            // vytvorenie aut
             prePreSetup();
             while (iterator < numberOfReplications)
             {
@@ -81,8 +82,8 @@ namespace Automobilka.Simulations
 
                     //Console.WriteLine("Vnutorny cyklus "+ iterator / numberOfReplications);
 
-                    actualEvent = eventCalendar.First<Event>();
-                    eventCalendar.RemoveFirst();
+                    actualEvent = eventCalendar.First();
+                    eventCalendar.RemoveAt(0);
                     timeActual = actualEvent.Time();
                     if (timeActual <= maxTime)
                     {
@@ -111,15 +112,16 @@ namespace Automobilka.Simulations
 
         private void resetVariables()
         {
-            eventCalendar = new LinkedList<Event>();
+            eventCalendar = new List<Event>();
             timeActual = 0.0;
         }
 
         public void updateEventCalendar(Event evt)
         {
-            // najst poradie a potom ho pridat na spravne miesto
-            eventCalendar.AddLast(evt);
+            // prida ho na koniec
+            eventCalendar.Add(evt);
             // to do orderovanie
+            eventCalendar.Sort((x, y) => x.Time().CompareTo(y.Time()));
         }
 
         public virtual void preSetup() {

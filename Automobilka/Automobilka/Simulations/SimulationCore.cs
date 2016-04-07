@@ -12,7 +12,7 @@ namespace Automobilka
 {
     public class SimulationCore : SimulationCoreAbstract
     {
-        Application smernik;
+
         private Queue carsBeforeDepo; //auta pred skladkou
         private Queue carsBeforeBuilding; // auta pred stavbou
         public double materialA { get; set; }
