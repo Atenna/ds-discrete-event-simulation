@@ -19,6 +19,8 @@ namespace Automobilka
         private int replications { get; set; }
 
         SimulationVariantA simulationA;
+        SimulationVariantB simulationB;
+        SimulationVariantC simulationC;
 
 
         private void textBox2_Click(object sender, EventArgs e)
@@ -73,13 +75,22 @@ namespace Automobilka
             variant = -1;
             maxTime = Int32.MaxValue;
             replications = 100;
+            backgroundWorker1.WorkerSupportsCancellation = true;
+        }
 
-            // vytvorenie simulacie pre kazdu moznost s generatormi pre auta
+        private void initializeSimulationInstances()
+        {
             simulationA = new SimulationVariantA(maxTime, replications, backgroundWorker1, seedGenerator);
+            Event initialEventA = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
+            simulationA.init = initialEventA;
 
-            Event initialEvent = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
+            simulationB = new SimulationVariantB(maxTime, replications, backgroundWorker1, seedGenerator);
+            Event initialEventB = new EventVehiclesInit(simulationB, 0, simulationB.getCarsInitial());
+            simulationB.init = initialEventB;
 
-            simulationA.init = initialEvent;
+            simulationC = new SimulationVariantC(maxTime, replications, backgroundWorker1, seedGenerator);
+            Event initialEventC = new EventVehiclesInit(simulationC, 0, simulationC.getCarsInitial());
+            simulationC.init = initialEventC;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -87,9 +98,16 @@ namespace Automobilka
             // the simulation background thread can start, if we don't have any errors
             if (!backgroundWorker1.IsBusy && isReadyToSimulate())
             {
-                Console.WriteLine("Priputajte sa");
+                Console.WriteLine("Replications " + replications);
+                initializeSimulationInstances();
                 backgroundWorker1.RunWorkerAsync();
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            // treba sledovat podmienku na cancelationPending flag ... on si ju nevsimne sam pocas behu, cize sa to nestopne
+            this.backgroundWorker1.CancelAsync();
         }
 
         public bool isReadyToSimulate()
@@ -122,19 +140,24 @@ namespace Automobilka
                 label1.Text += "Error: Select a variant";
             }
             string check = label1.Text == "" ? "True" : "False";
-            //Console.WriteLine("Ready to simulate " + check);
+            
             return label1.Text == "";
         }
 
         public void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            // tu pobezi simulacia vytvorena niekde vyssie, jej instancia bude volat v ProgressChanged
-            // Simulaca test = new Simulacia(backgroundWorker1);
-            // test.simulate();
-            //Console.WriteLine("Odlietame");
+            if(variant == 1)
+            {
+                simulationA.backgroundProcess();
+            } else if(variant == 2)
+            {
+                simulationB.backgroundProcess();
+            } else if(variant == 3)
+            {
+                simulationC.backgroundProcess();
+            }
+            
 
-            simulationA.backgroundProcess();
-            //
             if (backgroundWorker1.CancellationPending)
             {
                 e.Cancel = true;
@@ -159,7 +182,19 @@ namespace Automobilka
                 // vypis na nejaky label, ze sa nema co zastavit, resp
                 // bude tento butoon locked
             }
-            Statistics stats = simulationA.getStats();
+            Statistics stats;
+
+            if (variant == 1)
+            {
+                stats = simulationA.getStats();
+            } else if(variant == 2)
+            {
+                stats = simulationB.getStats();
+            } else
+            {
+                stats = simulationC.getStats();
+            }
+            
             showStats(stats);
         }
 

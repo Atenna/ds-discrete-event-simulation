@@ -30,30 +30,6 @@ namespace Automobilka.Simulations
             this.isFinished = false;
         }
 
-        public void simulation()
-        {
-            Event actualEvent;
-            int iterator = 0;
-
-            while (iterator < numberOfReplications)
-            {
-                preSetup();
-                resetVariables();
-                while (timeActual <= maxTime && eventCalendar.Any<Event>() && condition())
-                {
-                    //refresh();    
-                    actualEvent = eventCalendar.First<Event>();
-                    timeActual = actualEvent.Time();
-                    if (timeActual <= maxTime)
-                    {
-                        actualEvent.execute();
-                    }
-                }
-                iterator++;
-                Console.WriteLine("Replikacia #" + iterator);
-            }
-            isFinished = true;
-        }
         // vytvori statistiky, init. .. etc
         public virtual void prePreSetup()
         {
@@ -64,6 +40,8 @@ namespace Automobilka.Simulations
         {
             Event actualEvent;
             int iterator = 0;
+            double progress = 0.0;
+            int step = numberOfReplications / 100; // jedno percento replikacie 
 
             // vytvorenie aut
             prePreSetup();
@@ -71,16 +49,13 @@ namespace Automobilka.Simulations
             {
                 resetVariables();
                 preSetup();
-                //progress = (iterator / numberOfReplications)*100;
-                //Console.WriteLine("Vonkajsi cyklus " + iterator);
-                worker.ReportProgress(iterator);
+
+                progress = ((double)iterator / (double)numberOfReplications) * 100;
+
+                worker.ReportProgress(Convert.ToInt32(progress));
 
                 while (timeActual <= maxTime && eventCalendar.Any<Event>() && condition())
                 {
-                    //refresh();
-
-                    //Console.WriteLine("Vnutorny cyklus "+ iterator / numberOfReplications);
-
                     actualEvent = eventCalendar.First();
                     eventCalendar.RemoveAt(0);
                     timeActual = actualEvent.Time();

@@ -10,14 +10,38 @@ namespace Automobilka.Simulations
 {
     class SimulationVariantB : SimulationCore
     {
-        //private LinkedList<Vehicle> cars;
+        private Vehicle[] cars;
 
         public SimulationVariantB(double maxTime, int replications, BackgroundWorker worker, Random seedGeneratorInit) : base(maxTime, replications, worker, seedGeneratorInit)
         {
-            //cars.AddLast((Vehicle)new CarA());
-            //cars.AddLast((Vehicle)new CarC());
-            //cars.AddLast((Vehicle)new CarE());
+            cars = new Vehicle[3];
 
+            cars[0] = (Vehicle)new CarA(new Random(seedGenerator.Next()));
+            cars[1] = (Vehicle)new CarC(new Random(seedGenerator.Next()));
+            cars[2] = (Vehicle)new CarE(new Random(seedGenerator.Next()));
+
+        }
+
+
+        public override void resetCars()
+        {
+            foreach (Vehicle car in cars)
+            {
+                car.resetAttributes(new Random(seedGenerator.Next()));
+            }
+        }
+
+        public override void addCars()
+        {
+            foreach (Vehicle v in cars)
+            {
+                cruelStats.addVehicleToStats(v);
+            }
+        }
+
+        public Vehicle[] getCarsInitial()
+        {
+            return cars;
         }
     }
 }

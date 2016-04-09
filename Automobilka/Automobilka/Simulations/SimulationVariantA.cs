@@ -12,7 +12,6 @@ namespace Automobilka.Simulations
     class SimulationVariantA : SimulationCore
     {
         private Vehicle[] cars;
-        // vytvorit novu triedu na rad aut 
 
         public SimulationVariantA(double maxTime, int replications, BackgroundWorker worker, Random seedGeneratorInit) : base(maxTime, replications, worker, seedGeneratorInit)
         {
