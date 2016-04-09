@@ -23,16 +23,16 @@ namespace Automobilka
         }
         public override void execute()
         {
-            double expectedTime = (lengthOfWay / (car.getSpeed() / 60)) + time; // ocakavany cas - kolko autu trava cesta
+            double expectedTime = (lengthOfWay / (car.getSpeed() / 60.0)) + time; // ocakavany cas - kolko autu trava cesta
 
             // poruchovost
-            if(car.hasFailed())
+            if (car.hasFailed())
             {
                 expectedTime += car.getTimeOfRepair();
             }
 
             core.materialB += car.getVolume();
-            if(core.materialB >= 5000)
+            if (core.materialB >= 5000)
             {
                 core.materialB = 5000;
                 return;
@@ -40,6 +40,17 @@ namespace Automobilka
 
             Event arrivalC = new EventArrivalToC(core, expectedTime, car);
             core.updateEventCalendar(arrivalC);
+
+            Vehicle carInFront = core.getFirstBeforeBuilding();
+            if (carInFront != null)
+            {
+                Event unloadStart = new EventUnloadStart(core, time, carInFront);
+                core.updateEventCalendar(unloadStart);
+            }
+            else
+            {
+                core.unloadMachineWorking = false;
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Automobilka
         public override void execute()
         {
 
-            double expectedTime = ( lengthOfWay / ( car.getSpeed() / 60 )) + time ; // ocakavany cas - kolko by autu trava cesta
+            double expectedTime = (lengthOfWay / (double)(car.getSpeed() / 60.0)) + time; // ocakavany cas - kolko by autu trava cesta
 
             expectedTime = core.wayAB.realTime(expectedTime);
             Event arrivalB = new EventArrivalToB(core, expectedTime, car);
@@ -40,7 +40,8 @@ namespace Automobilka
             {
                 Event loadStart = new EventLoadStart(core, time, carInFront);
                 core.updateEventCalendar(loadStart);
-            } else
+            }
+            else
             {
                 core.loadMachineWorking = false;
             }

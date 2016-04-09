@@ -26,10 +26,12 @@ namespace Automobilka
             // nastavi sa im pociatocny cas cakania
             car.setStartOfWaiting(time);
             // ak sa nic nenaklada, pride prve auto na rad
+
             if (core.unloadMachineWorking == false)
             {
-                Event unloadStart = new EventUnloadStart(core, time, core.getFirstBeforeDepo());
+                Event unloadStart = new EventUnloadStart(core, time, core.getFirstBeforeBuilding());
                 core.updateEventCalendar(unloadStart);
+                core.unloadMachineWorking = true;
             }
         }
     }

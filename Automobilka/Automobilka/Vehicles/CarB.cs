@@ -8,7 +8,7 @@ namespace Automobilka.Vehicles
 {
     class CarB : Vehicle
     {
-        public CarB(Random generator) : base(20, 50, 0.04, 50, generator)
+        public CarB(Random generator) : base(20, 50, 0.75, 50, generator)
         {
 
         }

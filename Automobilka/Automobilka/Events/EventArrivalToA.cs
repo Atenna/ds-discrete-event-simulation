@@ -11,29 +11,30 @@ namespace Automobilka
     {
         private SimulationCore core;
         private double time;
-        private Vehicle[] cars;
+        private Vehicle car;
 
-        public EventArrivalToA(SimulationCore actualSimulation, double scheduledTime, params Vehicle[] cars) : base(actualSimulation, scheduledTime)
+        public EventArrivalToA(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
-            this.cars = cars;
+            this.car = car;
         }
-    public override void execute()
+        public override void execute()
         {
-            foreach (Vehicle car in cars)
+            // postavia sa do radu
+            core.updteListBeforeDepo(car);
+            // nastavi sa im pociatocny cas cakania
+            car.setStartOfWaiting(time);
+            // ak sa nic nenaklada, pride prve auto na rad
+            if (core.loadMachineWorking == false)
             {
-                // postavia sa do radu
-                core.updteListBeforeDepo(car);
-                // nastavi sa im pociatocny cas cakania
-                car.setStartOfWaiting(time);
-                // ak sa nic nenaklada, pride prve auto na rad
-                if (core.loadMachineWorking == false)
+                if (core.materialA <= 0)
                 {
-                    Event loadStart = new EventLoadStart(core, time, core.getFirstBeforeDepo());
-                    core.updateEventCalendar(loadStart);
-                }                
-                
+                    return;
+                }
+                Event loadStart = new EventLoadStart(core, time, core.getFirstBeforeDepo());
+                core.updateEventCalendar(loadStart);
+                core.loadMachineWorking = true;
             }
         }
     }

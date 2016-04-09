@@ -22,10 +22,11 @@ namespace Automobilka.Events
         public override void execute()
         {
             // vsetky poslem aby prisli pred depo v case 0
-            
-
-            Event arrivalToA = new EventArrivalToA(core, time, cars);
-            core.updateEventCalendar(arrivalToA);
+            foreach (Vehicle v in cars)
+            {
+                Event arrival = new EventArrivalToA(core, time, v);
+                core.updateEventCalendar(arrival);
+            }
         }
     }
 }

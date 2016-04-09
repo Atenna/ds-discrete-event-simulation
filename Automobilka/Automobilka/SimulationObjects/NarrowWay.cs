@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automobilka
+namespace Automobilka.SimulationObjects
 {
     public class NarrowWay
     {
@@ -16,7 +16,7 @@ namespace Automobilka
         // najdlhsi cas prichodu aktualnych aut na ceste
         public double realTime(double expectedTime)
         {
-            if(expectedTime < timeOfArrival)
+            if (expectedTime < timeOfArrival)
             {
                 return timeOfArrival;
             }

@@ -1,7 +1,9 @@
-﻿using Automobilka.Simulations;
+﻿using Automobilka.SimulationObjects;
+using Automobilka.Simulations;
 using Automobilka.Vehicles;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -10,34 +12,80 @@ namespace Automobilka
 {
     public class SimulationCore : SimulationCoreAbstract
     {
-        Application smernik;
-        private LinkedList<Vehicle> carsBeforeDepo; //auta pred skladkou
-        private LinkedList<Vehicle> carsBeforeBuilding; // auta pred stavbou
+        protected Random seedGenerator;
+
+        private Queue carsBeforeDepo; //auta pred skladkou
+        private Queue carsBeforeBuilding; // auta pred stavbou
         public double materialA { get; set; }
         public double materialB { get; set; }
 
         public NarrowWay wayAB { get; set; }
         public NarrowWay wayCA { get; set; }
 
-        public bool loadMachineWorking {get; set;}
-        public bool unloadMachineWorking {get; set;}
+        protected Statistics cruelStats;
 
-        public SimulationCore(double maxTime, int replications) : base(maxTime, replications)
+        public bool loadMachineWorking { get; set; }
+        public bool unloadMachineWorking { get; set; }
+
+        public SimulationCore(double maxTime, int replications, BackgroundWorker worker, Random seedGeneratorInit) : base(maxTime, replications, worker)
         {
             unloadMachineWorking = false;
             loadMachineWorking = false;
-            materialA = 5000;
-            materialB = 0;
-            carsBeforeBuilding = new LinkedList<Vehicle>();
-            carsBeforeDepo = new LinkedList<Vehicle>();
-    }
+            carsBeforeBuilding = new Queue();
+            carsBeforeDepo = new Queue();
+            seedGenerator = seedGeneratorInit;
+        }
+
+        public override void prePreSetup()
+        {
+            cruelStats = new Statistics();
+            cruelStats.setLoad(carsBeforeDepo);
+            cruelStats.setUnload(carsBeforeBuilding);
+
+            addCars();
+        }
+
+        public virtual void addCars()
+        {
+
+        }
+
+        public override void postSetup()
+        {
+            cruelStats.updateStatistics(timeActual);
+        }
+
+        public override void postPostSetup()
+        {
+            Console.WriteLine("Priemerne trvanie simulacie (v hodinach): " + cruelStats.getStatsMeanSimulationTime() / 60);
+
+            Console.WriteLine("Priemerna dlzka radu - Nakladka: " + cruelStats.getStatsMeanLoadQueueLength());
+            Console.WriteLine("Priemerna dlzka radu - Vykladka: " + cruelStats.getStatsMeanUnloadQueueLength());
+
+            Console.WriteLine("Priemerna dlzka stravena autom cakanim - Nakladka (v minutach): " + cruelStats.getStatsMeanLoadQueueTime());
+            Console.WriteLine("Priemerna dlzka stravena autom cakanim - Vykladka (v minutach): " + cruelStats.getStatsMeanUnloadQueueTime());
+
+            Console.WriteLine("Priemerna dlzka cakania vsetkych aut - Nakladka (v hodinach): " + cruelStats.getStatsSumMeanLoadQueueTime() / 60);
+            Console.WriteLine("Priemerna dlzka cakania vsetkych aut - Vykladka (v hodinach): " + cruelStats.getStatsSumMeanUnloadQueueTime() / 60);
+        }
 
         public override void preSetup()
         {
-           wayAB  = new NarrowWay(); // depo - stavba
-           wayCA  = new NarrowWay(); // prejazd - depo
-           materialA = 5000;
-           materialB = 0;
+            base.preSetup();
+            wayAB = new NarrowWay(); // depo - stavba
+            wayCA = new NarrowWay(); // prejazd - depo
+            materialA = 5000;
+            materialB = 0;
+            carsBeforeBuilding.reset();
+            carsBeforeDepo.reset();
+            resetCars();
+            loadMachineWorking = false;
+            unloadMachineWorking = false;
+        }
+
+        public virtual void resetCars()
+        {
+
         }
 
         public override bool condition()
@@ -46,34 +94,23 @@ namespace Automobilka
         }
         public void updteListBeforeDepo(Vehicle car)
         {
-            carsBeforeDepo.AddLast(car);
+            carsBeforeDepo.addVehicleToEnd(car, timeActual);
         }
 
         public void updteListBeforeBuilding(Vehicle car)
         {
-            carsBeforeBuilding.AddLast(car);
+            carsBeforeBuilding.addVehicleToEnd(car, timeActual);
         }
 
         public Vehicle getFirstBeforeDepo()
         {
-            return carsBeforeDepo.First();
+            return carsBeforeDepo.getVehicleFromQueue(timeActual);
         }
 
         public Vehicle getFirstBeforeBuilding()
         {
-            Vehicle car = carsBeforeBuilding.First();
-            carsBeforeBuilding.RemoveFirst();
-            return car;
+            return carsBeforeBuilding.getVehicleFromQueue(timeActual);
         }
 
-        public override void refresh()
-        {
-            Application.DoEvents();
-        }
-
-        public void setApp(Application app)
-        {
-            this.smernik = app;
-        }
     }
 }

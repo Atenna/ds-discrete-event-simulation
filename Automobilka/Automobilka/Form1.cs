@@ -1,18 +1,23 @@
 ﻿using Automobilka.Events;
+using Automobilka.Responsivity;
 using Automobilka.Simulations;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using System.ComponentModel;
+using System.Threading;
 
 namespace Automobilka
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form, Responsible
     {
         private static int seed;
         private static Random seedGenerator, generatorCarA, generatorCarB, generatorCarC, generatorCarD, generatorCarE;
         private int variant;
         private int maxTime { get; set; }
         private int replications { get; set; }
+
+        SimulationVariantA simulationA;
 
 
         private void textBox2_Click(object sender, EventArgs e)
@@ -22,7 +27,7 @@ namespace Automobilka
 
         private void textBox2_Leave(object sender, EventArgs e)
         {
-            if(textBox2.Text=="")
+            if (textBox2.Text == "")
             {
                 textBox2.Text = "Generator seed";
             }
@@ -30,7 +35,7 @@ namespace Automobilka
 
         private void textBox1_Leave(object sender, EventArgs e)
         {
-            if(textBox1.Text=="")
+            if (textBox1.Text == "")
             {
                 textBox1.Text = "Number of replications";
             }
@@ -45,16 +50,19 @@ namespace Automobilka
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             String comboBoxString = comboBox1.GetItemText(this.comboBox1.SelectedItem);
-            if (comboBoxString == "Variant A") {
+            if (comboBoxString == "Variant A")
+            {
                 variant = 1;
-            } else if(comboBoxString == "Variant B")
+            }
+            else if (comboBoxString == "Variant B")
             {
                 variant = 2;
-            } else
+            }
+            else
             {
                 variant = 3;
             }
-            Console.WriteLine("Variant "+variant);
+            Console.WriteLine("Variant " + variant);
         }
 
         public Form1()
@@ -62,22 +70,28 @@ namespace Automobilka
             InitializeComponent();
             seedGenerator = (seed != 0) ? new Random() : new Random(seed);
             variant = -1;
-
-            // inicializacia generatorov
-            generatorCarA = new Random(seedGenerator.Next());
-            generatorCarB = new Random(seedGenerator.Next());
-            generatorCarC = new Random(seedGenerator.Next());
-            generatorCarD = new Random(seedGenerator.Next());
-            generatorCarE = new Random(seedGenerator.Next());
+            maxTime = Int32.MaxValue;
+            replications = 100;
 
             // vytvorenie simulacie pre kazdu moznost s generatormi pre auta
-            SimulationVariantA simulationA = new SimulationVariantA(generatorCarA, generatorCarB, generatorCarC, generatorCarD, maxTime, replications);
+            simulationA = new SimulationVariantA(maxTime, replications, backgroundWorker1, seedGenerator);
 
             Event initialEvent = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
 
+            simulationA.init = initialEvent;
         }
 
         private void button1_Click(object sender, EventArgs e)
+        {
+            // the simulation background thread can start, if we don't have any errors
+            if (!backgroundWorker1.IsBusy && isReadyToSimulate())
+            {
+                Console.WriteLine("Priputajte sa");
+                backgroundWorker1.RunWorkerAsync();
+            }
+        }
+
+        public bool isReadyToSimulate()
         {
             label1.Text = "";
 
@@ -86,7 +100,7 @@ namespace Automobilka
                 replications = int.Parse(textBox1.Text);
                 seed = int.Parse(textBox1.Text);
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 label1.Text += "Error: Accepted integers only \n";
                 Console.WriteLine(exc.StackTrace.ToString());
@@ -98,13 +112,51 @@ namespace Automobilka
             {
                 label1.Text += "Error: Incorrect value for number of replications \n";
             }
-            if(textBox2.Text == "Generator seed")
+            if (textBox2.Text == "Generator seed")
             {
                 label1.Text += "Error: Incorrect value for generator seed \n";
             }
-            if(variant == -1)
+            if (variant == -1)
             {
                 label1.Text += "Error: Select a variant";
+            }
+            string check = label1.Text == "" ? "True" : "False";
+            //Console.WriteLine("Ready to simulate " + check);
+            return label1.Text == "";
+        }
+
+        public void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // tu pobezi simulacia vytvorena niekde vyssie, jej instancia bude volat v ProgressChanged
+            // Simulaca test = new Simulacia(backgroundWorker1);
+            // test.simulate();
+            //Console.WriteLine("Odlietame");
+
+            simulationA.backgroundProcess();
+            //
+            if (backgroundWorker1.CancellationPending)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
+            progressBar1.Value = e.ProgressPercentage;
+            //Console.WriteLine("Tu by sme sa mali dostat");
+        }
+
+        public void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (backgroundWorker1.IsBusy)
+            {
+                backgroundWorker1.CancelAsync();
+            }
+            else
+            {
+                // vypis na nejaky label, ze sa nema co zastavit, resp
+                // bude tento butoon locked
             }
         }
     }

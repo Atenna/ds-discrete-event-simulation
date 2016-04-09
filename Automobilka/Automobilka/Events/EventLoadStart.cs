@@ -12,8 +12,9 @@ namespace Automobilka
         private SimulationCore core;
         private double time;
         private Vehicle car;
-        private double speedOfLoading = 180/60; // m3 / min
-        public EventLoadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
+        private double speedOfLoading = 180 / 60.0; // m3 / min
+        public EventLoadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car)
+            : base(actualSimulation, scheduledTime)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
@@ -21,20 +22,14 @@ namespace Automobilka
         }
         public override void execute()
         {
-            
-            if (core.materialA > 0)
+            double rest = core.materialA - car.getVolume();
+            if (rest < 0)
             {
-                double rest = core.materialA - car.getVolume();
-                if(rest < 0)
-                {
-                    core.materialA = 0;
-                } else
-                {
-                    core.materialA -= car.getVolume();
-                }
-            } else
+                core.materialA = 0;
+            }
+            else
             {
-                return;
+                core.materialA -= car.getVolume();
             }
 
             double timeOfLoading = car.getVolume() / speedOfLoading; // v minutach
