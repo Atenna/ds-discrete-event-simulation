@@ -106,7 +106,6 @@ namespace Automobilka
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // treba sledovat podmienku na cancelationPending flag ... on si ju nevsimne sam pocas behu, cize sa to nestopne
             this.backgroundWorker1.CancelAsync();
         }
 
@@ -168,7 +167,6 @@ namespace Automobilka
         {
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
             progressBar1.Value = e.ProgressPercentage;
-            //Console.WriteLine("Tu by sme sa mali dostat");
         }
 
         public void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

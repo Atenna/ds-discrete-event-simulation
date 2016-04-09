@@ -21,6 +21,9 @@ namespace Automobilka.Simulations
         private int numberOfReplications { get; set; }
         public bool isFinished { get; set; }
 
+        private BackgroundWorker worker;
+        private bool cancel;
+
         public SimulationCoreAbstract(double maxTime, int numberOfReplications, BackgroundWorker worker) : base(worker)
         {
             this.timeActual = 0.0;
@@ -28,6 +31,7 @@ namespace Automobilka.Simulations
             this.eventCalendar = new List<Event>();
             this.numberOfReplications = numberOfReplications;
             this.isFinished = false;
+            this.worker = worker;
         }
 
         // vytvori statistiky, init. .. etc
@@ -68,7 +72,14 @@ namespace Automobilka.Simulations
                 iterator++;
                 //Console.WriteLine("Replikacia #" + iterator);
             }
-            worker.ReportProgress(100);
+            if(!condition())
+            {
+                worker.ReportProgress(0);
+            } else
+            {
+                worker.ReportProgress(100);
+            }
+            
             isFinished = true;
             postPostSetup();
         }

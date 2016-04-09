@@ -43,5 +43,10 @@ namespace Automobilka.Simulations
         {
             return cars;
         }
+
+        public override bool condition()
+        {
+            return !worker.CancellationPending;
+        }
     }
 }
