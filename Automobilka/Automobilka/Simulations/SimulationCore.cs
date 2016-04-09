@@ -36,6 +36,7 @@ namespace Automobilka
             seedGenerator = seedGeneratorInit;
         }
 
+        // vytvori novu statistiku a priradi nove fronty
         public override void prePreSetup()
         {
             cruelStats = new Statistics();
@@ -55,6 +56,7 @@ namespace Automobilka
             cruelStats.updateStatistics(timeActual);
         }
 
+        // vypisovanie statistik ... 
         public override void postPostSetup()
         {
             Console.WriteLine("Priemerne trvanie simulacie (v hodinach): " + cruelStats.getStatsMeanSimulationTime() / 60);
@@ -110,6 +112,11 @@ namespace Automobilka
         public Vehicle getFirstBeforeBuilding()
         {
             return carsBeforeBuilding.getVehicleFromQueue(timeActual);
+        }
+
+        public Statistics getStats()
+        {
+            return cruelStats;
         }
 
     }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Threading;
+using Automobilka.SimulationObjects;
 
 namespace Automobilka
 {
@@ -158,6 +159,19 @@ namespace Automobilka
                 // vypis na nejaky label, ze sa nema co zastavit, resp
                 // bude tento butoon locked
             }
+            Statistics stats = simulationA.getStats();
+            showStats(stats);
+        }
+
+        public void showStats(Statistics stats)
+        {
+            label2.Text = "Average run time: " + stats.getStatsMeanSimulationTime()/60;
+            label3.Text = "Depo: " + stats.getStatsMeanLoadQueueLength();
+            label4.Text = "Building: " + stats.getStatsMeanUnloadQueueLength();
+            label5.Text = "Depo: " + stats.getStatsMeanLoadQueueTime();
+            label6.Text = "Building: " + stats.getStatsMeanUnloadQueueTime();
+            label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime()/60;
+            label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime()/60;
         }
     }
 }
