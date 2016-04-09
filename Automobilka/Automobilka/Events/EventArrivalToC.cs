@@ -1,4 +1,5 @@
-﻿using Automobilka.Vehicles;
+﻿using Automobilka.Readonly;
+using Automobilka.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Automobilka
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
-            this.lengthOfWay = 35;
+            this.lengthOfWay = Constants.CALength;
         }
         public override void execute()
         {

@@ -1,9 +1,5 @@
-﻿using Automobilka.Vehicles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Automobilka.Readonly;
+using Automobilka.Vehicles;
 
 namespace Automobilka
 {
@@ -13,7 +9,7 @@ namespace Automobilka
         private SimulationCore core;
         private double time;
         private Vehicle car;
-        private double speedOfUnloading = 200 / 60.0; // m3 / min
+        private double speedOfUnloading = Constants.unloadMachinePerformance;
         public EventUnloadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
         {
             this.core = actualSimulation;

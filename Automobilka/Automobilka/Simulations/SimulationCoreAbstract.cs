@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Threading;
 using Automobilka.Responsivity;
 using System.ComponentModel;
 
@@ -22,7 +18,6 @@ namespace Automobilka.Simulations
         public bool isFinished { get; set; }
 
         private BackgroundWorker worker;
-        private bool cancel;
 
         public SimulationCoreAbstract(double maxTime, int numberOfReplications, BackgroundWorker worker) : base(worker)
         {

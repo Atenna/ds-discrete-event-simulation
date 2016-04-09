@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\EventVehiclesInit.cs" />
+    <Compile Include="Readonly\Constants.cs" />
     <Compile Include="SimulationObjects\NarrowWay.cs" />
     <Compile Include="SimulationObjects\Queue.cs" />
     <Compile Include="SimulationObjects\Statistics.cs" />

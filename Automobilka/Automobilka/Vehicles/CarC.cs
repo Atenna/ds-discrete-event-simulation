@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Automobilka.Readonly;
+using System;
 
 namespace Automobilka.Vehicles
 {
     class CarC : Vehicle
     {
-        public CarC(Random generator) : base(25, 45, 0.04, 100, generator)
+        public CarC(Random generator) : 
+            base(Constants.volumeOfVehicleC, Constants.speedOfVehicleC, Constants.probabilityOfCrashOfVehicleC, Constants.timeOfRepairOfVehicleC, generator)
         {
 
         }

@@ -1,4 +1,5 @@
 ﻿using Automobilka.Vehicles;
+using Automobilka.Readonly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Automobilka
         private SimulationCore core;
         private double time;
         private Vehicle car;
-        private double speedOfLoading = 180 / 60.0; // m3 / min
+        private double speedOfLoading = Constants.loadMachinePerformance;
         public EventLoadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car)
             : base(actualSimulation, scheduledTime)
         {

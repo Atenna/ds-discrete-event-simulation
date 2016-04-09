@@ -1,9 +1,5 @@
-﻿using Automobilka.Vehicles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Automobilka.Readonly;
+using Automobilka.Vehicles;
 
 namespace Automobilka
 {
@@ -19,7 +15,7 @@ namespace Automobilka
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
-            this.lengthOfWay = 15;
+            this.lengthOfWay = Constants.BCLength;
         }
         public override void execute()
         {
@@ -32,9 +28,9 @@ namespace Automobilka
             }
 
             core.materialB += car.getVolume();
-            if (core.materialB >= 5000)
+            if (core.materialB >= Constants.materialToLoad)
             {
-                core.materialB = 5000;
+                core.materialB = Constants.materialToLoad;
                 return;
             }
 

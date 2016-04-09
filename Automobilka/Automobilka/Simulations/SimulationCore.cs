@@ -1,4 +1,5 @@
-﻿using Automobilka.SimulationObjects;
+﻿using Automobilka.Readonly;
+using Automobilka.SimulationObjects;
 using Automobilka.Simulations;
 using Automobilka.Vehicles;
 using System;
@@ -76,7 +77,7 @@ namespace Automobilka
             base.preSetup();
             wayAB = new NarrowWay(); // depo - stavba
             wayCA = new NarrowWay(); // prejazd - depo
-            materialA = 5000;
+            materialA = Constants.materialToLoad;
             materialB = 0;
             carsBeforeBuilding.reset();
             carsBeforeDepo.reset();
@@ -92,7 +93,7 @@ namespace Automobilka
 
         public override bool condition()
         {
-            return materialB < 5000;
+            return materialB < Constants.materialToLoad;
         }
         public void updteListBeforeDepo(Vehicle car)
         {
