@@ -22,27 +22,20 @@ namespace Automobilka
         }
         public override void execute()
         {
-            double rest = core.materialA - car.getVolume();
-            if (rest < 0)
-            {
-                core.materialA = 0;
-            }
-            else
-            {
-                core.materialA -= car.getVolume();
-            }
+            double volumeToLoad = (core.materialA <= car.getVolume()) ? core.materialA : car.getVolume();
 
-            double timeOfLoading = car.getVolume() / speedOfLoading; // v minutach
+            core.materialA -= volumeToLoad;
 
-            // nastavi nakladac ze pracuje
+            double timeOfLoading = volumeToLoad / speedOfLoading;
+
+            car.realVolume = volumeToLoad;
+            
             core.loadMachineWorking = true;
-            // nastavi cas koniec cakania v rade
+            
             car.setEndOfWaitingOnDepo(time);
 
-            // vytvori koniec nakladania
             Event loadEnd = new EventLoadFinish(core, timeOfLoading + time, car);
 
-            // prida koniec nakladania do kalendata udalosti
             core.updateEventCalendar(loadEnd);
         }
     }

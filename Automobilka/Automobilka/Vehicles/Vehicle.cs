@@ -11,6 +11,7 @@ namespace Automobilka.Vehicles
         private Random failureGenerator;
 
         private int volume;
+        public double realVolume { get; set; }
         private int speed;
         private double probabilityOfCrash;
         private int timeOfRepair;
@@ -29,6 +30,7 @@ namespace Automobilka.Vehicles
             this.probabilityOfCrash = pProbability;
             this.timeOfRepair = pTime;
             this.failureGenerator = generator;
+            this.realVolume = 0;
         }
 
         public int getVolume()

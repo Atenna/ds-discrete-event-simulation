@@ -30,7 +30,8 @@ namespace Automobilka
             car.setEndOfWaitingOnBuilding(time);
 
             // TO-DO vypocita cas nakladania
-            double timeOfUnloading = car.getVolume() / speedOfUnloading; // v minutach
+            double timeOfUnloading = car.realVolume / speedOfUnloading; // v minutach
+            car.realVolume = 0;
 
             // vytvori koniec nakladania
             Event unloadEnd = new EventUnloadFinish(core, timeOfUnloading + time, car);
