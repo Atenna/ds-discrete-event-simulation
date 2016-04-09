@@ -19,18 +19,23 @@ namespace Automobilka
             this.time = scheduledTime;
             this.car = car;
         }
-    public override void execute()
+        public override void execute()
         {
-                // postavia sa do radu
-                core.updteListBeforeDepo(car);
-                // nastavi sa im pociatocny cas cakania
-                car.setStartOfWaiting(time);
-                // ak sa nic nenaklada, pride prve auto na rad
-                if (core.loadMachineWorking == false)
+            // postavia sa do radu
+            core.updteListBeforeDepo(car);
+            // nastavi sa im pociatocny cas cakania
+            car.setStartOfWaiting(time);
+            // ak sa nic nenaklada, pride prve auto na rad
+            if (core.loadMachineWorking == false)
+            {
+                if (core.materialA <= 0)
                 {
-                    Event loadStart = new EventLoadStart(core, time, core.getFirstBeforeDepo());
-                    core.updateEventCalendar(loadStart);
-                }                
+                    return;
+                }
+                Event loadStart = new EventLoadStart(core, time, core.getFirstBeforeDepo());
+                core.updateEventCalendar(loadStart);
+                core.loadMachineWorking = true;
+            }
         }
     }
 }

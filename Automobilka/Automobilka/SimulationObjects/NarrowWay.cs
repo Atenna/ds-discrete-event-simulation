@@ -16,7 +16,7 @@ namespace Automobilka.SimulationObjects
         // najdlhsi cas prichodu aktualnych aut na ceste
         public double realTime(double expectedTime)
         {
-            if(expectedTime < timeOfArrival)
+            if (expectedTime < timeOfArrival)
             {
                 return timeOfArrival;
             }

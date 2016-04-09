@@ -12,7 +12,7 @@ namespace Automobilka.Simulations
     {
         //private LinkedList<Vehicle> cars;
 
-        public SimulationVariantB(double maxTime, int replications, BackgroundWorker worker) : base(maxTime, replications, worker)
+        public SimulationVariantB(double maxTime, int replications, BackgroundWorker worker, Random seedGeneratorInit) : base(maxTime, replications, worker, seedGeneratorInit)
         {
             //cars.AddLast((Vehicle)new CarA());
             //cars.AddLast((Vehicle)new CarC());

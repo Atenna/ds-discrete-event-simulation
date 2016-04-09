@@ -17,6 +17,10 @@ namespace Automobilka.SimulationObjects
         private double unloadSize;
         private double timeOfWaitingOnBuilding;
         private double timeOfWaitingOnDepo;
+        private double simulationTimeCumulative;
+
+        private double meanWaitingOnDepo;
+        private double meanWaitingOnBuilding;
 
         public Statistics()
         {
@@ -26,9 +30,9 @@ namespace Automobilka.SimulationObjects
             unloadSize = 0;
             timeOfWaitingOnBuilding = 0;
             timeOfWaitingOnDepo = 0;
-    }
+        }
 
-    public void addVehicleToStats(Vehicle car)
+        public void addVehicleToStats(Vehicle car)
         {
             cars.Add(car);
         }
@@ -45,18 +49,26 @@ namespace Automobilka.SimulationObjects
 
         public void updateStatistics(double simulationTime)
         {
+            simulationTimeCumulative += simulationTime;
+
             loadSize += load.getMeanQueueLength(simulationTime);
             unloadSize += unload.getMeanQueueLength(simulationTime);
 
-            foreach(Vehicle v in cars)
+            foreach (Vehicle v in cars)
             {
                 timeOfWaitingOnBuilding += v.getWaitingOnBuilding();
                 timeOfWaitingOnDepo += v.getWaitingOnDepo();
+
+                meanWaitingOnDepo += v.getMeanWaitingOnDepo();
+                meanWaitingOnBuilding += v.getMeanWaitingOnBuilding();
             }
 
             iterator++;
         }
-
+        public double getStatsMeanSimulationTime()
+        {
+            return simulationTimeCumulative / iterator;
+        }
         public double getStatsMeanLoadQueueLength()
         {
             return loadSize / iterator;
@@ -74,7 +86,7 @@ namespace Automobilka.SimulationObjects
         // statistika pre jedno auto - priemerna dlzka cakania pred nakladacom
         public double getStatsMeanLoadQueueTime()
         {
-            return (timeOfWaitingOnDepo / iterator) / cars.Count();
+            return (meanWaitingOnDepo / iterator) / cars.Count;
         }
         // statistika pre vsetky auta - priemerna dlzka cakania pred vykladacom
         public double getStatsSumMeanUnloadQueueTime()
@@ -84,7 +96,7 @@ namespace Automobilka.SimulationObjects
 
         public double getStatsMeanUnloadQueueTime()
         {
-            return (timeOfWaitingOnBuilding / iterator) / cars.Count();
+            return (meanWaitingOnBuilding / iterator) / cars.Count;
         }
     }
 }

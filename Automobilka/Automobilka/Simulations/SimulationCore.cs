@@ -12,6 +12,7 @@ namespace Automobilka
 {
     public class SimulationCore : SimulationCoreAbstract
     {
+        protected Random seedGenerator;
 
         private Queue carsBeforeDepo; //auta pred skladkou
         private Queue carsBeforeBuilding; // auta pred stavbou
@@ -23,15 +24,16 @@ namespace Automobilka
 
         protected Statistics cruelStats;
 
-        public bool loadMachineWorking {get; set;}
-        public bool unloadMachineWorking {get; set;}
+        public bool loadMachineWorking { get; set; }
+        public bool unloadMachineWorking { get; set; }
 
-        public SimulationCore(double maxTime, int replications, BackgroundWorker worker) : base(maxTime, replications, worker)
+        public SimulationCore(double maxTime, int replications, BackgroundWorker worker, Random seedGeneratorInit) : base(maxTime, replications, worker)
         {
             unloadMachineWorking = false;
             loadMachineWorking = false;
             carsBeforeBuilding = new Queue();
             carsBeforeDepo = new Queue();
+            seedGenerator = seedGeneratorInit;
         }
 
         public override void prePreSetup()
@@ -55,23 +57,30 @@ namespace Automobilka
 
         public override void postPostSetup()
         {
+            Console.WriteLine("Priemerne trvanie simulacie (v hodinach): " + cruelStats.getStatsMeanSimulationTime() / 60);
+
             Console.WriteLine("Priemerna dlzka radu - Nakladka: " + cruelStats.getStatsMeanLoadQueueLength());
             Console.WriteLine("Priemerna dlzka radu - Vykladka: " + cruelStats.getStatsMeanUnloadQueueLength());
 
-            Console.WriteLine("Priemerna dlzka cakania - Nakladka: " + cruelStats.getStatsMeanLoadQueueTime());
-            Console.WriteLine("Priemerna dlzka cakania - Vykladka: " + cruelStats.getStatsMeanUnloadQueueTime());
+            Console.WriteLine("Priemerna dlzka stravena autom cakanim - Nakladka (v minutach): " + cruelStats.getStatsMeanLoadQueueTime());
+            Console.WriteLine("Priemerna dlzka stravena autom cakanim - Vykladka (v minutach): " + cruelStats.getStatsMeanUnloadQueueTime());
+
+            Console.WriteLine("Priemerna dlzka cakania vsetkych aut - Nakladka (v hodinach): " + cruelStats.getStatsSumMeanLoadQueueTime() / 60);
+            Console.WriteLine("Priemerna dlzka cakania vsetkych aut - Vykladka (v hodinach): " + cruelStats.getStatsSumMeanUnloadQueueTime() / 60);
         }
 
         public override void preSetup()
         {
             base.preSetup();
-            wayAB  = new NarrowWay(); // depo - stavba
-            wayCA  = new NarrowWay(); // prejazd - depo
+            wayAB = new NarrowWay(); // depo - stavba
+            wayCA = new NarrowWay(); // prejazd - depo
             materialA = 5000;
             materialB = 0;
             carsBeforeBuilding.reset();
             carsBeforeDepo.reset();
             resetCars();
+            loadMachineWorking = false;
+            unloadMachineWorking = false;
         }
 
         public virtual void resetCars()

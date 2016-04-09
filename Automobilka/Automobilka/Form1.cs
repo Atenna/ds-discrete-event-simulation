@@ -27,7 +27,7 @@ namespace Automobilka
 
         private void textBox2_Leave(object sender, EventArgs e)
         {
-            if(textBox2.Text=="")
+            if (textBox2.Text == "")
             {
                 textBox2.Text = "Generator seed";
             }
@@ -35,7 +35,7 @@ namespace Automobilka
 
         private void textBox1_Leave(object sender, EventArgs e)
         {
-            if(textBox1.Text=="")
+            if (textBox1.Text == "")
             {
                 textBox1.Text = "Number of replications";
             }
@@ -50,16 +50,19 @@ namespace Automobilka
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             String comboBoxString = comboBox1.GetItemText(this.comboBox1.SelectedItem);
-            if (comboBoxString == "Variant A") {
+            if (comboBoxString == "Variant A")
+            {
                 variant = 1;
-            } else if(comboBoxString == "Variant B")
+            }
+            else if (comboBoxString == "Variant B")
             {
                 variant = 2;
-            } else
+            }
+            else
             {
                 variant = 3;
             }
-            Console.WriteLine("Variant "+variant);
+            Console.WriteLine("Variant " + variant);
         }
 
         public Form1()
@@ -67,18 +70,11 @@ namespace Automobilka
             InitializeComponent();
             seedGenerator = (seed != 0) ? new Random() : new Random(seed);
             variant = -1;
-            maxTime = 1000;
+            maxTime = Int32.MaxValue;
             replications = 100;
 
-            // inicializacia generatorov
-            generatorCarA = new Random(seedGenerator.Next());
-            generatorCarB = new Random(seedGenerator.Next());
-            generatorCarC = new Random(seedGenerator.Next());
-            generatorCarD = new Random(seedGenerator.Next());
-            generatorCarE = new Random(seedGenerator.Next());
-
             // vytvorenie simulacie pre kazdu moznost s generatormi pre auta
-            simulationA = new SimulationVariantA(generatorCarA, generatorCarB, generatorCarC, generatorCarD, maxTime, replications, backgroundWorker1);
+            simulationA = new SimulationVariantA(maxTime, replications, backgroundWorker1, seedGenerator);
 
             Event initialEvent = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
 
@@ -135,7 +131,7 @@ namespace Automobilka
             // Simulaca test = new Simulacia(backgroundWorker1);
             // test.simulate();
             //Console.WriteLine("Odlietame");
-            
+
             simulationA.backgroundProcess();
             //
             if (backgroundWorker1.CancellationPending)
@@ -153,10 +149,11 @@ namespace Automobilka
 
         public void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if(backgroundWorker1.IsBusy)
+            if (backgroundWorker1.IsBusy)
             {
                 backgroundWorker1.CancelAsync();
-            } else
+            }
+            else
             {
                 // vypis na nejaky label, ze sa nema co zastavit, resp
                 // bude tento butoon locked

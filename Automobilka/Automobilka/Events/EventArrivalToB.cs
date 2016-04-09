@@ -27,11 +27,11 @@ namespace Automobilka
             car.setStartOfWaiting(time);
             // ak sa nic nenaklada, pride prve auto na rad
 
-            Vehicle car2 = core.getFirstBeforeDepo();
-            if (core.unloadMachineWorking == false && car2 != null)
+            if (core.unloadMachineWorking == false)
             {
-                Event unloadStart = new EventUnloadStart(core, time, car2);
+                Event unloadStart = new EventUnloadStart(core, time, core.getFirstBeforeBuilding());
                 core.updateEventCalendar(unloadStart);
+                core.unloadMachineWorking = true;
             }
         }
     }

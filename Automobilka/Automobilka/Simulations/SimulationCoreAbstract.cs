@@ -20,7 +20,7 @@ namespace Automobilka.Simulations
 
         private int numberOfReplications { get; set; }
         public bool isFinished { get; set; }
-        
+
         public SimulationCoreAbstract(double maxTime, int numberOfReplications, BackgroundWorker worker) : base(worker)
         {
             this.timeActual = 0.0;
@@ -35,7 +35,7 @@ namespace Automobilka.Simulations
             Event actualEvent;
             int iterator = 0;
 
-            while(iterator < numberOfReplications)
+            while (iterator < numberOfReplications)
             {
                 preSetup();
                 resetVariables();
@@ -64,7 +64,6 @@ namespace Automobilka.Simulations
         {
             Event actualEvent;
             int iterator = 0;
-            double progress;
 
             // vytvorenie aut
             prePreSetup();
@@ -124,7 +123,8 @@ namespace Automobilka.Simulations
             eventCalendar.Sort((x, y) => x.Time().CompareTo(y.Time()));
         }
 
-        public virtual void preSetup() {
+        public virtual void preSetup()
+        {
             updateEventCalendar(init);
         }
 

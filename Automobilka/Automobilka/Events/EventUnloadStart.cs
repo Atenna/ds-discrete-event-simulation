@@ -13,7 +13,7 @@ namespace Automobilka
         private SimulationCore core;
         private double time;
         private Vehicle car;
-        private double speedOfUnloading = 200 / 60; // m3 / min
+        private double speedOfUnloading = 200 / 60.0; // m3 / min
         public EventUnloadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
         {
             this.core = actualSimulation;
@@ -33,7 +33,7 @@ namespace Automobilka
             double timeOfUnloading = car.getVolume() / speedOfUnloading; // v minutach
 
             // vytvori koniec nakladania
-            Event unloadEnd = new EventLoadFinish(core, timeOfUnloading + time, car);
+            Event unloadEnd = new EventUnloadFinish(core, timeOfUnloading + time, car);
 
             // prida koniec nakladania do kalendata udalosti
             core.updateEventCalendar(unloadEnd);

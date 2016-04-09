@@ -38,7 +38,7 @@ namespace Automobilka.SimulationObjects
                 return toReturn;
             }
             else return null;
-            
+
         }
 
         public void updateQueue(double simulationTime)
