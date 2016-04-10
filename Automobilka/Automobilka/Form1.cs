@@ -26,6 +26,8 @@ namespace Automobilka
         SimulationVariantB simulationB;
         SimulationVariantC simulationC;
 
+        bool isChecked;
+
         private void textBox2_Click(object sender, EventArgs e)
         {
             textBox2.Text = "";
@@ -81,6 +83,7 @@ namespace Automobilka
             backgroundWorker1.WorkerSupportsCancellation = true;
             button2.Enabled = false;
             button3.Enabled = false;
+            isChecked = false;
         }
 
         private void initializeSimulationInstances()
@@ -105,6 +108,19 @@ namespace Automobilka
             simulationC.initCars(carB, carC, carD);
             Event initialEventC = new EventVehiclesInit(simulationC, 0, simulationC.getCarsInitial());
             simulationC.init = initialEventC;
+
+            if (variant == 1)
+            {
+                simulationA.isVisualized = isChecked;
+            }
+            else if (variant == 2)
+            {
+                simulationB.isVisualized = isChecked;
+            }
+            else if (variant == 3)
+            {
+                simulationC.isVisualized = isChecked;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -193,11 +209,9 @@ namespace Automobilka
             }
         }
 
-        bool isChecked = false;
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             isChecked = radioButton1.Checked;
-            
         }
 
         private void radioButton1_Click(object sender, EventArgs e)
@@ -208,18 +222,6 @@ namespace Automobilka
             {
                 radioButton1.Checked = true;
                 isChecked = false;
-            }
-            if (variant == 1)
-            {
-                simulationA.isVisualized = isChecked;
-            }
-            else if (variant == 2)
-            {
-                simulationB.isVisualized = isChecked;
-            }
-            else if (variant == 3)
-            {
-                simulationC.isVisualized = isChecked;
             }
         }
 
