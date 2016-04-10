@@ -29,8 +29,13 @@ namespace Automobilka.GUI
 
         private static void repaintCA(SimulationCore simulation, Form1 form)
         {
-            List<Vehicle> ca = simulation.carsCA;
+            List<Vehicle> ca = simulation.getCarsCA();
             string text = "C-A ";
+            if(ca.Count == 0)
+            {
+                form.label11.Text = text;
+                return;
+            }
             foreach (Vehicle v in ca)
             {
                 text += v.toString();
@@ -40,8 +45,13 @@ namespace Automobilka.GUI
 
         private static void repaintBC(SimulationCore simulation, Form1 form)
         {
-            List<Vehicle> bc = simulation.carsBC;
+            List<Vehicle> bc = simulation.getCarsBC();
             string text = "B-C ";
+            if (bc.Count == 0)
+            {
+                form.label10.Text = text;
+                return;
+            }
             foreach (Vehicle v in bc)
             {
                 text += v.toString();
@@ -102,8 +112,13 @@ namespace Automobilka.GUI
 
         private static void repaintAB(SimulationCore simulation, Form1 form)
         {
-            List<Vehicle> ab = simulation.carsAB;
+            List<Vehicle> ab = simulation.getCarsAB();
             string text = "A-B ";
+            if (ab.Count == 0)
+            {
+                form.label9.Text = text;
+                return;
+            }
             foreach (Vehicle v in ab)
             {
                 text += v.toString();

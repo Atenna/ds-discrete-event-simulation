@@ -22,9 +22,11 @@ namespace Automobilka
             this.time = scheduledTime;
             this.car = car;
             this.lengthOfWay = Constants.CALength;
-
-            this.core.carsBC.Remove(car);
-            this.core.carsCA.Add(car);
+            lock (Constants.gateF)
+            {
+                this.core.removeFromBC(car);
+                this.core.getCarsCA().Add(car);
+            }
         }
         public override void execute()
         {

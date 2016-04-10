@@ -48,8 +48,6 @@ namespace Automobilka.Simulations
 
                 progress = ((double)iterator / (double)numberOfReplications) * 100;
 
-                
-
                 while (timeActual <= maxTime && eventCalendar.Any<Event>() && condition())
                 {
                     actualEvent = eventCalendar.First();
@@ -60,7 +58,7 @@ namespace Automobilka.Simulations
                         actualEvent.execute();
                     }
                     worker.ReportProgress(Convert.ToInt32(progress));
-                    System.Threading.Thread.Sleep(100);
+                    System.Threading.Thread.Sleep(700);
                 }
                 
                 postSetup();

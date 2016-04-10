@@ -17,7 +17,10 @@ namespace Automobilka
             this.car = car;
             this.lengthOfWay = Constants.BCLength;
             this.core.carAtUnloader = null;
-            this.core.carsBC.Add(car);
+            lock(Constants.gateF)
+            {
+                this.core.getCarsBC().Add(car);
+            }
         }
         public override void execute()
         {

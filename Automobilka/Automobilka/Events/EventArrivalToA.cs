@@ -1,4 +1,5 @@
-﻿using Automobilka.Vehicles;
+﻿using Automobilka.Readonly;
+using Automobilka.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,14 @@ namespace Automobilka
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
-            if(this.core.carsCA.Contains(car))
+            lock(Constants.gateF)
             {
-                this.core.carsCA.Remove(car);
+                if (this.core.getCarsCA().Contains(car))
+                {
+                    this.core.removeFromCA(car);
+                }
             }
+            
         }
         public override void execute()
         {

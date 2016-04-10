@@ -20,9 +20,9 @@ namespace Automobilka
         public Vehicle carAtLoader { set; get; }
         public Vehicle carAtUnloader { get; set; }
 
-        public List<Vehicle> carsAB { get; set; }
-        public List<Vehicle> carsBC { get; set; }
-        public List<Vehicle> carsCA { get; set; }
+        private List<Vehicle> carsAB;
+        private List<Vehicle> carsBC;
+        private List<Vehicle> carsCA;
 
         public double materialA { get; set; }
         public double materialB { get; set; }
@@ -158,5 +158,53 @@ namespace Automobilka
             return carsBeforeBuilding;
         }
 
+        public List<Vehicle> getCarsAB()
+        {
+            lock (Constants.gateF)
+            {
+                return carsAB;
+            }
+        }
+
+        public void removeFromAB(Vehicle car)
+        {
+            lock (Constants.gateF)
+            {
+                carsAB.Remove(car);
+            }
+        }
+
+        public List<Vehicle> getCarsBC()
+        {
+            lock (Constants.gateF)
+            {
+                return carsBC;
+            }
+        }
+
+        public void removeFromBC(Vehicle car)
+        {
+            lock (Constants.gateF)
+            {
+                carsBC.Remove(car);
+                carsBC.Remove(car);
+            }
+        }
+
+        public void removeFromCA(Vehicle car)
+        {
+            lock (Constants.gateF)
+            {
+                carsCA.Remove(car);
+            }
+        }
+
+        public List<Vehicle> getCarsCA()
+        {
+            lock (Constants.gateF)
+            {
+                return carsCA;
+            }
+        }
     }
 }

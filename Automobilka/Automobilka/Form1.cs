@@ -18,7 +18,7 @@ namespace Automobilka
         private static int seed;
         private static Random seedGenerator;
         private int variant;
-        private bool visalized;
+        private bool visualized;
         private int maxTime { get; set; }
         private int replications { get; set; }
 
@@ -79,7 +79,7 @@ namespace Automobilka
             maxTime = Int32.MaxValue;
             replications = 100;
             backgroundWorker1.WorkerSupportsCancellation = true;
-            visalized = true;
+            visualized = true;
         }
 
         private void initializeSimulationInstances()
@@ -215,27 +215,30 @@ namespace Automobilka
         {
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
             progressBar1.Value = e.ProgressPercentage;
-            lock (Constants.gate)
+            lock (Constants.gate) 
             {
-                if (variant == 1)
+                lock(Constants.gateF)
                 {
-                    if (radioButton1.Checked)
+                    if (variant == 1)
                     {
-                        Graphics.repaint(simulationA, this);
+                        if (radioButton1.Checked)
+                        {
+                            Graphics.repaint(simulationA, this);
+                        }
                     }
-                }
-                else if (variant == 2)
-                {
-                    if (radioButton1.Checked)
+                    else if (variant == 2)
                     {
-                        Graphics.repaint(simulationB, this);
+                        if (radioButton1.Checked)
+                        {
+                            Graphics.repaint(simulationB, this);
+                        }
                     }
-                }
-                else if (variant == 3)
-                {
-                    if (radioButton1.Checked)
+                    else if (variant == 3)
                     {
-                        Graphics.repaint(simulationC, this);
+                        if (radioButton1.Checked)
+                        {
+                            Graphics.repaint(simulationC, this);
+                        }
                     }
                 }
             }
