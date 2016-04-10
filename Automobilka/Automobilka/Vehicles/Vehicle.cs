@@ -111,7 +111,7 @@ namespace Automobilka.Vehicles
 
         public string toString()
         {
-            return name + ": ["+ realVolume + "/"+volume+"], "+speed;
+            return name + ": ["+ realVolume + "/"+volume+"], "+speed + " ";
         }
     }
 }

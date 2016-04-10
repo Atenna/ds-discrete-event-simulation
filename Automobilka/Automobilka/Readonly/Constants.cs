@@ -40,5 +40,7 @@ namespace Automobilka.Readonly
         public const int timeOfRepairOfVehicleD = 44;
         public const int timeOfRepairOfVehicleE = 170;
 
+        public static readonly object gate = new object();
+
     }
 }

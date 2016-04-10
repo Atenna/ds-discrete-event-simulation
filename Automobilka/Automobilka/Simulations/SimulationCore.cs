@@ -113,22 +113,34 @@ namespace Automobilka
         }
         public void updteListBeforeDepo(Vehicle car)
         {
-            carsBeforeDepo.addVehicleToEnd(car, timeActual);
+            lock (Constants.gate)
+            {
+                carsBeforeDepo.addVehicleToEnd(car, timeActual);
+            }
         }
 
         public void updteListBeforeBuilding(Vehicle car)
         {
-            carsBeforeBuilding.addVehicleToEnd(car, timeActual);
+            lock (Constants.gate)
+            {
+                carsBeforeBuilding.addVehicleToEnd(car, timeActual);
+            }
         }
 
         public Vehicle getFirstBeforeDepo()
         {
-            return carsBeforeDepo.getVehicleFromQueue(timeActual);
+            lock (Constants.gate)
+            {
+                return carsBeforeDepo.getVehicleFromQueue(timeActual);
+            }
         }
 
         public Vehicle getFirstBeforeBuilding()
         {
-            return carsBeforeBuilding.getVehicleFromQueue(timeActual);
+            lock (Constants.gate)
+            {
+                return carsBeforeBuilding.getVehicleFromQueue(timeActual);
+            }
         }
 
         public Statistics getStats()
