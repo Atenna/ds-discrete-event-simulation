@@ -18,7 +18,6 @@ namespace Automobilka
         private static int seed;
         private static Random seedGenerator;
         private int variant;
-        private bool visualized;
         private bool paused = false;
         private int maxTime { get; set; }
         private int replications { get; set; }
@@ -80,7 +79,8 @@ namespace Automobilka
             maxTime = Int32.MaxValue;
             replications = 100;
             backgroundWorker1.WorkerSupportsCancellation = true;
-            visualized = true;
+            button2.Enabled = false;
+            button3.Enabled = false;
         }
 
         private void initializeSimulationInstances()
@@ -112,6 +112,8 @@ namespace Automobilka
             // the simulation background thread can start, if we don't have any errors
             if (!backgroundWorker1.IsBusy && isReadyToSimulate())
             {
+                button2.Enabled = true;
+                button3.Enabled = true;
                 Console.WriteLine("Replications " + replications);
                 initializeSimulationInstances();
                 trackBar1_Scroll(this, e);
@@ -121,7 +123,7 @@ namespace Automobilka
 
         private void button3_Click(object sender, EventArgs e)
         {
-            this.backgroundWorker1.CancelAsync();
+            backgroundWorker1.CancelAsync();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -174,7 +176,12 @@ namespace Automobilka
 
         public void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            if(variant == 1)
+            if (backgroundWorker1.CancellationPending)
+            {
+                e.Cancel = true;
+            }
+
+            if (variant == 1)
             {
                 simulationA.backgroundProcess();
             } else if(variant == 2)
@@ -183,12 +190,6 @@ namespace Automobilka
             } else if(variant == 3)
             {
                 simulationC.backgroundProcess();
-            }
-            
-
-            if (backgroundWorker1.CancellationPending)
-            {
-                e.Cancel = true;
             }
         }
 
@@ -250,8 +251,8 @@ namespace Automobilka
             }
             else
             {
-                // vypis na nejaky label, ze sa nema co zastavit, resp
-                // bude tento butoon locked
+                button2.Enabled = false;
+                button3.Enabled = false;
             }
             Statistics stats;
 

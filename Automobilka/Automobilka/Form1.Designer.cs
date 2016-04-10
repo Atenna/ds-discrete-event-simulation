@@ -423,6 +423,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1557, 989);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label16);
@@ -441,6 +442,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.panel1);
+            this.MinimumSize = new System.Drawing.Size(1585, 1068);
             this.Name = "Form1";
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);
