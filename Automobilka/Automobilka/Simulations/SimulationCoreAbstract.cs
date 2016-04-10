@@ -62,21 +62,18 @@ namespace Automobilka.Simulations
                     {
                         actualEvent.execute();
                     }
-                    worker.ReportProgress(Convert.ToInt32(progress));
+                    
                     Constants.doneEvent.WaitOne(Timeout.Infinite);
                     if (isVisualized)
                     {
+                        worker.ReportProgress(Convert.ToInt32(progress));
                         slowDown();
-                    } else
-                    {
-                        if (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - ticks / TimeSpan.TicksPerMillisecond > 20000000)
-                        {
-                            Thread.Sleep(1);
-                            ticks = DateTime.Now.Ticks;
-                        }
                     }
                 }
-                
+                if(!isVisualized)
+                {
+                    worker.ReportProgress(Convert.ToInt32(progress));
+                }
                 postSetup();
                 iterator++;
             }
