@@ -15,6 +15,7 @@ namespace Automobilka.Simulations
         public Event init { set; get; }
         protected double timeActual;
         protected double maxTime;
+        protected int speed;
 
         private int numberOfReplications { get; set; }
         public bool isFinished { get; set; }
@@ -61,12 +62,11 @@ namespace Automobilka.Simulations
                     }
                     worker.ReportProgress(Convert.ToInt32(progress));
                     Constants.doneEvent.WaitOne(Timeout.Infinite);
-                    System.Threading.Thread.Sleep(30);
+                    Thread.Sleep(speed);
                 }
                 
                 postSetup();
                 iterator++;
-                //Console.WriteLine("Replikacia #" + iterator);
             }
             if(!condition())
             {
@@ -115,5 +115,8 @@ namespace Automobilka.Simulations
             return true;
         }
 
+        public void setSpeed(int speed) {
+            this.speed = (10-speed)*100;
+        }
     }
 }

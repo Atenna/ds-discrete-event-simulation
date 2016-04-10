@@ -114,6 +114,7 @@ namespace Automobilka
             {
                 Console.WriteLine("Replications " + replications);
                 initializeSimulationInstances();
+                trackBar1_Scroll(this, e);
                 backgroundWorker1.RunWorkerAsync();
             }
         }
@@ -279,6 +280,21 @@ namespace Automobilka
             label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime()/60;
         }
 
-        
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            int value = trackBar1.Value;
+            if (variant == 1)
+            {
+                simulationA.setSpeed(value);
+            }
+            else if (variant == 2)
+            {
+                simulationB.setSpeed(value);
+            }
+            else
+            {
+                simulationC.setSpeed(value);
+            }
+        }
     }
 }
