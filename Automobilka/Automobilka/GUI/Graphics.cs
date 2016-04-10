@@ -25,6 +25,21 @@ namespace Automobilka.GUI
             repaintAB(simulation, form);
             repaintBC(simulation, form);
             repaintCA(simulation, form);
+            // na hodiny
+            form.label19.Text = "Simulation time: " + (simulation.getActualTime()/60).ToString("#.000");
+        }
+
+        public static void repaintClear(Form1 form)
+        {
+            form.label12.Text = "Material: " + 5000;
+            form.label13.Text = "Material: " + 0;
+            form.label9.Text = "A-B ";
+            form.label11.Text = "C-A ";
+            form.label10.Text = "B-C ";
+            form.label17.Text = "";
+            form.label16.Text = "";
+            form.listBox1.Items.Clear();
+            form.listBox2.Items.Clear();
         }
 
         private static void repaintCA(SimulationCore simulation, Form1 form)

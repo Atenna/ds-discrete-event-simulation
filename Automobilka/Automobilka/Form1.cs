@@ -208,25 +208,10 @@ namespace Automobilka
                 simulationC.backgroundProcess();
             }
         }
-
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            isChecked = radioButton1.Checked;
-        }
-
-        private void radioButton1_Click(object sender, EventArgs e)
-        {
-            if (radioButton1.Checked && !isChecked)
-                radioButton1.Checked = false;
-            else
-            {
-                radioButton1.Checked = true;
-                isChecked = false;
-            }
-        }
-
+        int counter = 0;
         public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            counter++;
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
             progressBar1.Value = e.ProgressPercentage;
             lock (Constants.gate) 
@@ -235,23 +220,26 @@ namespace Automobilka
                 {
                     if (variant == 1)
                     {
-                        if (radioButton1.Checked)
+                        if (checkBox1.Checked)
                         {
                             Graphics.repaint(simulationA, this);
+                            showStats(simulationA.getStats());
                         }
                     }
                     else if (variant == 2)
                     {
-                        if (radioButton1.Checked)
+                        if (checkBox1.Checked)
                         {
                             Graphics.repaint(simulationB, this);
+                            showStats(simulationB.getStats());
                         }
                     }
                     else if (variant == 3)
                     {
-                        if (radioButton1.Checked)
+                        if (checkBox1.Checked)
                         {
                             Graphics.repaint(simulationC, this);
+                            showStats(simulationC.getStats());
                         }
                     }
                 }
@@ -260,6 +248,7 @@ namespace Automobilka
 
         public void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            Graphics.repaintClear(this);
             if (backgroundWorker1.IsBusy)
             {
                 backgroundWorker1.CancelAsync();
@@ -283,6 +272,7 @@ namespace Automobilka
             }
             
             showStats(stats);
+            showIS(stats);
         }
 
         public void showStats(Statistics stats)
@@ -294,6 +284,12 @@ namespace Automobilka
             label6.Text = "Building: " + stats.getStatsMeanUnloadQueueTime();
             label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime()/60;
             label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime()/60;
+       }
+
+        public void showIS(Statistics stats)
+        {
+            double[] _IS = stats.confidenceIntervalSimulationTime(0.9);
+            label18.Text = "Interval: <" + (_IS[0] / 60).ToString("#.000") + ", " + (_IS[1] / 60).ToString("#.000") + ">";
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -311,6 +307,11 @@ namespace Automobilka
             {
                 simulationC.setSpeed(value);
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            isChecked = checkBox1.Checked;
         }
     }
 }
