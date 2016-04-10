@@ -129,7 +129,6 @@ namespace Automobilka.Simulations
 
         private void slowDown()
         {
-            
             Thread.Sleep(speed);
         }
 

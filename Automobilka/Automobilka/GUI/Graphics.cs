@@ -42,10 +42,25 @@ namespace Automobilka.GUI
             form.listBox2.Items.Clear();
         }
 
+        public static void repaintClear(Form1 form)
+        {
+            form.label12.Text = "Material: " + 5000;
+            form.label13.Text = "Material: " + 0;
+
+            form.label11.Text = "C-A ";
+            form.label10.Text = "B-C ";
+            form.label17.Text = "";
+            form.label16.Text = "";
+            form.listBox1.Items.Clear();
+            form.listBox2.Items.Clear();
+            form.label9.Text = "A-B ";
+        }
+
         private static void repaintCA(SimulationCore simulation, Form1 form)
         {
-            List<Vehicle> ca = simulation.getCarsCA();
             string text = "C-A ";
+            List<Vehicle> ca = simulation.getCarsCA();
+            
             if(ca.Count == 0)
             {
                 form.label11.Text = text;
@@ -60,8 +75,8 @@ namespace Automobilka.GUI
 
         private static void repaintBC(SimulationCore simulation, Form1 form)
         {
-            List<Vehicle> bc = simulation.getCarsBC();
             string text = "B-C ";
+            List<Vehicle> bc = simulation.getCarsBC();
             if (bc.Count == 0)
             {
                 form.label10.Text = text;
@@ -127,8 +142,9 @@ namespace Automobilka.GUI
 
         private static void repaintAB(SimulationCore simulation, Form1 form)
         {
-            List<Vehicle> ab = simulation.getCarsAB();
             string text = "A-B ";
+            List<Vehicle> ab = simulation.getCarsAB();
+            
             if (ab.Count == 0)
             {
                 form.label9.Text = text;

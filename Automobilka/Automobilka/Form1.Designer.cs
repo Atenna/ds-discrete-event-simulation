@@ -295,9 +295,9 @@
             // 
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Location = new System.Drawing.Point(23, 639);
+            this.groupBox3.Location = new System.Drawing.Point(12, 639);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(547, 136);
+            this.groupBox3.Size = new System.Drawing.Size(558, 136);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Avg. waiting time of all cars";
@@ -424,37 +424,63 @@
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.label18);
+<<<<<<< HEAD
             this.groupBox6.Location = new System.Drawing.Point(12, 923);
+=======
+            this.groupBox6.Location = new System.Drawing.Point(12, 934);
+>>>>>>> origin/master
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(558, 100);
             this.groupBox6.TabIndex = 26;
             this.groupBox6.TabStop = false;
+<<<<<<< HEAD
             this.groupBox6.Text = "Confidence Interval";
+=======
+            this.groupBox6.Text = "Confidence interval";
+>>>>>>> origin/master
             // 
             // label18
             // 
             this.label18.AutoSize = true;
+<<<<<<< HEAD
             this.label18.Location = new System.Drawing.Point(15, 45);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(102, 29);
             this.label18.TabIndex = 0;
             this.label18.Text = "Interval: ";
+=======
+            this.label18.Location = new System.Drawing.Point(15, 52);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(96, 29);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "Interval:";
+>>>>>>> origin/master
             // 
             // label19
             // 
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(589, 432);
             this.label19.Name = "label19";
+<<<<<<< HEAD
             this.label19.Size = new System.Drawing.Size(190, 29);
             this.label19.TabIndex = 27;
             this.label19.Text = "Simulation time: ";
+=======
+            this.label19.Size = new System.Drawing.Size(142, 29);
+            this.label19.TabIndex = 27;
+            this.label19.Text = "Actual time: ";
+>>>>>>> origin/master
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(1557, 1064);
+=======
+            this.ClientSize = new System.Drawing.Size(1557, 1075);
+>>>>>>> origin/master
             this.Controls.Add(this.label19);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.label17);
@@ -530,10 +556,17 @@
         private System.Windows.Forms.Label label15;
         public System.Windows.Forms.Label label16;
         public System.Windows.Forms.Label label17;
+<<<<<<< HEAD
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label18;
         public System.Windows.Forms.Label label19;
+=======
+        private System.Windows.Forms.GroupBox groupBox6;
+        public System.Windows.Forms.Label label18;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label19;
+>>>>>>> origin/master
     }
 }
 
