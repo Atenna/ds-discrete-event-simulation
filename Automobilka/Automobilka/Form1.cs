@@ -208,14 +208,10 @@ namespace Automobilka
                 simulationC.backgroundProcess();
             }
         }
-<<<<<<< HEAD
-        int counter = 0;
-=======
 
->>>>>>> origin/master
         public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            counter++;
+           
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
             progressBar1.Value = e.ProgressPercentage;
             lock (Constants.gate) 
@@ -288,17 +284,15 @@ namespace Automobilka
             label6.Text = "Building: " + stats.getStatsMeanUnloadQueueTime();
             label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime()/60;
             label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime()/60;
-<<<<<<< HEAD
+
        }
 
         public void showIS(Statistics stats)
         {
             double[] _IS = stats.confidenceIntervalSimulationTime(0.9);
             label18.Text = "Interval: <" + (_IS[0] / 60).ToString("#.000") + ", " + (_IS[1] / 60).ToString("#.000") + ">";
-=======
             double [] _is = stats.confidenceIntervalSimulationTime(0.9);
             label18.Text = "Interval: <" + (_is[0]/60).ToString("#.000") + ", " + (_is[1]/60).ToString("#.000") + ">";
->>>>>>> origin/master
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
