@@ -19,6 +19,7 @@ namespace Automobilka
         private static Random seedGenerator;
         private int variant;
         private bool visualized;
+        private bool paused = false;
         private int maxTime { get; set; }
         private int replications { get; set; }
 
@@ -124,20 +125,16 @@ namespace Automobilka
 
         private void button2_Click(object sender, EventArgs e)
         {
-            /*
-            if (variant == 1)
+            if (!paused)
             {
-                simulationA.paused = true;
+                Constants.doneEvent.Reset();
+                paused = true;
             }
-            else if (variant == 2)
+            else
             {
-                simulationB.paused = true;
+                Constants.doneEvent.Set();
+                paused = false;
             }
-            else if (variant == 3)
-            {
-                simulationC.paused = true;
-            }
-            */
         }
 
         public bool isReadyToSimulate()

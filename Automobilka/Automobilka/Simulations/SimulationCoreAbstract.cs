@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Automobilka.Responsivity;
 using System.ComponentModel;
+using Automobilka.Readonly;
+using System.Threading;
 
 namespace Automobilka.Simulations
 {
@@ -58,7 +60,8 @@ namespace Automobilka.Simulations
                         actualEvent.execute();
                     }
                     worker.ReportProgress(Convert.ToInt32(progress));
-                    System.Threading.Thread.Sleep(700);
+                    Constants.doneEvent.WaitOne(Timeout.Infinite);
+                    System.Threading.Thread.Sleep(30);
                 }
                 
                 postSetup();

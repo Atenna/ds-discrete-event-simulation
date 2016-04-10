@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Automobilka.Readonly
@@ -42,5 +43,7 @@ namespace Automobilka.Readonly
 
         public static readonly object gate = new object();
         public static readonly object gateF = new object();
+
+        public static ManualResetEvent doneEvent = new ManualResetEvent(true);
     }
 }
