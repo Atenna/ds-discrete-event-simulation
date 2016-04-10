@@ -16,6 +16,7 @@ namespace Automobilka.Simulations
         protected double timeActual;
         protected double maxTime;
         protected int speed;
+        public bool isVisualized { get; set; }
 
         private int numberOfReplications { get; set; }
         public bool isFinished { get; set; }
@@ -62,7 +63,10 @@ namespace Automobilka.Simulations
                     }
                     worker.ReportProgress(Convert.ToInt32(progress));
                     Constants.doneEvent.WaitOne(Timeout.Infinite);
-                    Thread.Sleep(speed);
+                    if (isVisualized)
+                    {
+                        slowDown();
+                    }
                 }
                 
                 postSetup();
@@ -117,6 +121,11 @@ namespace Automobilka.Simulations
 
         public void setSpeed(int speed) {
             this.speed = (10-speed)*100;
+        }
+
+        private void slowDown()
+        {
+            Thread.Sleep(speed);
         }
     }
 }

@@ -197,6 +197,7 @@ namespace Automobilka
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             isChecked = radioButton1.Checked;
+            
         }
 
         private void radioButton1_Click(object sender, EventArgs e)
@@ -207,6 +208,18 @@ namespace Automobilka
             {
                 radioButton1.Checked = true;
                 isChecked = false;
+            }
+            if (variant == 1)
+            {
+                simulationA.isVisualized = isChecked;
+            }
+            else if (variant == 2)
+            {
+                simulationB.isVisualized = isChecked;
+            }
+            else if (variant == 3)
+            {
+                simulationC.isVisualized = isChecked;
             }
         }
 
@@ -292,7 +305,7 @@ namespace Automobilka
             {
                 simulationB.setSpeed(value);
             }
-            else
+            else if(variant == 3)
             {
                 simulationC.setSpeed(value);
             }
