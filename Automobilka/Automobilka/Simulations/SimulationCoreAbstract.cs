@@ -38,6 +38,7 @@ namespace Automobilka.Simulations
 
         public override void backgroundProcess()
         {
+            long ticks = 10;
             Event actualEvent;
             int iterator = 0;
             double progress = 0.0;
@@ -61,14 +62,18 @@ namespace Automobilka.Simulations
                     {
                         actualEvent.execute();
                     }
-                    worker.ReportProgress(Convert.ToInt32(progress));
+                    
                     Constants.doneEvent.WaitOne(Timeout.Infinite);
                     if (isVisualized)
                     {
+                        worker.ReportProgress(Convert.ToInt32(progress));
                         slowDown();
                     }
                 }
-                
+                if(!isVisualized)
+                {
+                    worker.ReportProgress(Convert.ToInt32(progress));
+                }
                 postSetup();
                 iterator++;
             }
