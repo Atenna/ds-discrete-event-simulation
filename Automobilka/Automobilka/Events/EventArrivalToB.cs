@@ -18,6 +18,10 @@ namespace Automobilka
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
+            if (this.core.carsAB.Contains(car))
+            {
+                this.core.carsAB.Remove(car);
+            }
         }
         public override void execute()
         {

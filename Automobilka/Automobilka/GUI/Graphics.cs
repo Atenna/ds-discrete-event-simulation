@@ -22,6 +22,31 @@ namespace Automobilka.GUI
             repaintQueueListB(simulation, form);
             repaintLoad(simulation, form);
             repaintUnload(simulation, form);
+            repaintAB(simulation, form);
+            repaintBC(simulation, form);
+            repaintCA(simulation, form);
+        }
+
+        private static void repaintCA(SimulationCore simulation, Form1 form)
+        {
+            List<Vehicle> ca = simulation.carsCA;
+            string text = "C-A ";
+            foreach (Vehicle v in ca)
+            {
+                text += v.toString();
+            }
+            form.label11.Text = text;
+        }
+
+        private static void repaintBC(SimulationCore simulation, Form1 form)
+        {
+            List<Vehicle> bc = simulation.carsBC;
+            string text = "B-C ";
+            foreach (Vehicle v in bc)
+            {
+                text += v.toString();
+            }
+            form.label10.Text = text;
         }
 
         private static void repaintUnload(SimulationCore simulation, Form1 form)
@@ -73,6 +98,17 @@ namespace Automobilka.GUI
                     form.listBox2.Items.Add(frontB[i].toString() + "\n");
                 }
             }
+        }
+
+        private static void repaintAB(SimulationCore simulation, Form1 form)
+        {
+            List<Vehicle> ab = simulation.carsAB;
+            string text = "A-B ";
+            foreach (Vehicle v in ab)
+            {
+                text += v.toString();
+            }
+            form.label9.Text = text;
         }
     }
 }

@@ -22,6 +22,7 @@ namespace Automobilka
             this.car = car;
             this.lengthOfWay = Constants.ABLength;
             this.core.carAtLoader = null;
+            this.core.carsAB.Add(car);
         }
         public override void execute()
         {

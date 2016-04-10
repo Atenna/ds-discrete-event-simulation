@@ -60,7 +60,7 @@ namespace Automobilka.Simulations
                         actualEvent.execute();
                     }
                     worker.ReportProgress(Convert.ToInt32(progress));
-                    System.Threading.Thread.Sleep(300);
+                    System.Threading.Thread.Sleep(400);
                 }
                 
                 postSetup();

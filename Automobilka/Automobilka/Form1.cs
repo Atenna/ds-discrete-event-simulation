@@ -17,6 +17,7 @@ namespace Automobilka
         private static int seed;
         private static Random seedGenerator;
         private int variant;
+        private bool visalized;
         private int maxTime { get; set; }
         private int replications { get; set; }
 
@@ -77,6 +78,7 @@ namespace Automobilka
             maxTime = Int32.MaxValue;
             replications = 100;
             backgroundWorker1.WorkerSupportsCancellation = true;
+            visalized = true;
         }
 
         private void initializeSimulationInstances()
@@ -197,15 +199,24 @@ namespace Automobilka
             progressBar1.Value = e.ProgressPercentage;
             if (variant == 1)
             {
-                Graphics.repaint(simulationA, this);
+                if(radioButton1.Checked)
+                {
+                    Graphics.repaint(simulationA, this);
+                }
             }
             else if (variant == 2)
             {
-                Graphics.repaint(simulationB, this);
+                if (radioButton1.Checked)
+                {
+                    Graphics.repaint(simulationB, this);
+                }
             }
             else if (variant == 3)
             {
-                Graphics.repaint(simulationC, this);
+                if (radioButton1.Checked)
+                {
+                    Graphics.repaint(simulationC, this);
+                }
             }
         }
 

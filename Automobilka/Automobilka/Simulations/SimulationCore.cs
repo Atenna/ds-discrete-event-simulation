@@ -20,6 +20,10 @@ namespace Automobilka
         public Vehicle carAtLoader { set; get; }
         public Vehicle carAtUnloader { get; set; }
 
+        public List<Vehicle> carsAB { get; set; }
+        public List<Vehicle> carsBC { get; set; }
+        public List<Vehicle> carsCA { get; set; }
+
         public double materialA { get; set; }
         public double materialB { get; set; }
 
@@ -40,6 +44,9 @@ namespace Automobilka
             carsBeforeBuilding = new Queue();
             carsBeforeDepo = new Queue();
             seedGenerator = seedGeneratorInit;
+            carsAB = new List<Vehicle>();
+            carsBC = new List<Vehicle>();
+            carsCA = new List<Vehicle>();
         }
 
         // vytvori novu statistiku a priradi nove fronty
