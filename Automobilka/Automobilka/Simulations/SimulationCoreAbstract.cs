@@ -38,6 +38,7 @@ namespace Automobilka.Simulations
 
         public override void backgroundProcess()
         {
+            long ticks = 10;
             Event actualEvent;
             int iterator = 0;
             double progress = 0.0;
@@ -66,6 +67,13 @@ namespace Automobilka.Simulations
                     if (isVisualized)
                     {
                         slowDown();
+                    } else
+                    {
+                        if (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond - ticks / TimeSpan.TicksPerMillisecond > 20000000)
+                        {
+                            Thread.Sleep(1);
+                            ticks = DateTime.Now.Ticks;
+                        }
                     }
                 }
                 
