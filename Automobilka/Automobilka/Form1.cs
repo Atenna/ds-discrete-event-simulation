@@ -209,22 +209,6 @@ namespace Automobilka
             }
         }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            isChecked = radioButton1.Checked;
-        }
-
-        private void radioButton1_Click(object sender, EventArgs e)
-        {
-            if (radioButton1.Checked && !isChecked)
-                radioButton1.Checked = false;
-            else
-            {
-                radioButton1.Checked = true;
-                isChecked = false;
-            }
-        }
-
         public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
@@ -235,21 +219,21 @@ namespace Automobilka
                 {
                     if (variant == 1)
                     {
-                        if (radioButton1.Checked)
+                        if (checkBox1.Checked)
                         {
                             Graphics.repaint(simulationA, this);
                         }
                     }
                     else if (variant == 2)
                     {
-                        if (radioButton1.Checked)
+                        if (checkBox1.Checked)
                         {
                             Graphics.repaint(simulationB, this);
                         }
                     }
                     else if (variant == 3)
                     {
-                        if (radioButton1.Checked)
+                        if (checkBox1.Checked)
                         {
                             Graphics.repaint(simulationC, this);
                         }
@@ -281,7 +265,7 @@ namespace Automobilka
             {
                 stats = simulationC.getStats();
             }
-            
+            Graphics.repaintClear(this);
             showStats(stats);
         }
 
@@ -294,6 +278,8 @@ namespace Automobilka
             label6.Text = "Building: " + stats.getStatsMeanUnloadQueueTime();
             label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime()/60;
             label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime()/60;
+            double [] _is = stats.confidenceIntervalSimulationTime(0.9);
+            label18.Text = "Interval: <" + (_is[0]/60).ToString("#.000") + ", " + (_is[1]/60).ToString("#.000") + ">";
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -311,6 +297,11 @@ namespace Automobilka
             {
                 simulationC.setSpeed(value);
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            isChecked = checkBox1.Checked;
         }
     }
 }

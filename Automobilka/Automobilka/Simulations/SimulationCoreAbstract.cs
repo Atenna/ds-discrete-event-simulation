@@ -38,7 +38,6 @@ namespace Automobilka.Simulations
 
         public override void backgroundProcess()
         {
-            long ticks = 10;
             Event actualEvent;
             int iterator = 0;
             double progress = 0.0;
@@ -130,7 +129,6 @@ namespace Automobilka.Simulations
 
         private void slowDown()
         {
-            
             Thread.Sleep(speed);
         }
     }
