@@ -11,17 +11,18 @@ namespace Automobilka.Simulations
     class SimulationVariantB : SimulationCore
     {
         private Vehicle[] cars;
-
+        public bool paused { get; set; }
         public SimulationVariantB(double maxTime, int replications, BackgroundWorker worker, Random seedGeneratorInit) : base(maxTime, replications, worker, seedGeneratorInit)
         {
             cars = new Vehicle[3];
-
-            cars[0] = (Vehicle)new CarA(new Random(seedGenerator.Next()));
-            cars[1] = (Vehicle)new CarC(new Random(seedGenerator.Next()));
-            cars[2] = (Vehicle)new CarE(new Random(seedGenerator.Next()));
-
+            paused = false;
         }
-
+        public void initCars(Vehicle car1, Vehicle car2, Vehicle car3)
+        {
+            cars[0] = car1;
+            cars[1] = car2;
+            cars[2] = car3;
+        }
 
         public override void resetCars()
         {
@@ -46,7 +47,7 @@ namespace Automobilka.Simulations
 
         public override bool condition()
         {
-            return !worker.CancellationPending;
+            return !worker.CancellationPending && !paused;
         }
     }
 }

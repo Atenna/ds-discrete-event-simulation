@@ -17,8 +17,13 @@ namespace Automobilka
 
         private Queue carsBeforeDepo; //auta pred skladkou
         private Queue carsBeforeBuilding; // auta pred stavbou
+        public Vehicle carAtLoader { set; get; }
+        public Vehicle carAtUnloader { get; set; }
+
         public double materialA { get; set; }
         public double materialB { get; set; }
+
+        private double[] _IS;
 
         public NarrowWay wayAB { get; set; }
         public NarrowWay wayCA { get; set; }
@@ -60,6 +65,8 @@ namespace Automobilka
         // vypisovanie statistik ... 
         public override void postPostSetup()
         {
+            _IS = cruelStats.confidenceIntervalSimulationTime(0.9);
+
             Console.WriteLine("Priemerne trvanie simulacie (v hodinach): " + cruelStats.getStatsMeanSimulationTime() / 60);
 
             Console.WriteLine("Priemerna dlzka radu - Nakladka: " + cruelStats.getStatsMeanLoadQueueLength());
@@ -70,6 +77,8 @@ namespace Automobilka
 
             Console.WriteLine("Priemerna dlzka cakania vsetkych aut - Nakladka (v hodinach): " + cruelStats.getStatsSumMeanLoadQueueTime() / 60);
             Console.WriteLine("Priemerna dlzka cakania vsetkych aut - Vykladka (v hodinach): " + cruelStats.getStatsSumMeanUnloadQueueTime() / 60);
+
+            Console.WriteLine("Interval spolahlivosti: <" + _IS[0]/60 + ", " + _IS[1]/60);
         }
 
         public override void preSetup()
@@ -118,6 +127,16 @@ namespace Automobilka
         public Statistics getStats()
         {
             return cruelStats;
+        }
+
+        public Queue getQueueDepo()
+        {
+            return carsBeforeDepo;
+        }
+
+        public Queue getQueueBuilding()
+        {
+            return carsBeforeBuilding;
         }
 
     }

@@ -16,6 +16,7 @@ namespace Automobilka
             this.time = scheduledTime;
             this.car = car;
             this.lengthOfWay = Constants.BCLength;
+            this.core.carAtUnloader = null;
         }
         public override void execute()
         {

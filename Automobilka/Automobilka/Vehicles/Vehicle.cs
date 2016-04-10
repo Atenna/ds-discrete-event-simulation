@@ -9,7 +9,7 @@ namespace Automobilka.Vehicles
     public class Vehicle
     {
         private Random failureGenerator;
-
+        private string name;
         private int volume;
         public double realVolume { get; set; }
         private int speed;
@@ -23,8 +23,9 @@ namespace Automobilka.Vehicles
         private double numberOfWaitingOnDepo = 0;
         private double numberOfWaitingOnBuilding = 0;
 
-        public Vehicle(int pVolume, int pSpeed, double pProbability, int pTime, Random generator)
+        public Vehicle(string name, int pVolume, int pSpeed, double pProbability, int pTime, Random generator)
         {
+            this.name = name;
             this.volume = pVolume;
             this.speed = pSpeed;
             this.probabilityOfCrash = pProbability;
@@ -106,6 +107,11 @@ namespace Automobilka.Vehicles
             numberOfWaitingOnBuilding = 0;
             numberOfWaitingOnDepo = 0;
             failureGenerator = failureGeneratorReinit;
+        }
+
+        public string toString()
+        {
+            return name + ": ["+ realVolume + "/"+volume+"], "+speed;
         }
     }
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MathNet.Numerics.Statistics;
+using MathNet.Numerics.Distributions;
 
 namespace Automobilka.SimulationObjects
 {
@@ -18,6 +20,7 @@ namespace Automobilka.SimulationObjects
         private double timeOfWaitingOnBuilding;
         private double timeOfWaitingOnDepo;
         private double simulationTimeCumulative;
+        private double simulationTimePower;
 
         private double meanWaitingOnDepo;
         private double meanWaitingOnBuilding;
@@ -50,6 +53,7 @@ namespace Automobilka.SimulationObjects
         public void updateStatistics(double simulationTime)
         {
             simulationTimeCumulative += simulationTime;
+            simulationTimePower += Math.Pow(simulationTime, 2);
 
             loadSize += load.getMeanQueueLength(simulationTime);
             unloadSize += unload.getMeanQueueLength(simulationTime);
@@ -97,6 +101,30 @@ namespace Automobilka.SimulationObjects
         public double getStatsMeanUnloadQueueTime()
         {
             return (meanWaitingOnBuilding / iterator) / cars.Count;
+        }
+
+        public double[] confidenceIntervalSimulationTime(double confidence)
+        {
+            confidence = 1 - ((1 - confidence) / 2);
+            double[] interval = new double[2];
+            double avg = simulationTimeCumulative / iterator;
+            double standardDeviation = Math.Sqrt((simulationTimePower / iterator) - Math.Pow(avg, 2));
+
+            double value = 0;
+
+            if (iterator < 30)
+            {
+                value = StudentT.InvCDF(0.0, 1.0, iterator, confidence);
+            }
+            else
+            {
+                value = Normal.InvCDF(0, 1, confidence);
+            }
+
+            interval[0] = avg - (value * standardDeviation / Math.Sqrt((iterator - 1)));
+            interval[1] = avg + (value * standardDeviation / Math.Sqrt((iterator - 1)));
+
+            return interval;
         }
     }
 }

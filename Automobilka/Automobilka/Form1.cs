@@ -7,13 +7,15 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Threading;
 using Automobilka.SimulationObjects;
+using Automobilka.GUI;
+using Automobilka.Vehicles;
 
 namespace Automobilka
 {
     public partial class Form1 : Form, Responsible
     {
         private static int seed;
-        private static Random seedGenerator, generatorCarA, generatorCarB, generatorCarC, generatorCarD, generatorCarE;
+        private static Random seedGenerator;
         private int variant;
         private int maxTime { get; set; }
         private int replications { get; set; }
@@ -21,7 +23,6 @@ namespace Automobilka
         SimulationVariantA simulationA;
         SimulationVariantB simulationB;
         SimulationVariantC simulationC;
-
 
         private void textBox2_Click(object sender, EventArgs e)
         {
@@ -80,15 +81,24 @@ namespace Automobilka
 
         private void initializeSimulationInstances()
         {
+            Vehicle carA = new CarA(seedGenerator);
+            Vehicle carB = new CarB(seedGenerator);
+            Vehicle carC = new CarC(seedGenerator);
+            Vehicle carD = new CarD(seedGenerator);
+            Vehicle carE = new CarE(seedGenerator);
+
             simulationA = new SimulationVariantA(maxTime, replications, backgroundWorker1, seedGenerator);
+            simulationA.initCars(carA, carB, carC, carD);
             Event initialEventA = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
             simulationA.init = initialEventA;
 
             simulationB = new SimulationVariantB(maxTime, replications, backgroundWorker1, seedGenerator);
+            simulationB.initCars(carA, carC, carE);
             Event initialEventB = new EventVehiclesInit(simulationB, 0, simulationB.getCarsInitial());
             simulationB.init = initialEventB;
 
             simulationC = new SimulationVariantC(maxTime, replications, backgroundWorker1, seedGenerator);
+            simulationC.initCars(carB, carC, carD);
             Event initialEventC = new EventVehiclesInit(simulationC, 0, simulationC.getCarsInitial());
             simulationC.init = initialEventC;
         }
@@ -107,6 +117,24 @@ namespace Automobilka
         private void button3_Click(object sender, EventArgs e)
         {
             this.backgroundWorker1.CancelAsync();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            /*
+            if (variant == 1)
+            {
+                simulationA.paused = true;
+            }
+            else if (variant == 2)
+            {
+                simulationB.paused = true;
+            }
+            else if (variant == 3)
+            {
+                simulationC.paused = true;
+            }
+            */
         }
 
         public bool isReadyToSimulate()
@@ -167,6 +195,18 @@ namespace Automobilka
         {
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
             progressBar1.Value = e.ProgressPercentage;
+            if (variant == 1)
+            {
+                Graphics.repaint(simulationA, this);
+            }
+            else if (variant == 2)
+            {
+                Graphics.repaint(simulationB, this);
+            }
+            else if (variant == 3)
+            {
+                Graphics.repaint(simulationC, this);
+            }
         }
 
         public void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -206,5 +246,7 @@ namespace Automobilka
             label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime()/60;
             label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime()/60;
         }
+
+        
     }
 }

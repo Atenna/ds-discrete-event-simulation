@@ -9,9 +9,8 @@ namespace Automobilka.Vehicles
 {
     class CarA : Vehicle
     {
-
         public CarA(Random generator) : 
-            base(Constants.volumeOfVehicleA, Constants.speedOfVehicleA, Constants.probabilityOfCrashOfVehicleA, Constants.timeOfRepairOfVehicleA, generator)
+            base("A", Constants.volumeOfVehicleA, Constants.speedOfVehicleA, Constants.probabilityOfCrashOfVehicleA, Constants.timeOfRepairOfVehicleA, generator)
         {
 
         }

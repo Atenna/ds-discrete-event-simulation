@@ -15,6 +15,7 @@ namespace Automobilka
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
+            this.core.carAtUnloader = car;
         }
 
         public override void execute()

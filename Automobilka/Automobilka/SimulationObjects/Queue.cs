@@ -64,5 +64,15 @@ namespace Automobilka.SimulationObjects
             sumOfTime = 0.0;
             lastChange = 0.0;
         }
+
+        public Vehicle getAt(int i)
+        {
+                return queue.ElementAt(i);
+        }
+
+        public List<Vehicle> getList()
+        {
+            return queue;
+        }
     }
 }
