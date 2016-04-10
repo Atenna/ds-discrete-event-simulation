@@ -74,6 +74,7 @@ namespace Automobilka
         {
             _IS = cruelStats.confidenceIntervalSimulationTime(0.9);
 
+            /*
             Console.WriteLine("Priemerne trvanie simulacie (v hodinach): " + cruelStats.getStatsMeanSimulationTime() / 60);
 
             Console.WriteLine("Priemerna dlzka radu - Nakladka: " + cruelStats.getStatsMeanLoadQueueLength());
@@ -86,6 +87,7 @@ namespace Automobilka
             Console.WriteLine("Priemerna dlzka cakania vsetkych aut - Vykladka (v hodinach): " + cruelStats.getStatsSumMeanUnloadQueueTime() / 60);
 
             Console.WriteLine("Interval spolahlivosti: <" + _IS[0]/60 + ", " + _IS[1]/60);
+            */
         }
 
         public override void preSetup()
