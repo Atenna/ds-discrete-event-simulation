@@ -256,6 +256,7 @@ namespace Automobilka
                     }
                 }
             }
+            progressBar1.Value = e.ProgressPercentage;
         }
 
         public void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -326,6 +327,26 @@ namespace Automobilka
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             isChecked = checkBox1.Checked;
+        }
+
+        private static double minSimTime = 0;
+        private static double simTimeCumulative = 0, maxSimTime = 0;
+        private static int iterator = 0;
+
+        private static void updateChart(SimulationCore simulation, Form1 form)
+        {
+            double simTime = simulation.getStats().getStatsMeanSimulationTime();
+            double time = simulation.getSimTime();
+            iterator = simulation.getActualReplication();
+            simTimeCumulative += time;
+            maxSimTime = simTime > maxSimTime ? simTime : maxSimTime;
+            minSimTime = simTime < minSimTime ? simTime : minSimTime;
+
+            form.chart1.ChartAreas[0].AxisX.ScaleView.Zoom(0, simTimeCumulative);
+            form.chart1.ChartAreas[0].AxisY.ScaleView.Zoom(minSimTime, maxSimTime);
+
+            form.chart1.Series[0].Points.AddXY(iterator, simTime / 60);
+            form.chart1.Series[0].Points.AddXY(iterator, simTime / 60);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Automobilka.GUI
         {
             form.label12.Text = "Material: " + simulation.materialA;
             form.label13.Text = "Material: " + simulation.materialB;
-            form.label19.Text = "Actual time: " + (simulation.getSimTime() / 60).ToString("#.000");
+            form.label19.Text = "Actual time: " + (simulation.getSimTime()/60).ToString("#.000");
             // nastavenie dlzky radu pred depom a budovou
 
             repaintQueueListA(simulation, form);
@@ -26,7 +26,21 @@ namespace Automobilka.GUI
             repaintAB(simulation, form);
             repaintBC(simulation, form);
             repaintCA(simulation, form);
-            updateChart(simulation, form);
+            //updateChart(simulation, form);
+
+            Statistics stats = simulation.getStats();
+            repaintStats(form, stats);
+        }
+
+        private static void repaintStats(Form1 form, Statistics stats)
+        {
+            form.label2.Text = "Average run time: " + stats.getStatsMeanSimulationTime() / 60;
+            form.label3.Text = "Depo: " + stats.getStatsMeanLoadQueueLength();
+            form.label4.Text = "Building: " + stats.getStatsMeanUnloadQueueLength();
+            form.label5.Text = "Depo: " + stats.getStatsMeanLoadQueueTime();
+            form.label6.Text = "Building: " + stats.getStatsMeanUnloadQueueTime();
+            form.label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime() / 60;
+            form.label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime() / 60;
         }
 
         public static void repaintClear(Form1 form)
@@ -142,26 +156,6 @@ namespace Automobilka.GUI
                 text += v.toString();
             }
             form.label9.Text = text;
-        }
-
-        private static double minSimTime = 0;
-        private static double simTimeCumulative = 0, maxSimTime = 0;
-        private static int iterator = 0;
-
-        private static void updateChart(SimulationCore simulation, Form1 form)
-        {
-            double simTime = simulation.getStats().getStatsMeanSimulationTime();
-            double time = simulation.getSimTime();
-            iterator = simulation.getActualReplication();
-            simTimeCumulative += time;
-            maxSimTime = simTime > maxSimTime ? simTime : maxSimTime;
-            minSimTime = simTime < minSimTime ? simTime : minSimTime;
-
-            form.chart1.ChartAreas[0].AxisX.ScaleView.Zoom(0, simTimeCumulative);
-            form.chart1.ChartAreas[0].AxisY.ScaleView.Zoom(minSimTime, maxSimTime);
-
-            form.chart1.Series[0].Points.AddXY(iterator, simTime/60);
-            form.chart1.Series[0].Points.AddXY(iterator, simTime / 60);
         }
     }
 }

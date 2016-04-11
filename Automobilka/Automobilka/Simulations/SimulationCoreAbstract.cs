@@ -124,8 +124,17 @@ namespace Automobilka.Simulations
             return true;
         }
 
-        public void setSpeed(int speed) {
-            this.speed = (10-speed)*100;
+        public void setSpeed(int scrolledValue) {
+            Console.WriteLine("scrolledValue: " + scrolledValue);
+            if(scrolledValue != 10)
+            {
+                this.speed = (10 - scrolledValue) * 100;
+            }
+            else
+            {
+                this.speed = 10;
+            }
+            Console.WriteLine("speed: " + speed);
         }
 
         private void slowDown()
