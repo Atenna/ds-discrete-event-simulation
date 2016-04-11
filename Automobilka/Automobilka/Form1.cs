@@ -143,9 +143,18 @@ namespace Automobilka
             {
                 button2.Enabled = true;
                 button3.Enabled = true;
-                Console.WriteLine("Replications " + replications);
+                if (!isChecked)
+                {
+                    // nebude mozne posuvas simulaciu ak nie je zapnuta vizualizacia
+                    trackBar1.Enabled = false;
+                } else
+                {
+                    trackBar1.Enabled = true;
+                }
+                //Console.WriteLine("Replications " + replications);
                 initializeSimulationInstances();
                 trackBar1_Scroll(this, e);
+                button1.Enabled = false;
                 backgroundWorker1.RunWorkerAsync();
             }
         }
@@ -153,6 +162,8 @@ namespace Automobilka
         private void button3_Click(object sender, EventArgs e)
         {
             backgroundWorker1.CancelAsync();
+            Graphics.repaintClearStop(this);
+            button1.Enabled = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -232,31 +243,19 @@ namespace Automobilka
                 {
                     if (variant == 1)
                     {
-                        if (checkBox1.Checked)
-                        {
-                            Graphics.repaint(simulationA, this);
-                        }
-                        showStats(simulationA.getStats());
+                        Graphics.repaint(simulationA, this, isChecked);
                     }
                     else if (variant == 2)
                     {
-                        if (checkBox1.Checked)
-                        {
-                            Graphics.repaint(simulationB, this);
-                        }
-                        showStats(simulationB.getStats());
+                        Graphics.repaint(simulationB, this, isChecked);
                     }
                     else if (variant == 3)
                     {
-                        if (checkBox1.Checked)
-                        {
-                            Graphics.repaint(simulationC, this);
-                        }
-                        showStats(simulationC.getStats());
+                        Graphics.repaint(simulationC, this, isChecked);
+
                     }
                 }
             }
-            progressBar1.Value = e.ProgressPercentage;
         }
 
         public void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -283,9 +282,10 @@ namespace Automobilka
             {
                 stats = simulationC.getStats();
             }
-            //Graphics.repaintClear(this);
+            Graphics.repaintClear(this);
             showStats(stats);
             showIS(stats);
+            button1.Enabled = true;
         }
 
         public void showStats(Statistics stats)
