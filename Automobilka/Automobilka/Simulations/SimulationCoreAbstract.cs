@@ -16,6 +16,7 @@ namespace Automobilka.Simulations
         protected double timeActual;
         protected double maxTime;
         protected int speed;
+        private int iterator;
         public bool isVisualized { get; set; }
 
         private int numberOfReplications { get; set; }
@@ -39,7 +40,7 @@ namespace Automobilka.Simulations
         public override void backgroundProcess()
         {
             Event actualEvent;
-            int iterator = 0;
+            iterator = 0;
             double progress = 0.0;
             int step = numberOfReplications / 100; // jedno percento replikacie 
 
@@ -132,9 +133,14 @@ namespace Automobilka.Simulations
             Thread.Sleep(speed);
         }
 
-        public double getActualTime()
+        public double getSimTime()
         {
             return timeActual;
+        }
+
+        public int getActualReplication()
+        {
+            return iterator;
         }
     }
 }

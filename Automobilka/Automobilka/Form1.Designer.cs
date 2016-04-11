@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -66,6 +69,8 @@
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -74,6 +79,8 @@
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -424,63 +431,62 @@
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.label18);
-<<<<<<< HEAD
-            this.groupBox6.Location = new System.Drawing.Point(12, 923);
-=======
             this.groupBox6.Location = new System.Drawing.Point(12, 934);
->>>>>>> origin/master
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(558, 100);
             this.groupBox6.TabIndex = 26;
             this.groupBox6.TabStop = false;
-<<<<<<< HEAD
-            this.groupBox6.Text = "Confidence Interval";
-=======
             this.groupBox6.Text = "Confidence interval";
->>>>>>> origin/master
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-<<<<<<< HEAD
-            this.label18.Location = new System.Drawing.Point(15, 45);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(102, 29);
-            this.label18.TabIndex = 0;
-            this.label18.Text = "Interval: ";
-=======
             this.label18.Location = new System.Drawing.Point(15, 52);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(96, 29);
             this.label18.TabIndex = 0;
             this.label18.Text = "Interval:";
->>>>>>> origin/master
             // 
             // label19
             // 
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(589, 432);
             this.label19.Name = "label19";
-<<<<<<< HEAD
-            this.label19.Size = new System.Drawing.Size(190, 29);
-            this.label19.TabIndex = 27;
-            this.label19.Text = "Simulation time: ";
-=======
             this.label19.Size = new System.Drawing.Size(142, 29);
             this.label19.TabIndex = 27;
             this.label19.Text = "Actual time: ";
->>>>>>> origin/master
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.chart1);
+            this.panel2.Location = new System.Drawing.Point(594, 934);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(913, 339);
+            this.panel2.TabIndex = 28;
+            // 
+            // chart1
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(3, 3);
+            this.chart1.Name = "chart1";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
+            this.chart1.Size = new System.Drawing.Size(907, 333);
+            this.chart1.TabIndex = 0;
+            this.chart1.Text = "chart1";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-<<<<<<< HEAD
-            this.ClientSize = new System.Drawing.Size(1557, 1064);
-=======
-            this.ClientSize = new System.Drawing.Size(1557, 1075);
->>>>>>> origin/master
+            this.ClientSize = new System.Drawing.Size(1557, 1285);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.label17);
@@ -516,6 +522,8 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -556,17 +564,12 @@
         private System.Windows.Forms.Label label15;
         public System.Windows.Forms.Label label16;
         public System.Windows.Forms.Label label17;
-<<<<<<< HEAD
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label label18;
-        public System.Windows.Forms.Label label19;
-=======
         private System.Windows.Forms.GroupBox groupBox6;
         public System.Windows.Forms.Label label18;
         private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Label label19;
->>>>>>> origin/master
+        public System.Windows.Forms.Label label19;
+        public System.Windows.Forms.Panel panel2;
+        public System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
 

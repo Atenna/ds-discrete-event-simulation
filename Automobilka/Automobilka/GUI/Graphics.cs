@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Automobilka.GUI
 {
@@ -15,7 +16,7 @@ namespace Automobilka.GUI
         {
             form.label12.Text = "Material: " + simulation.materialA;
             form.label13.Text = "Material: " + simulation.materialB;
-
+            form.label19.Text = "Actual time: " + (simulation.getSimTime() / 60).ToString("#.000");
             // nastavenie dlzky radu pred depom a budovou
 
             repaintQueueListA(simulation, form);
@@ -25,21 +26,7 @@ namespace Automobilka.GUI
             repaintAB(simulation, form);
             repaintBC(simulation, form);
             repaintCA(simulation, form);
-            // na hodiny
-            form.label19.Text = "Simulation time: " + (simulation.getActualTime()/60).ToString("#.000");
-        }
-
-        public static void repaintClear(Form1 form)
-        {
-            form.label12.Text = "Material: " + 5000;
-            form.label13.Text = "Material: " + 0;
-            form.label9.Text = "A-B ";
-            form.label11.Text = "C-A ";
-            form.label10.Text = "B-C ";
-            form.label17.Text = "";
-            form.label16.Text = "";
-            form.listBox1.Items.Clear();
-            form.listBox2.Items.Clear();
+            updateChart(simulation, form);
         }
 
         public static void repaintClear(Form1 form)
@@ -155,6 +142,26 @@ namespace Automobilka.GUI
                 text += v.toString();
             }
             form.label9.Text = text;
+        }
+
+        private static double minSimTime = 0;
+        private static double simTimeCumulative = 0, maxSimTime = 0;
+        private static int iterator = 0;
+
+        private static void updateChart(SimulationCore simulation, Form1 form)
+        {
+            double simTime = simulation.getStats().getStatsMeanSimulationTime();
+            double time = simulation.getSimTime();
+            iterator = simulation.getActualReplication();
+            simTimeCumulative += time;
+            maxSimTime = simTime > maxSimTime ? simTime : maxSimTime;
+            minSimTime = simTime < minSimTime ? simTime : minSimTime;
+
+            form.chart1.ChartAreas[0].AxisX.ScaleView.Zoom(0, simTimeCumulative);
+            form.chart1.ChartAreas[0].AxisY.ScaleView.Zoom(minSimTime, maxSimTime);
+
+            form.chart1.Series[0].Points.AddXY(iterator, simTime/60);
+            form.chart1.Series[0].Points.AddXY(iterator, simTime / 60);
         }
     }
 }

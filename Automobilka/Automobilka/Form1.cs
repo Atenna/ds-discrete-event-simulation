@@ -10,6 +10,7 @@ using Automobilka.SimulationObjects;
 using Automobilka.GUI;
 using Automobilka.Vehicles;
 using Automobilka.Readonly;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Automobilka
 {
@@ -84,6 +85,18 @@ namespace Automobilka
             button2.Enabled = false;
             button3.Enabled = false;
             isChecked = false;
+            chart1.Series[0].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chart1.Series.Clear();
+            var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
+            {
+                Name = "Replications",
+                Color = System.Drawing.Color.Green,
+                IsVisibleInLegend = false,
+                IsXValueIndexed = true,
+                ChartType = SeriesChartType.Line
+            };
+
+            this.chart1.Series.Add(series1);
         }
 
         private void initializeSimulationInstances()
@@ -208,43 +221,38 @@ namespace Automobilka
                 simulationC.backgroundProcess();
             }
         }
-<<<<<<< HEAD
-        int counter = 0;
-=======
 
->>>>>>> origin/master
         public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            counter++;
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
             progressBar1.Value = e.ProgressPercentage;
-            lock (Constants.gate) 
+            lock (Constants.gate)
             {
-                lock(Constants.gateF)
+                lock (Constants.gateF)
                 {
                     if (variant == 1)
                     {
                         if (checkBox1.Checked)
                         {
                             Graphics.repaint(simulationA, this);
-                            showStats(simulationA.getStats());
                         }
+                        showStats(simulationA.getStats());
                     }
                     else if (variant == 2)
                     {
                         if (checkBox1.Checked)
                         {
                             Graphics.repaint(simulationB, this);
-                            showStats(simulationB.getStats());
                         }
+                        showStats(simulationB.getStats());
                     }
                     else if (variant == 3)
                     {
                         if (checkBox1.Checked)
                         {
                             Graphics.repaint(simulationC, this);
-                            showStats(simulationC.getStats());
                         }
+                        showStats(simulationC.getStats());
                     }
                 }
             }
@@ -274,31 +282,28 @@ namespace Automobilka
             {
                 stats = simulationC.getStats();
             }
-            Graphics.repaintClear(this);
+            //Graphics.repaintClear(this);
             showStats(stats);
             showIS(stats);
         }
 
         public void showStats(Statistics stats)
         {
-            label2.Text = "Average run time: " + stats.getStatsMeanSimulationTime()/60;
+            label2.Text = "Average run time: " + stats.getStatsMeanSimulationTime() / 60;
             label3.Text = "Depo: " + stats.getStatsMeanLoadQueueLength();
             label4.Text = "Building: " + stats.getStatsMeanUnloadQueueLength();
             label5.Text = "Depo: " + stats.getStatsMeanLoadQueueTime();
             label6.Text = "Building: " + stats.getStatsMeanUnloadQueueTime();
-            label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime()/60;
-            label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime()/60;
-<<<<<<< HEAD
+            label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime() / 60;
+            label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime() / 60;
        }
 
         public void showIS(Statistics stats)
         {
             double[] _IS = stats.confidenceIntervalSimulationTime(0.9);
             label18.Text = "Interval: <" + (_IS[0] / 60).ToString("#.000") + ", " + (_IS[1] / 60).ToString("#.000") + ">";
-=======
-            double [] _is = stats.confidenceIntervalSimulationTime(0.9);
-            label18.Text = "Interval: <" + (_is[0]/60).ToString("#.000") + ", " + (_is[1]/60).ToString("#.000") + ">";
->>>>>>> origin/master
+            double[] _is = stats.confidenceIntervalSimulationTime(0.9);
+            label18.Text = "Interval: <" + (_is[0] / 60).ToString("#.000") + ", " + (_is[1] / 60).ToString("#.000") + ">";
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
