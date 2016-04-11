@@ -278,7 +278,7 @@
             this.groupBox2.Size = new System.Drawing.Size(558, 136);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Avg. waiting time per car";
+            this.groupBox2.Text = "Avg. waiting time of all cars / hours";
             // 
             // label7
             // 
@@ -307,7 +307,7 @@
             this.groupBox3.Size = new System.Drawing.Size(558, 136);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Avg. waiting time of all cars";
+            this.groupBox3.Text = "Avg. waiting time per car / minutes";
             // 
             // groupBox4
             // 
