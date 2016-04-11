@@ -105,26 +105,32 @@ namespace Automobilka.SimulationObjects
 
         public double[] confidenceIntervalSimulationTime(double confidence)
         {
-            confidence = 1 - ((1 - confidence) / 2);
-            double[] interval = new double[2];
-            double avg = simulationTimeCumulative / iterator;
-            double standardDeviation = Math.Sqrt((simulationTimePower / iterator) - Math.Pow(avg, 2));
+            try {
+                confidence = 1 - ((1 - confidence) / 2);
+                double[] interval = new double[2];
+                double avg = simulationTimeCumulative / iterator;
+                double standardDeviation = Math.Sqrt((simulationTimePower / iterator) - Math.Pow(avg, 2));
 
-            double value = 0;
+                double value = 0;
 
-            if (iterator < 30)
+                if (iterator < 30)
+                {
+                    value = StudentT.InvCDF(0.0, 1.0, iterator, confidence);
+                }
+                else
+                {
+                    value = Normal.InvCDF(0, 1, confidence);
+                }
+
+                interval[0] = avg - (value * standardDeviation / Math.Sqrt((iterator - 1)));
+                interval[1] = avg + (value * standardDeviation / Math.Sqrt((iterator - 1)));
+
+                return interval;
+            } catch(ArgumentException ex)
             {
-                value = StudentT.InvCDF(0.0, 1.0, iterator, confidence);
+                Console.WriteLine("Nestiham ratat intervaly ;)");
             }
-            else
-            {
-                value = Normal.InvCDF(0, 1, confidence);
-            }
-
-            interval[0] = avg - (value * standardDeviation / Math.Sqrt((iterator - 1)));
-            interval[1] = avg + (value * standardDeviation / Math.Sqrt((iterator - 1)));
-
-            return interval;
+            return new double[2];
         }
     }
 }

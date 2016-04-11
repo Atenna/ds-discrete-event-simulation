@@ -2,10 +2,8 @@
 using Automobilka.Responsivity;
 using Automobilka.Simulations;
 using System;
-using System.Linq;
 using System.Windows.Forms;
 using System.ComponentModel;
-using System.Threading;
 using Automobilka.SimulationObjects;
 using Automobilka.GUI;
 using Automobilka.Vehicles;
@@ -135,7 +133,7 @@ namespace Automobilka
                 simulationC.isVisualized = isChecked;
             }
         }
-
+        // run button
         private void button1_Click(object sender, EventArgs e)
         {
             // the simulation background thread can start, if we don't have any errors
@@ -159,13 +157,26 @@ namespace Automobilka
             }
         }
 
+        // stop button
         private void button3_Click(object sender, EventArgs e)
         {
             backgroundWorker1.CancelAsync();
             Graphics.repaintClearStop(this);
             button1.Enabled = true;
+            restartSimulations();
+        }
+        // po zruseni simulacie tlacidlom Stop sa resetuju vsetky nastavenia simulacie
+        private void restartSimulations()
+        {
+            simulationA.prePreSetup();
+            simulationA.preSetup();
+            simulationB.prePreSetup();
+            simulationB.preSetup();
+            simulationC.prePreSetup();
+            simulationC.preSetup();
         }
 
+        // pause button
         private void button2_Click(object sender, EventArgs e)
         {
             if (!paused)
