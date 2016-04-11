@@ -21,6 +21,8 @@ namespace Automobilka.SimulationObjects
         private double timeOfWaitingOnDepo;
         private double simulationTimeCumulative;
         private double simulationTimePower;
+        private double minAvgSimTime;
+        private double maxAvgSimTime;
 
         private double meanWaitingOnDepo;
         private double meanWaitingOnBuilding;
@@ -33,6 +35,8 @@ namespace Automobilka.SimulationObjects
             unloadSize = 0;
             timeOfWaitingOnBuilding = 0;
             timeOfWaitingOnDepo = 0;
+            minAvgSimTime = 99999;
+            maxAvgSimTime = -1;
         }
 
         public void addVehicleToStats(Vehicle car)
@@ -68,6 +72,9 @@ namespace Automobilka.SimulationObjects
             }
 
             iterator++;
+            double t = simulationTimeCumulative / iterator;
+            minAvgSimTime = t < minAvgSimTime ? t : minAvgSimTime;
+            maxAvgSimTime = t > maxAvgSimTime ? t : maxAvgSimTime;
         }
         public double getStatsMeanSimulationTime()
         {
@@ -131,6 +138,16 @@ namespace Automobilka.SimulationObjects
                 Console.WriteLine("Nestiham ratat intervaly ;)");
             }
             return new double[2];
+        }
+
+        public double getMinAvgSimTime()
+        {
+            return minAvgSimTime/60;
+        }
+
+        public double getMaxAvgSimTime()
+        {
+            return maxAvgSimTime/60;
         }
     }
 }

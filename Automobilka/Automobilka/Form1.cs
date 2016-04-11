@@ -25,6 +25,8 @@ namespace Automobilka
         SimulationVariantB simulationB;
         SimulationVariantC simulationC;
 
+        private Series series1;
+
         bool isChecked;
 
         private void textBox2_Click(object sender, EventArgs e)
@@ -85,7 +87,7 @@ namespace Automobilka
             isChecked = false;
             chart1.Series[0].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             chart1.Series.Clear();
-            var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
+            series1 = new System.Windows.Forms.DataVisualization.Charting.Series
             {
                 Name = "Replications",
                 Color = System.Drawing.Color.Green,
@@ -95,6 +97,14 @@ namespace Automobilka
             };
 
             this.chart1.Series.Add(series1);
+            
+            //chart1.ChartAreas[0].AxisY.ScaleView.Zoom(posYStart, posYFinish);
+            /*
+            for(int i = 0; i < 100; i++)
+            {
+                series1.Points.AddXY(i, i);
+            }
+            */
         }
 
         private void initializeSimulationInstances()
@@ -243,11 +253,12 @@ namespace Automobilka
                 simulationC.backgroundProcess();
             }
         }
-
+        int replication = 0;
         public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
             progressBar1.Value = e.ProgressPercentage;
+            
             lock (Constants.gate)
             {
                 lock (Constants.gateF)
@@ -255,6 +266,12 @@ namespace Automobilka
                     if (variant == 1)
                     {
                         Graphics.repaint(simulationA, this, isChecked);
+                        if(simulationA.getActualReplication() > replication && (simulationA.getActualReplication()%30==0))
+                        {
+                            this.chart1.ChartAreas[0].AxisY.ScaleView.Zoom(simulationA.getStats().getMinAvgSimTime(), simulationA.getStats().getMaxAvgSimTime());
+                            Graphics.repaintGraph(simulationA, this, series1);
+                            replication = simulationA.getActualReplication();
+                        }
                     }
                     else if (variant == 2)
                     {
@@ -263,7 +280,6 @@ namespace Automobilka
                     else if (variant == 3)
                     {
                         Graphics.repaint(simulationC, this, isChecked);
-
                     }
                 }
             }

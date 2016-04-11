@@ -36,6 +36,11 @@ namespace Automobilka.GUI
             repaintTime(simulation, form);
         }
 
+        public static void repaintGraph(SimulationCore simulation, Form1 form, Series series)
+        {
+            series.Points.AddXY(simulation.getActualReplication(), simulation.getStats().getStatsMeanSimulationTime()/60);
+        }
+
         public static void repaintClearStop(Form1 form)
         {
             form.label12.Text = "Material: " ;
