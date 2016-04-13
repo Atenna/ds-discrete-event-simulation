@@ -10,7 +10,8 @@ namespace Automobilka
         private Vehicle car;
         private int lengthOfWay;
 
-        public EventUnloadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
+        public EventUnloadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : 
+            base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
@@ -21,6 +22,7 @@ namespace Automobilka
             {
                 this.core.getCarsBC().Add(car);
             }
+            actualSimulation.numberOfEvents++;
         }
         public override void execute()
         {

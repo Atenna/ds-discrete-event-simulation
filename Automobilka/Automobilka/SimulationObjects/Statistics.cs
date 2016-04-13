@@ -135,7 +135,7 @@ namespace Automobilka.SimulationObjects
                 return interval;
             } catch(ArgumentException ex)
             {
-                Console.WriteLine("Nestiham ratat intervaly ;)");
+                Console.WriteLine("Nestiham ratat intervaly ;)" + ex.StackTrace);
             }
             return new double[2];
         }

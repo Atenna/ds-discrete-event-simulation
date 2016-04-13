@@ -14,7 +14,7 @@ namespace Automobilka
         private double time;
         private Vehicle car;
 
-        public EventArrivalToA(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
+        public EventArrivalToA(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
@@ -26,7 +26,7 @@ namespace Automobilka
                     this.core.removeFromCA(car);
                 }
             }
-            
+            actualSimulation.numberOfEvents++;
         }
         public override void execute()
         {

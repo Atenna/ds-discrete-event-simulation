@@ -49,6 +49,8 @@ namespace Automobilka.Simulations
 
         public override bool condition()
         {
+            if (!base.condition())
+                return false;
             return !worker.CancellationPending && !paused;
         }
     }

@@ -15,7 +15,7 @@ namespace Automobilka
         private Vehicle car;
         private int lengthOfWay; // dlzka cesty z A do B v km
 
-        public EventLoadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
+        public EventLoadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
@@ -26,6 +26,7 @@ namespace Automobilka
             {
                 this.core.getCarsAB().Add(car);
             }
+            actualSimulation.numberOfEvents++;
         }
         public override void execute()
         {

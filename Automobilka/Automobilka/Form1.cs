@@ -29,6 +29,12 @@ namespace Automobilka
 
         bool isChecked;
 
+        private Vehicle carA;
+        private Vehicle carB;
+        private Vehicle carC;
+        private Vehicle carD;
+        private Vehicle carE;
+
         private void textBox2_Click(object sender, EventArgs e)
         {
             textBox2.Text = "";
@@ -97,7 +103,7 @@ namespace Automobilka
             };
 
             this.chart1.Series.Add(series1);
-            
+
             //chart1.ChartAreas[0].AxisY.ScaleView.Zoom(posYStart, posYFinish);
             /*
             for(int i = 0; i < 100; i++)
@@ -109,12 +115,6 @@ namespace Automobilka
 
         private void initializeSimulationInstances()
         {
-            Vehicle carA = new CarA(seedGenerator);
-            Vehicle carB = new CarB(seedGenerator);
-            Vehicle carC = new CarC(seedGenerator);
-            Vehicle carD = new CarD(seedGenerator);
-            Vehicle carE = new CarE(seedGenerator);
-
             simulationA = new SimulationVariantA(maxTime, replications, backgroundWorker1, seedGenerator);
             simulationA.initCars(carA, carB, carC, carD);
             Event initialEventA = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
@@ -146,9 +146,18 @@ namespace Automobilka
         // run button
         private void button1_Click(object sender, EventArgs e)
         {
+            
             // the simulation background thread can start, if we don't have any errors
             if (!backgroundWorker1.IsBusy && isReadyToSimulate())
             {
+                seedGenerator = (seed != 0) ? new Random() : new Random(seed);
+
+                carA = new CarA(seedGenerator);
+                carB = new CarB(seedGenerator);
+                carC = new CarC(seedGenerator);
+                carD = new CarD(seedGenerator);
+                carE = new CarE(seedGenerator);
+
                 button2.Enabled = true;
                 button3.Enabled = true;
                 if (!isChecked)

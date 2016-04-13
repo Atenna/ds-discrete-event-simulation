@@ -9,14 +9,16 @@ namespace Automobilka
     public abstract class Event
     {
 
-        private double timeExecution;
+        public double timeExecution { get; }
+        public int eventNumber { get; }
         protected SimulationCore mySimulation { get; set; }
 
         // plus do parametrov Vehicle 
-        public Event(SimulationCore actualSimulationCore, double scheduledTime)
+        public Event(SimulationCore actualSimulationCore, double scheduledTime, int order)
         {
             this.mySimulation = actualSimulationCore;
             this.timeExecution = scheduledTime;
+            this.eventNumber = order;
         }
 
         public double Time()

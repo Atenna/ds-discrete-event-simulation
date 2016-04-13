@@ -15,12 +15,13 @@ namespace Automobilka
         private Vehicle car;
         private double speedOfLoading = Constants.loadMachinePerformance;
         public EventLoadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car)
-            : base(actualSimulation, scheduledTime)
+            : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
             this.core.carAtLoader = car;
+            actualSimulation.numberOfEvents++;
         }
         public override void execute()
         {

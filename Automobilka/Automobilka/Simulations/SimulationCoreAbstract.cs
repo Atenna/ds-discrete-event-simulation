@@ -17,6 +17,7 @@ namespace Automobilka.Simulations
         protected double maxTime;
         protected int speed;
         private int iterator;
+        public int numberOfEvents { get; set; }
         public bool isVisualized { get; set; }
 
         private int numberOfReplications { get; set; }
@@ -29,6 +30,7 @@ namespace Automobilka.Simulations
             this.eventCalendar = new List<Event>();
             this.numberOfReplications = numberOfReplications;
             this.isFinished = false;
+            numberOfEvents = 0;
         }
 
         // vytvori statistiky, init. .. etc
@@ -112,6 +114,16 @@ namespace Automobilka.Simulations
             eventCalendar.Add(evt);
             // to do orderovanie
             eventCalendar.Sort((x, y) => x.Time().CompareTo(y.Time()));
+
+            List<Event> sortedList = new List<Event>();
+            sortedList = eventCalendar.OrderBy(x => x.timeExecution).ThenBy(x => x.eventNumber).ToList();
+
+            eventCalendar = sortedList;
+
+            // vlastna compare to funkcia, ktora to usortuje podla casu ale aj podla toho, kedy bola ktora aktivita vytvorena
+            // dat do eventu integer a pri vytvarani eventov nech ma event integer priradeny z nejakeho countra
+            // potom tu zavolat iba moju funkciu compare to event, event 
+
         }
 
         public virtual void preSetup()
