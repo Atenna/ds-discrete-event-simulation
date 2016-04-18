@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Automobilka.Events;
 
 namespace Automobilka
 {
@@ -19,6 +20,11 @@ namespace Automobilka
         private Queue carsBeforeBuilding; // auta pred stavbou
         public Vehicle carAtLoader { set; get; }
         public Vehicle carAtUnloader { get; set; }
+
+        public double timeLoadingStart { get; set; }
+        public double timeUnloadingStart { get; set; }
+        public double materialToLoad { get; set; }
+        public double materialToUnload { get; set; }
 
         private List<Vehicle> carsAB;
         private List<Vehicle> carsBC;
@@ -207,6 +213,27 @@ namespace Automobilka
             {
                 return carsCA;
             }
+        }
+
+        public double[] getProgressOfLoading()
+        {
+            double[] pole = new double[2];
+            pole[0] = (timeActual - timeLoadingStart) * Constants.loadMachinePerformance;
+            pole[1] = materialToLoad;
+            return pole;
+        }
+
+        public double[] getProgressOfUnloading()
+        {
+            double[] pole = new double[2];
+            pole[0] = materialToUnload - (timeActual - timeUnloadingStart) * Constants.unloadMachinePerformance;
+            pole[1] = materialToUnload;
+            return pole;
+        }
+
+        public override void addRefresh()
+        {
+            updateEventCalendar(new Refresh(this, timeActual));
         }
     }
 }

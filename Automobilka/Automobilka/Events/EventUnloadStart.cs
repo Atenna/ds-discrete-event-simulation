@@ -10,18 +10,23 @@ namespace Automobilka
         private double time;
         private Vehicle car;
         private double speedOfUnloading = Constants.unloadMachinePerformance;
-        public EventUnloadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
+        public EventUnloadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
-            this.core.carAtUnloader = car;
+            actualSimulation.numberOfEvents++;
         }
 
         public override void execute()
         {
+            this.core.carAtUnloader = car;
             // nastavi nakladac ze pracuje
             core.unloadMachineWorking = true;
+
+            // guicko 
+            core.materialToUnload = car.realVolume;
+            core.timeUnloadingStart = time;
 
             // nastavi cas koniec cakania v rade
             car.setEndOfWaitingOnBuilding(time);

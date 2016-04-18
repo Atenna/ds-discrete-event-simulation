@@ -43,6 +43,8 @@ namespace Automobilka.Readonly
 
         public static readonly object gate = new object();
         public static readonly object gateF = new object();
+        //kreslenie nalozeneho/ vylozeneho materialu
+        public static readonly object gateG = new object();
 
         public static ManualResetEvent doneEvent = new ManualResetEvent(true);
     }

@@ -10,21 +10,21 @@ namespace Automobilka
         private Vehicle car;
         private int lengthOfWay;
 
-        public EventUnloadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
+        public EventUnloadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
             this.lengthOfWay = Constants.BCLength;
-            this.core.carAtUnloader = null;
-            lock(Constants.gateF)
-            {
-                this.core.getCarsBC().Add(car);
-            }
+            actualSimulation.numberOfEvents++;
         }
         public override void execute()
         {
+            this.core.carAtUnloader = null;
             double expectedTime = (lengthOfWay / (car.getSpeed() / 60.0)) + time; // ocakavany cas - kolko autu trava cesta
+
+            core.timeUnloadingStart = 0.0;
+            core.materialToUnload = 0.0;
 
             // poruchovost
             if (car.hasFailed())
@@ -39,6 +39,10 @@ namespace Automobilka
                 return;
             }
 
+            lock (Constants.gateF)
+            {
+                this.core.getCarsBC().Add(car);
+            }
             Event arrivalC = new EventArrivalToC(core, expectedTime, car);
             core.updateEventCalendar(arrivalC);
 

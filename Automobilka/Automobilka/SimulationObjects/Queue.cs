@@ -67,7 +67,7 @@ namespace Automobilka.SimulationObjects
 
         public Vehicle getAt(int i)
         {
-                return queue.ElementAt(i);
+            return queue.ElementAt(i);
         }
 
         public List<Vehicle> getList()

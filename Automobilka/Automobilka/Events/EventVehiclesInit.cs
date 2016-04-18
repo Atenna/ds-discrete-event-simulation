@@ -13,11 +13,12 @@ namespace Automobilka.Events
         private double time;
         private Vehicle[] cars;
 
-        public EventVehiclesInit(SimulationCore actualSimulation, double scheduledTime, params Vehicle[] cars) : base(actualSimulation, 0)
+        public EventVehiclesInit(SimulationCore actualSimulation, double scheduledTime, params Vehicle[] cars) : base(actualSimulation, 0, actualSimulation.numberOfEvents)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.cars = cars;
+            actualSimulation.numberOfEvents++;
         }
         public override void execute()
         {

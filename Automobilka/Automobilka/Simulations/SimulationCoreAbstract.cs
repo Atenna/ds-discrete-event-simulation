@@ -5,6 +5,7 @@ using Automobilka.Responsivity;
 using System.ComponentModel;
 using Automobilka.Readonly;
 using System.Threading;
+using Automobilka.Events;
 
 namespace Automobilka.Simulations
 {
@@ -16,8 +17,18 @@ namespace Automobilka.Simulations
         protected double timeActual;
         protected double maxTime;
         protected int speed;
-        private int iterator;
+        protected int repeateTime = 1;
+        private int iterator = 0;
+        public int retIterator
+        {
+            get
+            {
+                return iterator;
+            }
+        }
+        public int numberOfEvents { get; set; }
         public bool isVisualized { get; set; }
+        public bool isRefreshed { get; set; }
 
         private int numberOfReplications { get; set; }
         public bool isFinished { get; set; }
@@ -29,6 +40,7 @@ namespace Automobilka.Simulations
             this.eventCalendar = new List<Event>();
             this.numberOfReplications = numberOfReplications;
             this.isFinished = false;
+            numberOfEvents = 0;
         }
 
         // vytvori statistiky, init. .. etc
@@ -55,36 +67,44 @@ namespace Automobilka.Simulations
 
                 while (timeActual <= maxTime && eventCalendar.Any<Event>() && condition())
                 {
-                    actualEvent = eventCalendar.First();
-                    eventCalendar.RemoveAt(0);
-                    timeActual = actualEvent.Time();
-                    if (timeActual <= maxTime)
+                    lock (Constants.gate)
                     {
-                        actualEvent.execute();
+                        actualEvent = eventCalendar.First();
+                        eventCalendar.RemoveAt(0);
+                        timeActual = actualEvent.Time();
+                        if (timeActual <= maxTime)
+                        {
+                            actualEvent.execute();
+                        }
                     }
-                    
+
                     Constants.doneEvent.WaitOne(Timeout.Infinite);
                     if (isVisualized)
                     {
                         worker.ReportProgress(Convert.ToInt32(progress));
-                        slowDown();
+                        if (!isRefreshed)
+                        {
+                            isRefreshed = true;
+                            addRefresh();
+                        }
                     }
                 }
-                if(!isVisualized)
+                if (!isVisualized)
                 {
                     worker.ReportProgress(Convert.ToInt32(progress));
                 }
                 postSetup();
                 iterator++;
             }
-            if(!condition())
+            if (!condition())
             {
                 worker.ReportProgress(0);
-            } else
+            }
+            else
             {
                 worker.ReportProgress(100);
             }
-            
+
             isFinished = true;
             postPostSetup();
         }
@@ -100,6 +120,11 @@ namespace Automobilka.Simulations
 
         }
 
+        public virtual void addRefresh()
+        {
+
+        }
+
         private void resetVariables()
         {
             eventCalendar = new List<Event>();
@@ -111,7 +136,17 @@ namespace Automobilka.Simulations
             // prida ho na koniec
             eventCalendar.Add(evt);
             // to do orderovanie
-            eventCalendar.Sort((x, y) => x.Time().CompareTo(y.Time()));
+            //eventCalendar.Sort((x, y) => x.Time().CompareTo(y.Time()));
+
+            List<Event> sortedList = new List<Event>();
+            sortedList = eventCalendar.OrderBy(x => x.timeExecution).ThenBy(x => x.eventNumber).ToList();
+
+            eventCalendar = sortedList;
+
+            // vlastna compare to funkcia, ktora to usortuje podla casu ale aj podla toho, kedy bola ktora aktivita vytvorena
+            // dat do eventu integer a pri vytvarani eventov nech ma event integer priradeny z nejakeho countra
+            // potom tu zavolat iba moju funkciu compare to event, event 
+
         }
 
         public virtual void preSetup()
@@ -124,13 +159,29 @@ namespace Automobilka.Simulations
             return true;
         }
 
-        public void setSpeed(int speed) {
-            this.speed = (10-speed)*100;
+        public void setSpeed(int scrolledValue)
+        {
+            Console.WriteLine("scrolledValue: " + scrolledValue);
+            /*if(scrolledValue != 10)
+            {
+                this.speed = (10 - scrolledValue) * 100;
+            }
+            else
+            {
+                this.speed = 10;
+            }*/
+            this.speed = scrolledValue;
+            Console.WriteLine("speed: " + speed);
         }
 
-        private void slowDown()
+        public int getSpeed()
         {
-            Thread.Sleep(speed);
+            return speed;
+        }
+
+        public int getRepeatTime()
+        {
+            return repeateTime;
         }
 
         public double getSimTime()

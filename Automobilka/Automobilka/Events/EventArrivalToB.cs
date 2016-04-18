@@ -14,21 +14,19 @@ namespace Automobilka
         private double time;
         private Vehicle car;
 
-        public EventArrivalToB(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime)
+        public EventArrivalToB(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
-            lock(Constants.gateF)
-            {
-                if (this.core.getCarsAB().Contains(car))
-                {
-                    this.core.removeFromAB(car);
-                }
-            }
+            actualSimulation.numberOfEvents++;
         }
         public override void execute()
         {
+            lock (Constants.gateF)
+            {
+                this.core.removeFromAB(car);
+            }
             // postavia sa do radu
             core.updteListBeforeBuilding(car);
             // nastavi sa im pociatocny cas cakania

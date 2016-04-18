@@ -9,10 +9,10 @@ namespace Automobilka.Vehicles
     public class Vehicle
     {
         private Random failureGenerator;
-        private string name;
-        private int volume;
+        public string name { get; set; }
+        public int volume { get; set; }
         public double realVolume { get; set; }
-        private int speed;
+        public int speed { get; set; }
         private double probabilityOfCrash;
         private int timeOfRepair;
 
@@ -111,7 +111,7 @@ namespace Automobilka.Vehicles
 
         public string toString()
         {
-            return name + ": ["+ realVolume + "/"+volume+"], "+speed + " ";
+            return name + ": [" + realVolume + "/" + volume + "], " + speed + " ";
         }
     }
 }

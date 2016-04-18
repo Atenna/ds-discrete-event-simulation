@@ -26,7 +26,7 @@ namespace Automobilka.GUI
             repaintAB(simulation, form);
             repaintBC(simulation, form);
             repaintCA(simulation, form);
-            updateChart(simulation, form);
+            repaintAB(simulation, form);
         }
 
         public static void repaintClear(Form1 form)
@@ -34,21 +34,22 @@ namespace Automobilka.GUI
             form.label12.Text = "Material: " + 5000;
             form.label13.Text = "Material: " + 0;
 
+            form.label9.Text = "A-B ";
             form.label11.Text = "C-A ";
             form.label10.Text = "B-C ";
             form.label17.Text = "";
             form.label16.Text = "";
             form.listBox1.Items.Clear();
             form.listBox2.Items.Clear();
-            form.label9.Text = "A-B ";
+            
         }
 
         private static void repaintCA(SimulationCore simulation, Form1 form)
         {
             string text = "C-A ";
             List<Vehicle> ca = simulation.getCarsCA();
-            
-            if(ca.Count == 0)
+
+            if (ca.Count == 0)
             {
                 form.label11.Text = text;
                 return;
@@ -79,10 +80,14 @@ namespace Automobilka.GUI
         private static void repaintUnload(SimulationCore simulation, Form1 form)
         {
             Vehicle car = simulation.carAtUnloader;
-            if(car != null)
+            if (car != null)
             {
-                form.label17.Text = car.toString();
-            } else
+                double[] unloadProgress = simulation.getProgressOfUnloading();
+                form.label17.Text = car.name + ": [" +
+                    unloadProgress[0].ToString("#.0") + " / " +
+                    unloadProgress[1].ToString("#.0") + "], " + car.speed;
+            }
+            else
             {
                 form.label17.Text = "";
             }
@@ -93,7 +98,9 @@ namespace Automobilka.GUI
             Vehicle car = simulation.carAtLoader;
             if (car != null)
             {
-                form.label16.Text = car.toString();
+                form.label16.Text = car.name + ": [" +
+                    (simulation.getProgressOfLoading()[0]).ToString("#.0") +
+                    " / " + car.volume + "], " + car.speed;
             }
             else
             {
@@ -131,7 +138,7 @@ namespace Automobilka.GUI
         {
             string text = "A-B ";
             List<Vehicle> ab = simulation.getCarsAB();
-            
+            Console.WriteLine(ab.Count);
             if (ab.Count == 0)
             {
                 form.label9.Text = text;
@@ -142,26 +149,6 @@ namespace Automobilka.GUI
                 text += v.toString();
             }
             form.label9.Text = text;
-        }
-
-        private static double minSimTime = 0;
-        private static double simTimeCumulative = 0, maxSimTime = 0;
-        private static int iterator = 0;
-
-        private static void updateChart(SimulationCore simulation, Form1 form)
-        {
-            double simTime = simulation.getStats().getStatsMeanSimulationTime();
-            double time = simulation.getSimTime();
-            iterator = simulation.getActualReplication();
-            simTimeCumulative += time;
-            maxSimTime = simTime > maxSimTime ? simTime : maxSimTime;
-            minSimTime = simTime < minSimTime ? simTime : minSimTime;
-
-            form.chart1.ChartAreas[0].AxisX.ScaleView.Zoom(0, simTimeCumulative);
-            form.chart1.ChartAreas[0].AxisY.ScaleView.Zoom(minSimTime, maxSimTime);
-
-            form.chart1.Series[0].Points.AddXY(iterator, simTime/60);
-            form.chart1.Series[0].Points.AddXY(iterator, simTime / 60);
         }
     }
 }
