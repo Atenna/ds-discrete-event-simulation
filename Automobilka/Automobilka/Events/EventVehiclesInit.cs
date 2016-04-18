@@ -13,8 +13,12 @@ namespace Automobilka.Events
         private double time;
         private Vehicle[] cars;
 
+<<<<<<< HEAD
+        public EventVehiclesInit(SimulationCore actualSimulation, double scheduledTime, params Vehicle[] cars) : base(actualSimulation, 0, actualSimulation.numberOfEvents)
+=======
         public EventVehiclesInit(SimulationCore actualSimulation, double scheduledTime, params Vehicle[] cars) : 
             base(actualSimulation, 0, actualSimulation.numberOfEvents)
+>>>>>>> NewBranch
         {
             this.core = actualSimulation;
             this.time = scheduledTime;

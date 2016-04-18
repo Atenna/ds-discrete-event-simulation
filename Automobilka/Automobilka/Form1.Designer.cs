@@ -433,13 +433,18 @@
             this.groupBox6.Controls.Add(this.label18);
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
             this.groupBox6.Location = new System.Drawing.Point(12, 923);
 >>>>>>> refs/remotes/origin/master
+>>>>>>> NewBranch
             this.groupBox6.Location = new System.Drawing.Point(12, 934);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(558, 100);
             this.groupBox6.TabIndex = 26;
             this.groupBox6.TabStop = false;
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
             this.groupBox6.Text = "Confidence interval";
             // 
@@ -448,6 +453,7 @@
             this.label18.AutoSize = true;
 =======
             this.groupBox6.Text = "Confidence Interval";
+>>>>>>> NewBranch
             this.groupBox6.Text = "Confidence interval";
             this.label18.AutoSize = true;
             this.label18.Location = new System.Drawing.Point(15, 45);
@@ -455,6 +461,9 @@
             this.label18.Size = new System.Drawing.Size(102, 29);
             this.label18.TabIndex = 0;
             this.label18.Text = "Interval: ";
+<<<<<<< HEAD
+
+=======
 >>>>>>> refs/remotes/origin/master
             this.label18.Location = new System.Drawing.Point(15, 52);
             this.label18.Name = "label18";
@@ -465,6 +474,7 @@
             // 
             // label19
             // 
+>>>>>>> NewBranch
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(589, 432);
             this.label19.Name = "label19";
@@ -503,21 +513,32 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1557, 1285);
             this.Controls.Add(this.panel2);
+<<<<<<< HEAD
+
 =======
+=======
+>>>>>>> NewBranch
             this.label19.AutoSize = true;
             this.label19.Location = new System.Drawing.Point(589, 432);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(190, 29);
             this.label19.TabIndex = 27;
             this.label19.Text = "Simulation time: ";
+<<<<<<< HEAD
+=======
             this.label19.Size = new System.Drawing.Size(142, 29);
             this.label19.TabIndex = 27;
             this.label19.Text = "Actual time: ";
+>>>>>>> NewBranch
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1557, 1075);
+<<<<<<< HEAD
+
+=======
 >>>>>>> refs/remotes/origin/master
+>>>>>>> NewBranch
             this.Controls.Add(this.label19);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.label17);
@@ -598,14 +619,22 @@
         private System.Windows.Forms.GroupBox groupBox6;
         public System.Windows.Forms.Label label18;
 <<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+>>>>>>> NewBranch
         private System.Windows.Forms.CheckBox checkBox1;
         public System.Windows.Forms.Label label19;
         public System.Windows.Forms.Panel panel2;
         public System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+<<<<<<< HEAD
+
+=======
 =======
         public System.Windows.Forms.CheckBox checkBox1;
         public System.Windows.Forms.Label label19;
 >>>>>>> refs/remotes/origin/master
+>>>>>>> NewBranch
     }
 }
 

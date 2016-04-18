@@ -20,21 +20,28 @@ namespace Automobilka
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
+<<<<<<< HEAD
+=======
             this.core.carAtLoader = car;
+>>>>>>> NewBranch
             actualSimulation.numberOfEvents++;
         }
         public override void execute()
         {
+            this.core.carAtLoader = car;
             double volumeToLoad = (core.materialA <= car.getVolume()) ? core.materialA : car.getVolume();
+
+            core.materialToLoad = volumeToLoad;
+            core.timeLoadingStart = time;
 
             core.materialA -= volumeToLoad;
 
             double timeOfLoading = volumeToLoad / speedOfLoading;
 
             car.realVolume = volumeToLoad;
-            
+
             core.loadMachineWorking = true;
-            
+
             car.setEndOfWaitingOnDepo(time);
 
             Event loadEnd = new EventLoadFinish(core, timeOfLoading + time, car);

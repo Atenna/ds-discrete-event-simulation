@@ -5,6 +5,7 @@ using Automobilka.Responsivity;
 using System.ComponentModel;
 using Automobilka.Readonly;
 using System.Threading;
+using Automobilka.Events;
 
 namespace Automobilka.Simulations
 {
@@ -16,9 +17,22 @@ namespace Automobilka.Simulations
         protected double timeActual;
         protected double maxTime;
         protected int speed;
+<<<<<<< HEAD
+        protected int repeateTime = 1;
+        private int iterator = 0;
+        public int retIterator
+        {
+            get
+            {
+                return iterator;
+            }
+        }
+=======
         private int iterator;
+>>>>>>> NewBranch
         public int numberOfEvents { get; set; }
         public bool isVisualized { get; set; }
+        public bool isRefreshed { get; set; }
 
         private int numberOfReplications { get; set; }
         public bool isFinished { get; set; }
@@ -57,36 +71,44 @@ namespace Automobilka.Simulations
 
                 while (timeActual <= maxTime && eventCalendar.Any<Event>() && condition())
                 {
-                    actualEvent = eventCalendar.First();
-                    eventCalendar.RemoveAt(0);
-                    timeActual = actualEvent.Time();
-                    if (timeActual <= maxTime)
+                    lock (Constants.gate)
                     {
-                        actualEvent.execute();
+                        actualEvent = eventCalendar.First();
+                        eventCalendar.RemoveAt(0);
+                        timeActual = actualEvent.Time();
+                        if (timeActual <= maxTime)
+                        {
+                            actualEvent.execute();
+                        }
                     }
-                    
+
                     Constants.doneEvent.WaitOne(Timeout.Infinite);
                     if (isVisualized)
                     {
                         worker.ReportProgress(Convert.ToInt32(progress));
-                        slowDown();
+                        if (!isRefreshed)
+                        {
+                            isRefreshed = true;
+                            addRefresh();
+                        }
                     }
                 }
-                if(!isVisualized)
+                if (!isVisualized)
                 {
                     worker.ReportProgress(Convert.ToInt32(progress));
                 }
                 postSetup();
                 iterator++;
             }
-            if(!condition())
+            if (!condition())
             {
                 worker.ReportProgress(0);
-            } else
+            }
+            else
             {
                 worker.ReportProgress(100);
             }
-            
+
             isFinished = true;
             postPostSetup();
         }
@@ -102,6 +124,11 @@ namespace Automobilka.Simulations
 
         }
 
+        public virtual void addRefresh()
+        {
+
+        }
+
         private void resetVariables()
         {
             eventCalendar = new List<Event>();
@@ -113,7 +140,11 @@ namespace Automobilka.Simulations
             // prida ho na koniec
             eventCalendar.Add(evt);
             // to do orderovanie
+<<<<<<< HEAD
+            //eventCalendar.Sort((x, y) => x.Time().CompareTo(y.Time()));
+=======
             eventCalendar.Sort((x, y) => x.Time().CompareTo(y.Time()));
+>>>>>>> NewBranch
 
             List<Event> sortedList = new List<Event>();
             sortedList = eventCalendar.OrderBy(x => x.timeExecution).ThenBy(x => x.eventNumber).ToList();
@@ -136,22 +167,40 @@ namespace Automobilka.Simulations
             return true;
         }
 
+<<<<<<< HEAD
+        public void setSpeed(int scrolledValue)
+        {
+            Console.WriteLine("scrolledValue: " + scrolledValue);
+            /*if(scrolledValue != 10)
+=======
         public void setSpeed(int scrolledValue) {
             Console.WriteLine("scrolledValue: " + scrolledValue);
             if(scrolledValue != 10)
+>>>>>>> NewBranch
             {
                 this.speed = (10 - scrolledValue) * 100;
             }
             else
             {
                 this.speed = 10;
-            }
+<<<<<<< HEAD
+            }*/
+            this.speed = scrolledValue;
             Console.WriteLine("speed: " + speed);
         }
 
-        private void slowDown()
+        public int getSpeed()
         {
-            Thread.Sleep(speed);
+            return speed;
+=======
+            }
+            Console.WriteLine("speed: " + speed);
+>>>>>>> NewBranch
+        }
+
+        public int getRepeatTime()
+        {
+            return repeateTime;
         }
 
         public double getSimTime()

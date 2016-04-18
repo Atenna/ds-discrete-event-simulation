@@ -20,6 +20,9 @@ namespace Automobilka
         private bool paused = false;
         private int maxTime { get; set; }
         private int replications { get; set; }
+        private int replicationsDone;
+        private int lastRepaintReplication;
+        private double cutRate = 0.3;
 
         SimulationVariantA simulationA;
         SimulationVariantB simulationB;
@@ -83,6 +86,8 @@ namespace Automobilka
         public Form1()
         {
             InitializeComponent();
+            trackBar1.Minimum = 200;
+            trackBar1.Maximum = 3000;
             seedGenerator = (seed != 0) ? new Random() : new Random(seed);
             variant = -1;
             maxTime = Int32.MaxValue;
@@ -173,6 +178,11 @@ namespace Automobilka
                 trackBar1_Scroll(this, e);
                 button1.Enabled = false;
                 backgroundWorker1.RunWorkerAsync();
+
+                foreach (var series in chart1.Series)
+                {
+                    series.Points.Clear();
+                }
             }
         }
 
@@ -240,7 +250,7 @@ namespace Automobilka
                 label1.Text += "Error: Select a variant";
             }
             string check = label1.Text == "" ? "True" : "False";
-            
+
             return label1.Text == "";
         }
 
@@ -254,10 +264,12 @@ namespace Automobilka
             if (variant == 1)
             {
                 simulationA.backgroundProcess();
-            } else if(variant == 2)
+            }
+            else if (variant == 2)
             {
                 simulationB.backgroundProcess();
-            } else if(variant == 3)
+            }
+            else if (variant == 3)
             {
                 simulationC.backgroundProcess();
             }
@@ -270,24 +282,75 @@ namespace Automobilka
 
         public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+<<<<<<< HEAD
+            // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
+=======
            
 >>>>>>> refs/remotes/origin/master
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
             progressBar1.Value = e.ProgressPercentage;
             
+>>>>>>> NewBranch
             lock (Constants.gate)
             {
                 lock (Constants.gateF)
                 {
                     if (variant == 1)
                     {
+<<<<<<< HEAD
+                        replicationsDone = simulationA.retIterator;
+                        if (checkBox1.Checked)
+=======
                         Graphics.repaint(simulationA, this, isChecked);
                         if(simulationA.getActualReplication() > replication && (simulationA.getActualReplication()%30==0))
+>>>>>>> NewBranch
                         {
                             this.chart1.ChartAreas[0].AxisY.ScaleView.Zoom(simulationA.getStats().getMinAvgSimTime(), simulationA.getStats().getMaxAvgSimTime());
                             Graphics.repaintGraph(simulationA, this, series1);
                             replication = simulationA.getActualReplication();
                         }
+<<<<<<< HEAD
+                        if (lastRepaintReplication != replicationsDone)
+                        {
+                            showStats(simulationA.getStats());
+                            if (replicationsDone > replications * cutRate)      //replicationsDone % 30 == 0 && 
+                            {
+                                updateChart(simulationA);
+                            }
+                        }
+                    }
+                    else if (variant == 2)
+                    {
+                        replicationsDone = simulationB.retIterator;
+                        if (checkBox1.Checked)
+                        {
+                            Graphics.repaint(simulationB, this);
+                        }
+                        if (lastRepaintReplication != replicationsDone)
+                        {
+                            showStats(simulationB.getStats());
+                            if (replicationsDone > replications * cutRate)
+                            {
+                                updateChart(simulationB);
+                            }
+                        }
+                    }
+                    else if (variant == 3)
+                    {
+                        replicationsDone = simulationC.retIterator;
+                        if (checkBox1.Checked)
+                        {
+                            Graphics.repaint(simulationC, this);
+                        }
+                        if (lastRepaintReplication != replicationsDone)
+                        {
+                            showStats(simulationC.getStats());
+                            if (replicationsDone > replications * cutRate)
+                            {
+                                 updateChart(simulationC);
+                            }
+                        }
+=======
                     }
                     else if (variant == 2)
                     {
@@ -296,9 +359,12 @@ namespace Automobilka
                     else if (variant == 3)
                     {
                         Graphics.repaint(simulationC, this, isChecked);
+>>>>>>> NewBranch
                     }
+                    lastRepaintReplication = replicationsDone;
                 }
             }
+            progressBar1.Value = e.ProgressPercentage;
         }
 
         public void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -318,10 +384,12 @@ namespace Automobilka
             if (variant == 1)
             {
                 stats = simulationA.getStats();
-            } else if(variant == 2)
+            }
+            else if (variant == 2)
             {
                 stats = simulationB.getStats();
-            } else
+            }
+            else
             {
                 stats = simulationC.getStats();
             }
@@ -341,12 +409,18 @@ namespace Automobilka
 <<<<<<< HEAD
             label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime() / 60;
             label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime() / 60;
+        }
+=======
+<<<<<<< HEAD
+            label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime() / 60;
+            label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime() / 60;
 =======
             label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime()/60;
             label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime()/60;
 
 >>>>>>> refs/remotes/origin/master
        }
+>>>>>>> NewBranch
 
         public void showIS(Statistics stats)
         {
@@ -356,9 +430,14 @@ namespace Automobilka
             double[] _is = stats.confidenceIntervalSimulationTime(0.9);
             label18.Text = "Interval: <" + (_is[0] / 60).ToString("#.000") + ", " + (_is[1] / 60).ToString("#.000") + ">";
 =======
+<<<<<<< HEAD
+            double[] _is = stats.confidenceIntervalSimulationTime(0.9);
+            label18.Text = "Interval: <" + (_is[0] / 60).ToString("#.000") + ", " + (_is[1] / 60).ToString("#.000") + ">";
+=======
             double [] _is = stats.confidenceIntervalSimulationTime(0.9);
             label18.Text = "Interval: <" + (_is[0]/60).ToString("#.000") + ", " + (_is[1]/60).ToString("#.000") + ">";
 >>>>>>> refs/remotes/origin/master
+>>>>>>> NewBranch
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -372,7 +451,7 @@ namespace Automobilka
             {
                 simulationB.setSpeed(value);
             }
-            else if(variant == 3)
+            else if (variant == 3)
             {
                 simulationC.setSpeed(value);
             }
@@ -381,6 +460,50 @@ namespace Automobilka
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             isChecked = checkBox1.Checked;
+
+            if (variant == 1)
+            {
+                if (simulationA != null)
+                {
+                    simulationA.isVisualized = isChecked;
+                }
+            }
+            else if (variant == 2)
+            {
+                if (simulationA != null)
+                {
+                    simulationB.isVisualized = isChecked;
+                }
+            }
+            else if (variant == 3)
+            {
+                if (simulationA != null)
+                {
+                    simulationC.isVisualized = isChecked;
+                }
+            }
+        }
+
+        double maxSimTime = 0;
+        double minSimTime = Double.MaxValue;
+
+        private void updateChart(SimulationCore simulation)
+        {
+            double simTime = simulation.getStats().getStatsMeanSimulationTime() / 60;
+            double time = simulation.getSimTime();
+            int iterator = simulation.getActualReplication();
+
+
+            maxSimTime = simTime > maxSimTime ? simTime : maxSimTime;
+            minSimTime = simTime < minSimTime ? simTime : minSimTime;
+            try
+            {
+                chart1.ChartAreas[0].AxisY.ScaleView.Zoom(minSimTime, maxSimTime);
+                chart1.Series[0].Points.AddXY(iterator, simTime);
+            }
+            catch (NullReferenceException)
+            {
+            }
         }
 
         private static double minSimTime = 0;

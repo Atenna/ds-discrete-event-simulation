@@ -21,17 +21,23 @@ namespace Automobilka
             this.time = scheduledTime;
             this.car = car;
             this.lengthOfWay = Constants.ABLength;
+<<<<<<< HEAD
+=======
             this.core.carAtLoader = null;
             lock (Constants.gateF)
             {
                 this.core.getCarsAB().Add(car);
             }
+>>>>>>> NewBranch
             actualSimulation.numberOfEvents++;
         }
         public override void execute()
         {
-
+            this.core.carAtLoader = null;
             double expectedTime = (lengthOfWay / (double)(car.getSpeed() / 60.0)) + time; // ocakavany cas - kolko by autu trava cesta
+
+            core.timeLoadingStart = 0.0;
+            core.materialToLoad = 0.0;
 
             expectedTime = core.wayAB.realTime(expectedTime);
             Event arrivalB = new EventArrivalToB(core, expectedTime, car);
@@ -40,6 +46,11 @@ namespace Automobilka
             if (core.materialA <= 0)
             {
                 return;
+            }
+
+            lock (Constants.gateF)
+            {
+                this.core.getCarsAB().Add(car);
             }
 
             Vehicle carInFront = core.getFirstBeforeDepo();

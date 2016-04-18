@@ -19,6 +19,8 @@ namespace Automobilka
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
+<<<<<<< HEAD
+=======
             lock(Constants.gateF)
             {
                 if (this.core.getCarsAB().Contains(car))
@@ -26,10 +28,15 @@ namespace Automobilka
                     this.core.removeFromAB(car);
                 }
             }
+>>>>>>> NewBranch
             actualSimulation.numberOfEvents++;
         }
         public override void execute()
         {
+            lock (Constants.gateF)
+            {
+                this.core.removeFromAB(car);
+            }
             // postavia sa do radu
             core.updteListBeforeBuilding(car);
             // nastavi sa im pociatocny cas cakania

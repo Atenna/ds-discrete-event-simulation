@@ -21,10 +21,7 @@ namespace Automobilka
             this.car = car;
             lock(Constants.gateF)
             {
-                if (this.core.getCarsCA().Contains(car))
-                {
-                    this.core.removeFromCA(car);
-                }
+                this.core.removeFromCA(car);
             }
             actualSimulation.numberOfEvents++;
         }
