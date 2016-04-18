@@ -262,9 +262,16 @@ namespace Automobilka
                 simulationC.backgroundProcess();
             }
         }
+<<<<<<< HEAD
         int replication = 0;
         public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+=======
+
+        public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+           
+>>>>>>> refs/remotes/origin/master
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
             progressBar1.Value = e.ProgressPercentage;
             
@@ -331,16 +338,27 @@ namespace Automobilka
             label4.Text = "Building: " + stats.getStatsMeanUnloadQueueLength();
             label5.Text = "Depo: " + stats.getStatsMeanLoadQueueTime();
             label6.Text = "Building: " + stats.getStatsMeanUnloadQueueTime();
+<<<<<<< HEAD
             label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime() / 60;
             label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime() / 60;
+=======
+            label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime()/60;
+            label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime()/60;
+
+>>>>>>> refs/remotes/origin/master
        }
 
         public void showIS(Statistics stats)
         {
             double[] _IS = stats.confidenceIntervalSimulationTime(0.9);
             label18.Text = "Interval: <" + (_IS[0] / 60).ToString("#.000") + ", " + (_IS[1] / 60).ToString("#.000") + ">";
+<<<<<<< HEAD
             double[] _is = stats.confidenceIntervalSimulationTime(0.9);
             label18.Text = "Interval: <" + (_is[0] / 60).ToString("#.000") + ", " + (_is[1] / 60).ToString("#.000") + ">";
+=======
+            double [] _is = stats.confidenceIntervalSimulationTime(0.9);
+            label18.Text = "Interval: <" + (_is[0]/60).ToString("#.000") + ", " + (_is[1]/60).ToString("#.000") + ">";
+>>>>>>> refs/remotes/origin/master
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
