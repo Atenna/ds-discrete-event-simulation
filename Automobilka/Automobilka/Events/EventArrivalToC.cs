@@ -22,15 +22,15 @@ namespace Automobilka
             this.time = scheduledTime;
             this.car = car;
             this.lengthOfWay = Constants.CALength;
+            actualSimulation.numberOfEvents++;
+        }
+        public override void execute()
+        {
             lock (Constants.gateF)
             {
                 this.core.removeFromBC(car);
                 this.core.getCarsCA().Add(car);
             }
-            actualSimulation.numberOfEvents++;
-        }
-        public override void execute()
-        {
             double expectedTime = (lengthOfWay / (car.getSpeed() / 60.0)) + time; // ocakavany cas - kolko by autu trava cesta
 
             expectedTime = core.wayCA.realTime(expectedTime);

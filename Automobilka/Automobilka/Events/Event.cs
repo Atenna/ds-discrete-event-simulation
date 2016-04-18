@@ -9,13 +9,8 @@ namespace Automobilka
     public abstract class Event
     {
 
-<<<<<<< HEAD
         public double timeExecution { get; set; }
         public int eventNumber;
-=======
-        public double timeExecution { get; }
-        public int eventNumber { get; }
->>>>>>> NewBranch
         protected SimulationCore mySimulation { get; set; }
 
 

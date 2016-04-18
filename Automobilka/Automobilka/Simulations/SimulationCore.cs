@@ -79,10 +79,7 @@ namespace Automobilka
         public override void postPostSetup()
         {
             _IS = cruelStats.confidenceIntervalSimulationTime(0.9);
-<<<<<<< HEAD
 
-=======
->>>>>>> NewBranch
             /*
             Console.WriteLine("Priemerne trvanie simulacie (v hodinach): " + cruelStats.getStatsMeanSimulationTime() / 60);
 

@@ -17,7 +17,6 @@ namespace Automobilka.Simulations
         public SimulationVariantA(double maxTime, int replications, BackgroundWorker worker, Random seedGeneratorInit) : base(maxTime, replications, worker, seedGeneratorInit)
         {
             cars = new Vehicle[4];
-            //cars = new Vehicle[2];
             paused = false;
         }
 
@@ -52,8 +51,6 @@ namespace Automobilka.Simulations
 
         public override bool condition()
         {
-            if (!base.condition())
-                return false;
             return !worker.CancellationPending && !paused;
         }
     }

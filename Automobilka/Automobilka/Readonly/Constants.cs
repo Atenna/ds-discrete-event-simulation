@@ -29,17 +29,17 @@ namespace Automobilka.Readonly
         public const int speedOfVehicleD = 70;
         public const int speedOfVehicleE = 30;
 
-        public const double probabilityOfCrashOfVehicleA = 0.12; //0.12
-        public const double probabilityOfCrashOfVehicleB = 0.04; // 0.04
-        public const double probabilityOfCrashOfVehicleC = 0.04; // 0.04
-        public const double probabilityOfCrashOfVehicleD = 0.11; // 0.11
-        public const double probabilityOfCrashOfVehicleE = 0.06; // 0.06
+        public const double probabilityOfCrashOfVehicleA = 0.12;
+        public const double probabilityOfCrashOfVehicleB = 0.04;
+        public const double probabilityOfCrashOfVehicleC = 0.04;
+        public const double probabilityOfCrashOfVehicleD = 0.11;
+        public const double probabilityOfCrashOfVehicleE = 0.06;
 
         public const int timeOfRepairOfVehicleA = 80;
         public const int timeOfRepairOfVehicleB = 50;
         public const int timeOfRepairOfVehicleC = 100;
         public const int timeOfRepairOfVehicleD = 44;
-        public const int timeOfRepairOfVehicleE = 160;
+        public const int timeOfRepairOfVehicleE = 170;
 
         public static readonly object gate = new object();
         public static readonly object gateF = new object();

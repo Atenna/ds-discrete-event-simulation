@@ -20,10 +20,6 @@ namespace Automobilka
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
-<<<<<<< HEAD
-=======
-            this.core.carAtLoader = car;
->>>>>>> NewBranch
             actualSimulation.numberOfEvents++;
         }
         public override void execute()
