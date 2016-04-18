@@ -12,13 +12,31 @@ namespace Automobilka.GUI
     public class Graphics
     {
         // prekresluje GUIcko
-        public static void repaint(SimulationCore simulation, Form1 form)
+        public static void repaint(SimulationCore simulation, Form1 form, bool visualized)
         {
+            
             form.label12.Text = "Material: " + simulation.materialA;
             form.label13.Text = "Material: " + simulation.materialB;
-            form.label19.Text = "Actual time: " + (simulation.getSimTime() / 60).ToString("#.000");
+            form.label19.Text = "Actual time: " + (simulation.getSimTime()/60).ToString("#.000");
             // nastavenie dlzky radu pred depom a budovou
+            if (visualized)
+            {
+                repaintQueueListA(simulation, form);
+                repaintQueueListB(simulation, form);
+                repaintLoad(simulation, form);
+                repaintUnload(simulation, form);
+                repaintAB(simulation, form);
+                repaintBC(simulation, form);
+                repaintCA(simulation, form);
+                //updateChart(simulation, form);
+            }
+            Statistics stats = simulation.getStats();
+            repaintStats(form, stats);
 
+            repaintTime(simulation, form);
+        }
+
+<<<<<<< HEAD
             repaintQueueListA(simulation, form);
             repaintQueueListB(simulation, form);
             repaintLoad(simulation, form);
@@ -27,6 +45,43 @@ namespace Automobilka.GUI
             repaintBC(simulation, form);
             repaintCA(simulation, form);
             repaintAB(simulation, form);
+=======
+        public static void repaintGraph(SimulationCore simulation, Form1 form, Series series)
+        {
+            series.Points.AddXY(simulation.getActualReplication(), simulation.getStats().getStatsMeanSimulationTime()/60);
+        }
+
+        public static void repaintClearStop(Form1 form)
+        {
+            form.label12.Text = "Material: " ;
+            form.label13.Text = "Material: ";
+            form.label19.Text = "Actual time: ";
+            form.label2.Text = "Average run time: ";
+            form.label3.Text = "Depo: ";
+            form.label4.Text = "Building: ";
+            form.label5.Text = "Depo: ";
+            form.label6.Text = "Building: ";
+            form.label7.Text = "Depo: ";
+            form.label8.Text = "Building: ";
+            form.progressBar1.Value = 0;
+        }
+
+        public static void repaintTime(SimulationCore simulation, Form1 form)
+        {
+            form.label19.Text = "Actual time: " + (simulation.getSimTime() / 60).ToString("#.000");
+        }
+
+        private static void repaintStats(Form1 form, Statistics stats)
+        {
+            //form.label19.Text = "Actual time: " + (simulation.getSimTime() / 60).ToString("#.000");
+            form.label2.Text = "Average run time: " + stats.getStatsMeanSimulationTime() / 60;
+            form.label3.Text = "Depo: " + stats.getStatsMeanLoadQueueLength();
+            form.label4.Text = "Building: " + stats.getStatsMeanUnloadQueueLength();
+            form.label5.Text = "Depo: " + stats.getStatsMeanLoadQueueTime();
+            form.label6.Text = "Building: " + stats.getStatsMeanUnloadQueueTime();
+            form.label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime() / 60;
+            form.label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime() / 60;
+>>>>>>> NewBranch
         }
 
         public static void repaintClear(Form1 form)

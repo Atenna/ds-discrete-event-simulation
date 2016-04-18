@@ -21,6 +21,14 @@ namespace Automobilka
             this.time = scheduledTime;
             this.car = car;
             this.lengthOfWay = Constants.ABLength;
+<<<<<<< HEAD
+=======
+            this.core.carAtLoader = null;
+            lock (Constants.gateF)
+            {
+                this.core.getCarsAB().Add(car);
+            }
+>>>>>>> NewBranch
             actualSimulation.numberOfEvents++;
         }
         public override void execute()

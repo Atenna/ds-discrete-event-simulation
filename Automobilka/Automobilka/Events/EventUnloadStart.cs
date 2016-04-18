@@ -10,11 +10,20 @@ namespace Automobilka
         private double time;
         private Vehicle car;
         private double speedOfUnloading = Constants.unloadMachinePerformance;
+<<<<<<< HEAD
         public EventUnloadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
+=======
+        public EventUnloadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : 
+            base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
+>>>>>>> NewBranch
         {
             this.core = actualSimulation;
             this.time = scheduledTime;
             this.car = car;
+<<<<<<< HEAD
+=======
+            this.core.carAtUnloader = car;
+>>>>>>> NewBranch
             actualSimulation.numberOfEvents++;
         }
 

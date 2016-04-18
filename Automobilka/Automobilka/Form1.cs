@@ -2,10 +2,8 @@
 using Automobilka.Responsivity;
 using Automobilka.Simulations;
 using System;
-using System.Linq;
 using System.Windows.Forms;
 using System.ComponentModel;
-using System.Threading;
 using Automobilka.SimulationObjects;
 using Automobilka.GUI;
 using Automobilka.Vehicles;
@@ -30,7 +28,15 @@ namespace Automobilka
         SimulationVariantB simulationB;
         SimulationVariantC simulationC;
 
+        private Series series1;
+
         bool isChecked;
+
+        private Vehicle carA;
+        private Vehicle carB;
+        private Vehicle carC;
+        private Vehicle carD;
+        private Vehicle carE;
 
         private void textBox2_Click(object sender, EventArgs e)
         {
@@ -92,7 +98,7 @@ namespace Automobilka
             isChecked = false;
             chart1.Series[0].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             chart1.Series.Clear();
-            var series1 = new System.Windows.Forms.DataVisualization.Charting.Series
+            series1 = new System.Windows.Forms.DataVisualization.Charting.Series
             {
                 Name = "Replications",
                 Color = System.Drawing.Color.Green,
@@ -102,16 +108,18 @@ namespace Automobilka
             };
 
             this.chart1.Series.Add(series1);
+
+            //chart1.ChartAreas[0].AxisY.ScaleView.Zoom(posYStart, posYFinish);
+            /*
+            for(int i = 0; i < 100; i++)
+            {
+                series1.Points.AddXY(i, i);
+            }
+            */
         }
 
         private void initializeSimulationInstances()
         {
-            Vehicle carA = new CarA(seedGenerator);
-            Vehicle carB = new CarB(seedGenerator);
-            Vehicle carC = new CarC(seedGenerator);
-            Vehicle carD = new CarD(seedGenerator);
-            Vehicle carE = new CarE(seedGenerator);
-
             simulationA = new SimulationVariantA(maxTime, replications, backgroundWorker1, seedGenerator);
             simulationA.initCars(carA, carB, carC, carD);
             Event initialEventA = new EventVehiclesInit(simulationA, 0, simulationA.getCarsInitial());
@@ -140,17 +148,35 @@ namespace Automobilka
                 simulationC.isVisualized = isChecked;
             }
         }
-
+        // run button
         private void button1_Click(object sender, EventArgs e)
         {
+            
             // the simulation background thread can start, if we don't have any errors
             if (!backgroundWorker1.IsBusy && isReadyToSimulate())
             {
+                seedGenerator = (seed != 0) ? new Random() : new Random(seed);
+
+                carA = new CarA(seedGenerator);
+                carB = new CarB(seedGenerator);
+                carC = new CarC(seedGenerator);
+                carD = new CarD(seedGenerator);
+                carE = new CarE(seedGenerator);
+
                 button2.Enabled = true;
                 button3.Enabled = true;
-                Console.WriteLine("Replications " + replications);
+                if (!isChecked)
+                {
+                    // nebude mozne posuvas simulaciu ak nie je zapnuta vizualizacia
+                    trackBar1.Enabled = false;
+                } else
+                {
+                    trackBar1.Enabled = true;
+                }
+                //Console.WriteLine("Replications " + replications);
                 initializeSimulationInstances();
                 trackBar1_Scroll(this, e);
+                button1.Enabled = false;
                 backgroundWorker1.RunWorkerAsync();
 
                 foreach (var series in chart1.Series)
@@ -160,11 +186,26 @@ namespace Automobilka
             }
         }
 
+        // stop button
         private void button3_Click(object sender, EventArgs e)
         {
             backgroundWorker1.CancelAsync();
+            Graphics.repaintClearStop(this);
+            button1.Enabled = true;
+            restartSimulations();
+        }
+        // po zruseni simulacie tlacidlom Stop sa resetuju vsetky nastavenia simulacie
+        private void restartSimulations()
+        {
+            simulationA.prePreSetup();
+            simulationA.preSetup();
+            simulationB.prePreSetup();
+            simulationB.preSetup();
+            simulationC.prePreSetup();
+            simulationC.preSetup();
         }
 
+        // pause button
         private void button2_Click(object sender, EventArgs e)
         {
             if (!paused)
@@ -233,21 +274,42 @@ namespace Automobilka
                 simulationC.backgroundProcess();
             }
         }
+<<<<<<< HEAD
+        int replication = 0;
+        public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+=======
 
         public void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+<<<<<<< HEAD
             // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
+=======
+           
+>>>>>>> refs/remotes/origin/master
+            // instancia beziacej simulacie bude updatovat GUIcko, napriklad aj progressBar
+            progressBar1.Value = e.ProgressPercentage;
+            
+>>>>>>> NewBranch
             lock (Constants.gate)
             {
                 lock (Constants.gateF)
                 {
                     if (variant == 1)
                     {
+<<<<<<< HEAD
                         replicationsDone = simulationA.retIterator;
                         if (checkBox1.Checked)
+=======
+                        Graphics.repaint(simulationA, this, isChecked);
+                        if(simulationA.getActualReplication() > replication && (simulationA.getActualReplication()%30==0))
+>>>>>>> NewBranch
                         {
-                            Graphics.repaint(simulationA, this);
+                            this.chart1.ChartAreas[0].AxisY.ScaleView.Zoom(simulationA.getStats().getMinAvgSimTime(), simulationA.getStats().getMaxAvgSimTime());
+                            Graphics.repaintGraph(simulationA, this, series1);
+                            replication = simulationA.getActualReplication();
                         }
+<<<<<<< HEAD
                         if (lastRepaintReplication != replicationsDone)
                         {
                             showStats(simulationA.getStats());
@@ -288,6 +350,16 @@ namespace Automobilka
                                  updateChart(simulationC);
                             }
                         }
+=======
+                    }
+                    else if (variant == 2)
+                    {
+                        Graphics.repaint(simulationB, this, isChecked);
+                    }
+                    else if (variant == 3)
+                    {
+                        Graphics.repaint(simulationC, this, isChecked);
+>>>>>>> NewBranch
                     }
                     lastRepaintReplication = replicationsDone;
                 }
@@ -321,9 +393,10 @@ namespace Automobilka
             {
                 stats = simulationC.getStats();
             }
-            //Graphics.repaintClear(this);
+            Graphics.repaintClear(this);
             showStats(stats);
             showIS(stats);
+            button1.Enabled = true;
         }
 
         public void showStats(Statistics stats)
@@ -333,16 +406,38 @@ namespace Automobilka
             label4.Text = "Building: " + stats.getStatsMeanUnloadQueueLength();
             label5.Text = "Depo: " + stats.getStatsMeanLoadQueueTime();
             label6.Text = "Building: " + stats.getStatsMeanUnloadQueueTime();
+<<<<<<< HEAD
             label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime() / 60;
             label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime() / 60;
         }
+=======
+<<<<<<< HEAD
+            label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime() / 60;
+            label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime() / 60;
+=======
+            label7.Text = "Depo: " + stats.getStatsSumMeanLoadQueueTime()/60;
+            label8.Text = "Building: " + stats.getStatsSumMeanUnloadQueueTime()/60;
+
+>>>>>>> refs/remotes/origin/master
+       }
+>>>>>>> NewBranch
 
         public void showIS(Statistics stats)
         {
             double[] _IS = stats.confidenceIntervalSimulationTime(0.9);
             label18.Text = "Interval: <" + (_IS[0] / 60).ToString("#.000") + ", " + (_IS[1] / 60).ToString("#.000") + ">";
+<<<<<<< HEAD
             double[] _is = stats.confidenceIntervalSimulationTime(0.9);
             label18.Text = "Interval: <" + (_is[0] / 60).ToString("#.000") + ", " + (_is[1] / 60).ToString("#.000") + ">";
+=======
+<<<<<<< HEAD
+            double[] _is = stats.confidenceIntervalSimulationTime(0.9);
+            label18.Text = "Interval: <" + (_is[0] / 60).ToString("#.000") + ", " + (_is[1] / 60).ToString("#.000") + ">";
+=======
+            double [] _is = stats.confidenceIntervalSimulationTime(0.9);
+            label18.Text = "Interval: <" + (_is[0]/60).ToString("#.000") + ", " + (_is[1]/60).ToString("#.000") + ">";
+>>>>>>> refs/remotes/origin/master
+>>>>>>> NewBranch
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -409,6 +504,26 @@ namespace Automobilka
             catch (NullReferenceException)
             {
             }
+        }
+
+        private static double minSimTime = 0;
+        private static double simTimeCumulative = 0, maxSimTime = 0;
+        private static int iterator = 0;
+
+        private static void updateChart(SimulationCore simulation, Form1 form)
+        {
+            double simTime = simulation.getStats().getStatsMeanSimulationTime();
+            double time = simulation.getSimTime();
+            iterator = simulation.getActualReplication();
+            simTimeCumulative += time;
+            maxSimTime = simTime > maxSimTime ? simTime : maxSimTime;
+            minSimTime = simTime < minSimTime ? simTime : minSimTime;
+
+            form.chart1.ChartAreas[0].AxisX.ScaleView.Zoom(0, simTimeCumulative);
+            form.chart1.ChartAreas[0].AxisY.ScaleView.Zoom(minSimTime, maxSimTime);
+
+            form.chart1.Series[0].Points.AddXY(iterator, simTime / 60);
+            form.chart1.Series[0].Points.AddXY(iterator, simTime / 60);
         }
     }
 }

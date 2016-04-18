@@ -21,6 +21,8 @@ namespace Automobilka.SimulationObjects
         private double timeOfWaitingOnDepo;
         private double simulationTimeCumulative;
         private double simulationTimePower;
+        private double minAvgSimTime;
+        private double maxAvgSimTime;
 
         private double meanWaitingOnDepo;
         private double meanWaitingOnBuilding;
@@ -33,6 +35,8 @@ namespace Automobilka.SimulationObjects
             unloadSize = 0;
             timeOfWaitingOnBuilding = 0;
             timeOfWaitingOnDepo = 0;
+            minAvgSimTime = 99999;
+            maxAvgSimTime = -1;
         }
 
         public void addVehicleToStats(Vehicle car)
@@ -68,6 +72,9 @@ namespace Automobilka.SimulationObjects
             }
 
             iterator++;
+            double t = simulationTimeCumulative / iterator;
+            minAvgSimTime = t < minAvgSimTime ? t : minAvgSimTime;
+            maxAvgSimTime = t > maxAvgSimTime ? t : maxAvgSimTime;
         }
         public double getStatsMeanSimulationTime()
         {
@@ -105,26 +112,42 @@ namespace Automobilka.SimulationObjects
 
         public double[] confidenceIntervalSimulationTime(double confidence)
         {
-            confidence = 1 - ((1 - confidence) / 2);
-            double[] interval = new double[2];
-            double avg = simulationTimeCumulative / iterator;
-            double standardDeviation = Math.Sqrt((simulationTimePower / iterator) - Math.Pow(avg, 2));
+            try {
+                confidence = 1 - ((1 - confidence) / 2);
+                double[] interval = new double[2];
+                double avg = simulationTimeCumulative / iterator;
+                double standardDeviation = Math.Sqrt((simulationTimePower / iterator) - Math.Pow(avg, 2));
 
-            double value = 0;
+                double value = 0;
 
-            if (iterator < 30)
+                if (iterator < 30)
+                {
+                    value = StudentT.InvCDF(0.0, 1.0, iterator, confidence);
+                }
+                else
+                {
+                    value = Normal.InvCDF(0, 1, confidence);
+                }
+
+                interval[0] = avg - (value * standardDeviation / Math.Sqrt((iterator - 1)));
+                interval[1] = avg + (value * standardDeviation / Math.Sqrt((iterator - 1)));
+
+                return interval;
+            } catch(ArgumentException ex)
             {
-                value = StudentT.InvCDF(0.0, 1.0, iterator, confidence);
+                Console.WriteLine("Nestiham ratat intervaly ;)" + ex.StackTrace);
             }
-            else
-            {
-                value = Normal.InvCDF(0, 1, confidence);
-            }
+            return new double[2];
+        }
 
-            interval[0] = avg - (value * standardDeviation / Math.Sqrt((iterator - 1)));
-            interval[1] = avg + (value * standardDeviation / Math.Sqrt((iterator - 1)));
+        public double getMinAvgSimTime()
+        {
+            return minAvgSimTime/60;
+        }
 
-            return interval;
+        public double getMaxAvgSimTime()
+        {
+            return maxAvgSimTime/60;
         }
     }
 }

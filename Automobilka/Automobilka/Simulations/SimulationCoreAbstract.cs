@@ -17,6 +17,7 @@ namespace Automobilka.Simulations
         protected double timeActual;
         protected double maxTime;
         protected int speed;
+<<<<<<< HEAD
         protected int repeateTime = 1;
         private int iterator = 0;
         public int retIterator
@@ -26,6 +27,9 @@ namespace Automobilka.Simulations
                 return iterator;
             }
         }
+=======
+        private int iterator;
+>>>>>>> NewBranch
         public int numberOfEvents { get; set; }
         public bool isVisualized { get; set; }
         public bool isRefreshed { get; set; }
@@ -136,7 +140,11 @@ namespace Automobilka.Simulations
             // prida ho na koniec
             eventCalendar.Add(evt);
             // to do orderovanie
+<<<<<<< HEAD
             //eventCalendar.Sort((x, y) => x.Time().CompareTo(y.Time()));
+=======
+            eventCalendar.Sort((x, y) => x.Time().CompareTo(y.Time()));
+>>>>>>> NewBranch
 
             List<Event> sortedList = new List<Event>();
             sortedList = eventCalendar.OrderBy(x => x.timeExecution).ThenBy(x => x.eventNumber).ToList();
@@ -159,16 +167,23 @@ namespace Automobilka.Simulations
             return true;
         }
 
+<<<<<<< HEAD
         public void setSpeed(int scrolledValue)
         {
             Console.WriteLine("scrolledValue: " + scrolledValue);
             /*if(scrolledValue != 10)
+=======
+        public void setSpeed(int scrolledValue) {
+            Console.WriteLine("scrolledValue: " + scrolledValue);
+            if(scrolledValue != 10)
+>>>>>>> NewBranch
             {
                 this.speed = (10 - scrolledValue) * 100;
             }
             else
             {
                 this.speed = 10;
+<<<<<<< HEAD
             }*/
             this.speed = scrolledValue;
             Console.WriteLine("speed: " + speed);
@@ -177,6 +192,10 @@ namespace Automobilka.Simulations
         public int getSpeed()
         {
             return speed;
+=======
+            }
+            Console.WriteLine("speed: " + speed);
+>>>>>>> NewBranch
         }
 
         public int getRepeatTime()
