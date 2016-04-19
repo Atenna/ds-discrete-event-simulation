@@ -26,6 +26,11 @@ namespace Automobilka
         private int lastRepaintReplication;
         private double cutRate = 0.3;
 
+        private double maxSimTime = 0;
+        private double minSimTime = Double.MaxValue;
+        private int lastUpdated;
+        private int graphJumpRate = 1000;
+
         SimulationVariantA simulationA;
         SimulationVariantB simulationB;
         SimulationVariantC simulationC;
@@ -157,6 +162,9 @@ namespace Automobilka
                 {
                     series.Points.Clear();
                 }
+                maxSimTime = 0;
+                minSimTime = Double.MaxValue;
+                lastUpdated = 0;
             }
         }
 
@@ -251,8 +259,9 @@ namespace Automobilka
                         if (lastRepaintReplication != replicationsDone)
                         {
                             showStats(simulationA.getStats());
-                            if (replicationsDone > replications * cutRate)      //replicationsDone % 30 == 0 && 
+                            if (replicationsDone > replications * cutRate && lastUpdated + replications / graphJumpRate < replicationsDone)
                             {
+                                lastUpdated = replicationsDone;
                                 updateChart(simulationA);
                             }
                         }
@@ -267,8 +276,9 @@ namespace Automobilka
                         if (lastRepaintReplication != replicationsDone)
                         {
                             showStats(simulationB.getStats());
-                            if (replicationsDone > replications * cutRate)
+                            if (replicationsDone > replications * cutRate && lastUpdated + replications / graphJumpRate < replicationsDone)
                             {
+                                lastUpdated = replicationsDone;
                                 updateChart(simulationB);
                             }
                         }
@@ -283,8 +293,9 @@ namespace Automobilka
                         if (lastRepaintReplication != replicationsDone)
                         {
                             showStats(simulationC.getStats());
-                            if (replicationsDone > replications * cutRate)
+                            if (replicationsDone > replications * cutRate && lastUpdated + replications / graphJumpRate < replicationsDone)
                             {
+                                lastUpdated = replicationsDone;
                                 updateChart(simulationC);
                             }
                         }
@@ -389,8 +400,6 @@ namespace Automobilka
             }
         }
 
-        double maxSimTime = 0;
-        double minSimTime = Double.MaxValue;
 
         private void updateChart(SimulationCore simulation)
         {
