@@ -1,59 +1,55 @@
 ﻿using Automobilka.Readonly;
 using Automobilka.Vehicles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Automobilka.Simulations;
 
 namespace Automobilka
 {
     class EventLoadFinish : Event
     {
-        private SimulationCore core;
-        private double time;
-        private Vehicle car;
-        private int lengthOfWay; // dlzka cesty z A do B v km
+        private SimulationCore _core;
+        private double _time;
+        private Vehicle _car;
+        private int _lengthOfWay; // dlzka cesty z A do B v km
 
-        public EventLoadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
+        public EventLoadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.NumberOfEvents)
         {
-            this.core = actualSimulation;
-            this.time = scheduledTime;
-            this.car = car;
-            this.lengthOfWay = Constants.ABLength;
-            actualSimulation.numberOfEvents++;
+            this._core = actualSimulation;
+            this._time = scheduledTime;
+            this._car = car;
+            this._lengthOfWay = Constants.AbLength;
+            actualSimulation.NumberOfEvents++;
         }
-        public override void execute()
+        public override void Execute()
         {
-            this.core.carAtLoader = null;
-            double expectedTime = (lengthOfWay / (double)(car.getSpeed() / 60.0)) + time; // ocakavany cas - kolko by autu trava cesta
+            this._core.CarAtLoader = null;
+            double expectedTime = (_lengthOfWay / (double)(_car.GetSpeed() / 60.0)) + _time; // ocakavany cas - kolko by autu trava cesta
 
-            core.timeLoadingStart = 0.0;
-            core.materialToLoad = 0.0;
+            _core.TimeLoadingStart = 0.0;
+            _core.MaterialToLoad = 0.0;
 
-            expectedTime = core.wayAB.realTime(expectedTime);
-            Event arrivalB = new EventArrivalToB(core, expectedTime, car);
-            core.updateEventCalendar(arrivalB);
+            expectedTime = _core.WayAb.RealTime(expectedTime);
+            Event arrivalB = new EventArrivalToB(_core, expectedTime, _car);
+            _core.UpdateEventCalendar(arrivalB);
 
-            if (core.materialA <= 0)
+            if (_core.MaterialA <= 0)
             {
                 return;
             }
 
-            lock (Constants.gateF)
+            lock (Constants.GateF)
             {
-                this.core.getCarsAB().Add(car);
+                this._core.GetCarsAb().Add(_car);
             }
 
-            Vehicle carInFront = core.getFirstBeforeDepo();
+            Vehicle carInFront = _core.GetFirstBeforeDepo();
             if (carInFront != null)
             {
-                Event loadStart = new EventLoadStart(core, time, carInFront);
-                core.updateEventCalendar(loadStart);
+                Event loadStart = new EventLoadStart(_core, _time, carInFront);
+                _core.UpdateEventCalendar(loadStart);
             }
             else
             {
-                core.loadMachineWorking = false;
+                _core.LoadMachineWorking = false;
             }
         }
     }

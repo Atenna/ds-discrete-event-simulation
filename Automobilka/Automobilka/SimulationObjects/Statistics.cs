@@ -1,128 +1,124 @@
 ﻿using Automobilka.Vehicles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MathNet.Numerics.Statistics;
 using MathNet.Numerics.Distributions;
 
 namespace Automobilka.SimulationObjects
 {
     public class Statistics
     {
-        private List<Vehicle> cars;
-        private Queue load;
-        private Queue unload;
-        private int iterator;
-        private double loadSize; // kumulativne sa tam bude ukladat priemerna dlzka radu 
-        private double unloadSize;
-        private double timeOfWaitingOnBuilding;
-        private double timeOfWaitingOnDepo;
-        private double simulationTimeCumulative;
-        private double simulationTimePower;
+        private List<Vehicle> _cars;
+        private Queue _load;
+        private Queue _unload;
+        private int _iterator;
+        private double _loadSize; // kumulativne sa tam bude ukladat priemerna dlzka radu 
+        private double _unloadSize;
+        private double _timeOfWaitingOnBuilding;
+        private double _timeOfWaitingOnDepo;
+        private double _simulationTimeCumulative;
+        private double _simulationTimePower;
 
-        private double meanWaitingOnDepo;
-        private double meanWaitingOnBuilding;
+        private double _meanWaitingOnDepo;
+        private double _meanWaitingOnBuilding;
 
         public Statistics()
         {
-            cars = new List<Vehicle>();
-            iterator = 0;
-            loadSize = 0;
-            unloadSize = 0;
-            timeOfWaitingOnBuilding = 0;
-            timeOfWaitingOnDepo = 0;
+            _cars = new List<Vehicle>();
+            _iterator = 0;
+            _loadSize = 0;
+            _unloadSize = 0;
+            _timeOfWaitingOnBuilding = 0;
+            _timeOfWaitingOnDepo = 0;
         }
 
-        public void addVehicleToStats(Vehicle car)
+        public void AddVehicleToStats(Vehicle car)
         {
-            cars.Add(car);
+            _cars.Add(car);
         }
 
-        public void setLoad(Queue load)
+        public void SetLoad(Queue load)
         {
-            this.load = load;
+            this._load = load;
         }
 
-        public void setUnload(Queue unload)
+        public void SetUnload(Queue unload)
         {
-            this.unload = unload;
+            this._unload = unload;
         }
 
-        public void updateStatistics(double simulationTime)
+        public void UpdateStatistics(double simulationTime)
         {
-            simulationTimeCumulative += simulationTime;
-            simulationTimePower += Math.Pow(simulationTime, 2);
+            _simulationTimeCumulative += simulationTime;
+            _simulationTimePower += Math.Pow(simulationTime, 2);
 
-            loadSize += load.getMeanQueueLength(simulationTime);
-            unloadSize += unload.getMeanQueueLength(simulationTime);
+            _loadSize += _load.GetMeanQueueLength(simulationTime);
+            _unloadSize += _unload.GetMeanQueueLength(simulationTime);
 
-            foreach (Vehicle v in cars)
+            foreach (Vehicle v in _cars)
             {
-                timeOfWaitingOnBuilding += v.getWaitingOnBuilding();
-                timeOfWaitingOnDepo += v.getWaitingOnDepo();
+                _timeOfWaitingOnBuilding += v.GetWaitingOnBuilding();
+                _timeOfWaitingOnDepo += v.GetWaitingOnDepo();
 
-                meanWaitingOnDepo += v.getMeanWaitingOnDepo();
-                meanWaitingOnBuilding += v.getMeanWaitingOnBuilding();
+                _meanWaitingOnDepo += v.GetMeanWaitingOnDepo();
+                _meanWaitingOnBuilding += v.GetMeanWaitingOnBuilding();
             }
 
-            iterator++;
+            _iterator++;
         }
-        public double getStatsMeanSimulationTime()
+        public double GetStatsMeanSimulationTime()
         {
-            return simulationTimeCumulative / iterator;
+            return _simulationTimeCumulative / _iterator;
         }
-        public double getStatsMeanLoadQueueLength()
+        public double GetStatsMeanLoadQueueLength()
         {
-            return loadSize / iterator;
+            return _loadSize / _iterator;
         }
-        public double getStatsMeanUnloadQueueLength()
+        public double GetStatsMeanUnloadQueueLength()
         {
-            return unloadSize / iterator;
+            return _unloadSize / _iterator;
         }
         // statistika pre vsetky auta - priemerna dlza cakania pred nakladacom
-        public double getStatsSumMeanLoadQueueTime()
+        public double GetStatsSumMeanLoadQueueTime()
         {
             // asi nebude fungovat hned
-            return (timeOfWaitingOnDepo / iterator);
+            return (_timeOfWaitingOnDepo / _iterator);
         }
         // statistika pre jedno auto - priemerna dlzka cakania pred nakladacom
-        public double getStatsMeanLoadQueueTime()
+        public double GetStatsMeanLoadQueueTime()
         {
-            return (meanWaitingOnDepo / iterator) / cars.Count;
+            return (_meanWaitingOnDepo / _iterator) / _cars.Count;
         }
         // statistika pre vsetky auta - priemerna dlzka cakania pred vykladacom
-        public double getStatsSumMeanUnloadQueueTime()
+        public double GetStatsSumMeanUnloadQueueTime()
         {
-            return (timeOfWaitingOnBuilding / iterator);
+            return (_timeOfWaitingOnBuilding / _iterator);
         }
 
-        public double getStatsMeanUnloadQueueTime()
+        public double GetStatsMeanUnloadQueueTime()
         {
-            return (meanWaitingOnBuilding / iterator) / cars.Count;
+            return (_meanWaitingOnBuilding / _iterator) / _cars.Count;
         }
 
-        public double[] confidenceIntervalSimulationTime(double confidence)
+        public double[] ConfidenceIntervalSimulationTime(double confidence)
         {
             confidence = 1 - ((1 - confidence) / 2);
             double[] interval = new double[2];
-            double avg = simulationTimeCumulative / iterator;
-            double standardDeviation = Math.Sqrt((simulationTimePower / iterator) - Math.Pow(avg, 2));
+            double avg = _simulationTimeCumulative / _iterator;
+            double standardDeviation = Math.Sqrt((_simulationTimePower / _iterator) - Math.Pow(avg, 2));
 
             double value = 0;
 
-            if (iterator < 30)
+            if (_iterator < 30)
             {
-                value = StudentT.InvCDF(0.0, 1.0, iterator, confidence);
+                value = StudentT.InvCDF(0.0, 1.0, _iterator, confidence);
             }
             else
             {
                 value = Normal.InvCDF(0, 1, confidence);
             }
 
-            interval[0] = avg - (value * standardDeviation / Math.Sqrt((iterator - 1)));
-            interval[1] = avg + (value * standardDeviation / Math.Sqrt((iterator - 1)));
+            interval[0] = avg - (value * standardDeviation / Math.Sqrt((_iterator - 1)));
+            interval[1] = avg + (value * standardDeviation / Math.Sqrt((_iterator - 1)));
 
             return interval;
         }

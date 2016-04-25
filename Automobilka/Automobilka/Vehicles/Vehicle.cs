@@ -1,117 +1,113 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Automobilka.Vehicles
 {
     public class Vehicle
     {
-        private Random failureGenerator;
-        public string name { get; set; }
-        public int volume { get; set; }
-        public double realVolume { get; set; }
-        public int speed { get; set; }
-        private double probabilityOfCrash;
-        private int timeOfRepair;
+        private Random _failureGenerator;
+        public string Name { get; set; }
+        public int Volume { get; set; }
+        public double RealVolume { get; set; }
+        public int Speed { get; set; }
+        private double _probabilityOfCrash;
+        private int _timeOfRepair;
 
-        private double timeOfWaitingOnDepo = 0;
-        private double timeOfWaitingOnBuilding = 0;
-        private double startOfWaiting = 0;
+        private double _timeOfWaitingOnDepo = 0;
+        private double _timeOfWaitingOnBuilding = 0;
+        private double _startOfWaiting = 0;
 
-        private double numberOfWaitingOnDepo = 0;
-        private double numberOfWaitingOnBuilding = 0;
+        private double _numberOfWaitingOnDepo = 0;
+        private double _numberOfWaitingOnBuilding = 0;
 
         public Vehicle(string name, int pVolume, int pSpeed, double pProbability, int pTime, Random generator)
         {
-            this.name = name;
-            this.volume = pVolume;
-            this.speed = pSpeed;
-            this.probabilityOfCrash = pProbability;
-            this.timeOfRepair = pTime;
-            this.failureGenerator = generator;
-            this.realVolume = 0;
+            this.Name = name;
+            this.Volume = pVolume;
+            this.Speed = pSpeed;
+            this._probabilityOfCrash = pProbability;
+            this._timeOfRepair = pTime;
+            this._failureGenerator = generator;
+            this.RealVolume = 0;
         }
 
-        public int getVolume()
+        public int GetVolume()
         {
-            return volume;
+            return Volume;
         }
 
-        public int getSpeed()
+        public int GetSpeed()
         {
-            return speed;
+            return Speed;
         }
 
-        public double getProbabilityOfCrash()
+        public double GetProbabilityOfCrash()
         {
-            return probabilityOfCrash;
+            return _probabilityOfCrash;
         }
 
-        public int getTimeOfRepair()
+        public int GetTimeOfRepair()
         {
-            return timeOfRepair;
+            return _timeOfRepair;
         }
 
-        public void setStartOfWaiting(double time)
+        public void SetStartOfWaiting(double time)
         {
-            this.startOfWaiting = time;
+            this._startOfWaiting = time;
         }
 
-        public void setEndOfWaitingOnDepo(double time)
+        public void SetEndOfWaitingOnDepo(double time)
         {
-            this.timeOfWaitingOnDepo += (time - startOfWaiting);
+            this._timeOfWaitingOnDepo += (time - _startOfWaiting);
             // kedze premenna sa pouzije este pri cakani pred uzlom B, treba vynulovat
-            this.startOfWaiting = 0;
-            numberOfWaitingOnDepo++;
+            this._startOfWaiting = 0;
+            _numberOfWaitingOnDepo++;
         }
 
-        public double getWaitingOnDepo()
+        public double GetWaitingOnDepo()
         {
-            return timeOfWaitingOnDepo;
+            return _timeOfWaitingOnDepo;
         }
-        public double getWaitingOnBuilding()
+        public double GetWaitingOnBuilding()
         {
-            return timeOfWaitingOnBuilding;
+            return _timeOfWaitingOnBuilding;
         }
-        public double getMeanWaitingOnDepo()
+        public double GetMeanWaitingOnDepo()
         {
-            return timeOfWaitingOnDepo / numberOfWaitingOnDepo;
+            return _timeOfWaitingOnDepo / _numberOfWaitingOnDepo;
         }
-        public double getMeanWaitingOnBuilding()
+        public double GetMeanWaitingOnBuilding()
         {
-            return timeOfWaitingOnBuilding / numberOfWaitingOnBuilding;
+            return _timeOfWaitingOnBuilding / _numberOfWaitingOnBuilding;
         }
 
-        public void setEndOfWaitingOnBuilding(double time)
+        public void SetEndOfWaitingOnBuilding(double time)
         {
-            this.timeOfWaitingOnBuilding += (time - startOfWaiting);
-            this.startOfWaiting = 0;
-            numberOfWaitingOnBuilding++;
+            this._timeOfWaitingOnBuilding += (time - _startOfWaiting);
+            this._startOfWaiting = 0;
+            _numberOfWaitingOnBuilding++;
         }
 
         // vrati true ak sa auto pokazi
-        public bool hasFailed()
+        public bool HasFailed()
         {
-            double failed = failureGenerator.NextDouble();
+            double failed = _failureGenerator.NextDouble();
 
-            return failed < probabilityOfCrash;
+            return failed < _probabilityOfCrash;
         }
 
-        public void resetAttributes(Random failureGeneratorReinit)
+        public void ResetAttributes(Random failureGeneratorReinit)
         {
-            timeOfWaitingOnDepo = 0;
-            timeOfWaitingOnBuilding = 0;
-            startOfWaiting = 0;
-            numberOfWaitingOnBuilding = 0;
-            numberOfWaitingOnDepo = 0;
-            failureGenerator = failureGeneratorReinit;
+            _timeOfWaitingOnDepo = 0;
+            _timeOfWaitingOnBuilding = 0;
+            _startOfWaiting = 0;
+            _numberOfWaitingOnBuilding = 0;
+            _numberOfWaitingOnDepo = 0;
+            _failureGenerator = failureGeneratorReinit;
         }
 
         public string toString()
         {
-            return name + ": [" + realVolume + "/" + volume + "], " + speed + " ";
+            return Name + ": [" + RealVolume + "/" + Volume + "], " + Speed + " ";
         }
     }
 }

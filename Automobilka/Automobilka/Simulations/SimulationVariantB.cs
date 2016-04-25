@@ -1,53 +1,49 @@
 ﻿using System;
 using Automobilka.Vehicles;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 
 namespace Automobilka.Simulations
 {
     class SimulationVariantB : SimulationCore
     {
-        private Vehicle[] cars;
-        public bool paused { get; set; }
+        private Vehicle[] _cars;
+        public bool Paused { get; set; }
         public SimulationVariantB(double maxTime, int replications, BackgroundWorker worker, Random seedGeneratorInit) : base(maxTime, replications, worker, seedGeneratorInit)
         {
-            cars = new Vehicle[3];
-            paused = false;
+            _cars = new Vehicle[3];
+            Paused = false;
         }
-        public void initCars(Vehicle car1, Vehicle car2, Vehicle car3)
+        public void InitCars(Vehicle car1, Vehicle car2, Vehicle car3)
         {
-            cars[0] = car1;
-            cars[1] = car2;
-            cars[2] = car3;
+            _cars[0] = car1;
+            _cars[1] = car2;
+            _cars[2] = car3;
         }
 
-        public override void resetCars()
+        public override void ResetCars()
         {
-            foreach (Vehicle car in cars)
+            foreach (Vehicle car in _cars)
             {
-                car.resetAttributes(new Random(seedGenerator.Next()));
+                car.ResetAttributes(new Random(SeedGenerator.Next()));
             }
         }
 
-        public override void addCars()
+        public override void AddCars()
         {
-            foreach (Vehicle v in cars)
+            foreach (Vehicle v in _cars)
             {
-                cruelStats.addVehicleToStats(v);
+                CruelStats.AddVehicleToStats(v);
             }
         }
 
-        public Vehicle[] getCarsInitial()
+        public Vehicle[] GetCarsInitial()
         {
-            return cars;
+            return _cars;
         }
 
-        public override bool condition()
+        public override bool Condition()
         {
-            return !worker.CancellationPending && !paused;
+            return !Worker.CancellationPending && !Paused;
         }
     }
 }

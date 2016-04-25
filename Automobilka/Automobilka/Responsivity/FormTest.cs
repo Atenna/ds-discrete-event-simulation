@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Forms;
-using System.Threading;
 
 namespace Automobilka.Responsivity
 {
@@ -28,7 +27,7 @@ namespace Automobilka.Responsivity
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             ClassTest test = new ClassTest(backgroundWorker1);
-            test.calculate();
+            test.Calculate();
             if(backgroundWorker1.CancellationPending)
             {
                 e.Cancel = true;

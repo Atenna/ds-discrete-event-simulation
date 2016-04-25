@@ -1,32 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Automobilka.Simulations;
 
 namespace Automobilka
 {
     public abstract class Event
     {
 
-        public double timeExecution { get; set; }
-        public int eventNumber;
-        protected SimulationCore mySimulation { get; set; }
+        public double TimeExecution { get; set; }
+        public int EventNumber;
+        protected SimulationCore MySimulation { get; set; }
 
 
         // plus do parametrov Vehicle 
         public Event(SimulationCore actualSimulationCore, double scheduledTime, int order)
         {
-            this.mySimulation = actualSimulationCore;
-            this.timeExecution = scheduledTime;
-            this.eventNumber = order;
+            this.MySimulation = actualSimulationCore;
+            this.TimeExecution = scheduledTime;
+            this.EventNumber = order;
         }
 
         public double Time()
         {
-            return timeExecution;
+            return TimeExecution;
         }
 
-        public abstract void execute();
+        public abstract void Execute();
     }
 }

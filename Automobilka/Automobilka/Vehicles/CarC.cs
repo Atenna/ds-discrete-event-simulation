@@ -6,7 +6,7 @@ namespace Automobilka.Vehicles
     class CarC : Vehicle
     {
         public CarC(Random generator) : 
-            base("C",Constants.volumeOfVehicleC, Constants.speedOfVehicleC, Constants.probabilityOfCrashOfVehicleC, Constants.timeOfRepairOfVehicleC, generator)
+            base("C",Constants.VolumeOfVehicleC, Constants.SpeedOfVehicleC, Constants.ProbabilityOfCrashOfVehicleC, Constants.TimeOfRepairOfVehicleC, generator)
         {
 
         }

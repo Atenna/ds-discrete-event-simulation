@@ -1,84 +1,80 @@
-﻿using Automobilka.Readonly;
-using Automobilka.SimulationObjects;
-using Automobilka.Simulations;
-using Automobilka.Vehicles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using Automobilka.Events;
+using Automobilka.Readonly;
+using Automobilka.SimulationObjects;
+using Automobilka.Vehicles;
 
-namespace Automobilka
+namespace Automobilka.Simulations
 {
     public class SimulationCore : SimulationCoreAbstract
     {
-        protected Random seedGenerator;
+        protected Random SeedGenerator;
 
-        private Queue carsBeforeDepo; //auta pred skladkou
-        private Queue carsBeforeBuilding; // auta pred stavbou
-        public Vehicle carAtLoader { set; get; }
-        public Vehicle carAtUnloader { get; set; }
+        private Queue _carsBeforeDepo; //auta pred skladkou
+        private Queue _carsBeforeBuilding; // auta pred stavbou
+        public Vehicle CarAtLoader { set; get; }
+        public Vehicle CarAtUnloader { get; set; }
 
-        public double timeLoadingStart { get; set; }
-        public double timeUnloadingStart { get; set; }
-        public double materialToLoad { get; set; }
-        public double materialToUnload { get; set; }
+        public double TimeLoadingStart { get; set; }
+        public double TimeUnloadingStart { get; set; }
+        public double MaterialToLoad { get; set; }
+        public double MaterialToUnload { get; set; }
 
-        private List<Vehicle> carsAB;
-        private List<Vehicle> carsBC;
-        private List<Vehicle> carsCA;
+        private List<Vehicle> _carsAb;
+        private List<Vehicle> _carsBc;
+        private List<Vehicle> _carsCa;
 
-        public double materialA { get; set; }
-        public double materialB { get; set; }
+        public double MaterialA { get; set; }
+        public double MaterialB { get; set; }
 
-        private double[] _IS;
+        private double[] _is;
 
-        public NarrowWay wayAB { get; set; }
-        public NarrowWay wayCA { get; set; }
+        public NarrowWay WayAb { get; set; }
+        public NarrowWay WayCa { get; set; }
 
-        protected Statistics cruelStats;
+        protected Statistics CruelStats;
 
-        public bool loadMachineWorking { get; set; }
-        public bool unloadMachineWorking { get; set; }
+        public bool LoadMachineWorking { get; set; }
+        public bool UnloadMachineWorking { get; set; }
 
         public SimulationCore(double maxTime, int replications, BackgroundWorker worker, Random seedGeneratorInit) : base(maxTime, replications, worker)
         {
-            unloadMachineWorking = false;
-            loadMachineWorking = false;
-            carsBeforeBuilding = new Queue();
-            carsBeforeDepo = new Queue();
-            seedGenerator = seedGeneratorInit;
-            carsAB = new List<Vehicle>();
-            carsBC = new List<Vehicle>();
-            carsCA = new List<Vehicle>();
+            UnloadMachineWorking = false;
+            LoadMachineWorking = false;
+            _carsBeforeBuilding = new Queue();
+            _carsBeforeDepo = new Queue();
+            SeedGenerator = seedGeneratorInit;
+            _carsAb = new List<Vehicle>();
+            _carsBc = new List<Vehicle>();
+            _carsCa = new List<Vehicle>();
         }
 
         // vytvori novu statistiku a priradi nove fronty
-        public override void prePreSetup()
+        public override void PrePreSetup()
         {
-            cruelStats = new Statistics();
-            cruelStats.setLoad(carsBeforeDepo);
-            cruelStats.setUnload(carsBeforeBuilding);
+            CruelStats = new Statistics();
+            CruelStats.SetLoad(_carsBeforeDepo);
+            CruelStats.SetUnload(_carsBeforeBuilding);
 
-            addCars();
+            AddCars();
         }
 
-        public virtual void addCars()
+        public virtual void AddCars()
         {
 
         }
 
-        public override void postSetup()
+        public override void PostSetup()
         {
-            cruelStats.updateStatistics(timeActual);
+            CruelStats.UpdateStatistics(TimeActual);
         }
 
         // vypisovanie statistik ... 
-        public override void postPostSetup()
+        public override void PostPostSetup()
         {
-            _IS = cruelStats.confidenceIntervalSimulationTime(0.9);
+            _is = CruelStats.ConfidenceIntervalSimulationTime(0.9);
 
             /*
             Console.WriteLine("Priemerne trvanie simulacie (v hodinach): " + cruelStats.getStatsMeanSimulationTime() / 60);
@@ -96,144 +92,144 @@ namespace Automobilka
             */
         }
 
-        public override void preSetup()
+        public override void PreSetup()
         {
-            base.preSetup();
-            wayAB = new NarrowWay(); // depo - stavba
-            wayCA = new NarrowWay(); // prejazd - depo
-            materialA = Constants.materialToLoad;
-            materialB = 0;
-            carsBeforeBuilding.reset();
-            carsBeforeDepo.reset();
-            resetCars();
-            loadMachineWorking = false;
-            unloadMachineWorking = false;
+            base.PreSetup();
+            WayAb = new NarrowWay(); // depo - stavba
+            WayCa = new NarrowWay(); // prejazd - depo
+            MaterialA = Constants.MaterialToLoad;
+            MaterialB = 0;
+            _carsBeforeBuilding.Reset();
+            _carsBeforeDepo.Reset();
+            ResetCars();
+            LoadMachineWorking = false;
+            UnloadMachineWorking = false;
         }
 
-        public virtual void resetCars()
+        public virtual void ResetCars()
         {
 
         }
 
-        public override bool condition()
+        public override bool Condition()
         {
-            return materialB < Constants.materialToLoad;
+            return MaterialB < Constants.MaterialToLoad;
         }
-        public void updteListBeforeDepo(Vehicle car)
+        public void UpdteListBeforeDepo(Vehicle car)
         {
-            lock (Constants.gate)
+            lock (Constants.Gate)
             {
-                carsBeforeDepo.addVehicleToEnd(car, timeActual);
+                _carsBeforeDepo.AddVehicleToEnd(car, TimeActual);
             }
         }
 
-        public void updteListBeforeBuilding(Vehicle car)
+        public void UpdteListBeforeBuilding(Vehicle car)
         {
-            lock (Constants.gate)
+            lock (Constants.Gate)
             {
-                carsBeforeBuilding.addVehicleToEnd(car, timeActual);
+                _carsBeforeBuilding.AddVehicleToEnd(car, TimeActual);
             }
         }
 
-        public Vehicle getFirstBeforeDepo()
+        public Vehicle GetFirstBeforeDepo()
         {
-            lock (Constants.gate)
+            lock (Constants.Gate)
             {
-                return carsBeforeDepo.getVehicleFromQueue(timeActual);
+                return _carsBeforeDepo.GetVehicleFromQueue(TimeActual);
             }
         }
 
-        public Vehicle getFirstBeforeBuilding()
+        public Vehicle GetFirstBeforeBuilding()
         {
-            lock (Constants.gate)
+            lock (Constants.Gate)
             {
-                return carsBeforeBuilding.getVehicleFromQueue(timeActual);
+                return _carsBeforeBuilding.GetVehicleFromQueue(TimeActual);
             }
         }
 
-        public Statistics getStats()
+        public Statistics GetStats()
         {
-            return cruelStats;
+            return CruelStats;
         }
 
-        public Queue getQueueDepo()
+        public Queue GetQueueDepo()
         {
-            return carsBeforeDepo;
+            return _carsBeforeDepo;
         }
 
-        public Queue getQueueBuilding()
+        public Queue GetQueueBuilding()
         {
-            return carsBeforeBuilding;
+            return _carsBeforeBuilding;
         }
 
-        public List<Vehicle> getCarsAB()
+        public List<Vehicle> GetCarsAb()
         {
-            lock (Constants.gateF)
+            lock (Constants.GateF)
             {
-                return carsAB;
+                return _carsAb;
             }
         }
 
-        public void removeFromAB(Vehicle car)
+        public void RemoveFromAb(Vehicle car)
         {
-            lock (Constants.gateF)
+            lock (Constants.GateF)
             {
-                carsAB.Remove(car);
+                _carsAb.Remove(car);
             }
         }
 
-        public List<Vehicle> getCarsBC()
+        public List<Vehicle> GetCarsBc()
         {
-            lock (Constants.gateF)
+            lock (Constants.GateF)
             {
-                return carsBC;
+                return _carsBc;
             }
         }
 
-        public void removeFromBC(Vehicle car)
+        public void RemoveFromBc(Vehicle car)
         {
-            lock (Constants.gateF)
+            lock (Constants.GateF)
             {
-                carsBC.Remove(car);
-                carsBC.Remove(car);
+                _carsBc.Remove(car);
+                _carsBc.Remove(car);
             }
         }
 
-        public void removeFromCA(Vehicle car)
+        public void RemoveFromCa(Vehicle car)
         {
-            lock (Constants.gateF)
+            lock (Constants.GateF)
             {
-                carsCA.Remove(car);
+                _carsCa.Remove(car);
             }
         }
 
-        public List<Vehicle> getCarsCA()
+        public List<Vehicle> GetCarsCa()
         {
-            lock (Constants.gateF)
+            lock (Constants.GateF)
             {
-                return carsCA;
+                return _carsCa;
             }
         }
 
-        public double[] getProgressOfLoading()
+        public double[] GetProgressOfLoading()
         {
             double[] pole = new double[2];
-            pole[0] = (timeActual - timeLoadingStart) * Constants.loadMachinePerformance;
-            pole[1] = materialToLoad;
+            pole[0] = (TimeActual - TimeLoadingStart) * Constants.LoadMachinePerformance;
+            pole[1] = MaterialToLoad;
             return pole;
         }
 
-        public double[] getProgressOfUnloading()
+        public double[] GetProgressOfUnloading()
         {
             double[] pole = new double[2];
-            pole[0] = materialToUnload - (timeActual - timeUnloadingStart) * Constants.unloadMachinePerformance;
-            pole[1] = materialToUnload;
+            pole[0] = MaterialToUnload - (TimeActual - TimeUnloadingStart) * Constants.UnloadMachinePerformance;
+            pole[1] = MaterialToUnload;
             return pole;
         }
 
-        public override void addRefresh()
+        public override void AddRefresh()
         {
-            updateEventCalendar(new Refresh(this, timeActual));
+            UpdateEventCalendar(new Refresh(this, TimeActual));
         }
     }
 }

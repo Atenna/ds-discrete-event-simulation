@@ -1,46 +1,42 @@
 ﻿using Automobilka.Readonly;
 using Automobilka.Vehicles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Automobilka.Simulations;
 
 namespace Automobilka
 {
     class EventArrivalToA : Event
     {
-        private SimulationCore core;
-        private double time;
-        private Vehicle car;
+        private SimulationCore _core;
+        private double _time;
+        private Vehicle _car;
 
-        public EventArrivalToA(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
+        public EventArrivalToA(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.NumberOfEvents)
         {
-            this.core = actualSimulation;
-            this.time = scheduledTime;
-            this.car = car;
-            lock(Constants.gateF)
+            this._core = actualSimulation;
+            this._time = scheduledTime;
+            this._car = car;
+            lock(Constants.GateF)
             {
-                this.core.removeFromCA(car);
+                this._core.RemoveFromCa(car);
             }
-            actualSimulation.numberOfEvents++;
+            actualSimulation.NumberOfEvents++;
         }
-        public override void execute()
+        public override void Execute()
         {
             // postavia sa do radu
-            core.updteListBeforeDepo(car);
+            _core.UpdteListBeforeDepo(_car);
             // nastavi sa im pociatocny cas cakania
-            car.setStartOfWaiting(time);
+            _car.SetStartOfWaiting(_time);
             // ak sa nic nenaklada, pride prve auto na rad
-            if (core.loadMachineWorking == false)
+            if (_core.LoadMachineWorking == false)
             {
-                if (core.materialA <= 0)
+                if (_core.MaterialA <= 0)
                 {
                     return;
                 }
-                Event loadStart = new EventLoadStart(core, time, core.getFirstBeforeDepo());
-                core.updateEventCalendar(loadStart);
-                core.loadMachineWorking = true;
+                Event loadStart = new EventLoadStart(_core, _time, _core.GetFirstBeforeDepo());
+                _core.UpdateEventCalendar(loadStart);
+                _core.LoadMachineWorking = true;
             }
         }
     }

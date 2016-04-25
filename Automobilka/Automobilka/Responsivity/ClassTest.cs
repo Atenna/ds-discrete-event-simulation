@@ -1,30 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Automobilka.Responsivity
 {
     class ClassTest
     {
-        private int top;
-        private BackgroundWorker worker;
+        private int _top;
+        private BackgroundWorker _worker;
         public ClassTest(BackgroundWorker worker)
         {
-            this.worker = worker;
-            top = 1000;
+            this._worker = worker;
+            _top = 1000;
         }
 
-        public int calculate()
+        public int Calculate()
         {
             int sum = 0;
             int iterator = 1;
-            while(iterator < top)
+            while(iterator < _top)
             {
                 sum += iterator;
-                worker.ReportProgress(iterator/10);
+                _worker.ReportProgress(iterator/10);
                 iterator++;
             }
             return sum;

@@ -5,161 +5,149 @@ using Automobilka.Responsivity;
 using System.ComponentModel;
 using Automobilka.Readonly;
 using System.Threading;
-using Automobilka.Events;
 
 namespace Automobilka.Simulations
 {
     public class SimulationCoreAbstract : ResponsiveCore
     {
-        private List<Event> eventCalendar;
+        private List<Event> _eventCalendar;
 
-        public Event init { set; get; }
-        protected double timeActual;
-        protected double maxTime;
-        protected int speed;
-        protected int repeateTime = 1;
-        private int iterator = 0;
-        public int retIterator
+        public Event Init { set; get; }
+        protected double TimeActual;
+        protected double MaxTime;
+        protected int Speed;
+        protected int RepeateTime = 1;
+        private int _iterator = 0;
+        public int RetIterator
         {
             get
             {
-                return iterator;
+                return _iterator;
             }
         }
-        public int numberOfEvents { get; set; }
-        public bool isVisualized { get; set; }
-        public bool isRefreshed { get; set; }
+        public int NumberOfEvents { get; set; }
+        public bool IsVisualized { get; set; }
+        public bool IsRefreshed { get; set; }
 
-        private int numberOfReplications { get; set; }
-        public bool isFinished { get; set; }
+        private int NumberOfReplications { get; set; }
+        public bool IsFinished { get; set; }
 
         public SimulationCoreAbstract(double maxTime, int numberOfReplications, BackgroundWorker worker) : base(worker)
         {
-            this.timeActual = 0.0;
-            this.maxTime = maxTime;
-            this.eventCalendar = new List<Event>();
-            this.numberOfReplications = numberOfReplications;
-            this.isFinished = false;
-            numberOfEvents = 0;
+            this.TimeActual = 0.0;
+            this.MaxTime = maxTime;
+            this._eventCalendar = new List<Event>();
+            this.NumberOfReplications = numberOfReplications;
+            this.IsFinished = false;
+            NumberOfEvents = 0;
         }
 
         // vytvori statistiky, init. .. etc
-        public virtual void prePreSetup()
+        public virtual void PrePreSetup()
         {
 
         }
 
-        public override void backgroundProcess()
+        public override void BackgroundProcess()
         {
             Event actualEvent;
-            iterator = 0;
+            _iterator = 0;
             double progress = 0.0;
-            int step = numberOfReplications / 100; // jedno percento replikacie 
 
             // vytvorenie aut
-            prePreSetup();
-            while (iterator < numberOfReplications)
+            PrePreSetup();
+            while (_iterator < NumberOfReplications)
             {
-                resetVariables();
-                preSetup();
+                ResetVariables();
+                PreSetup();
 
-                progress = ((double)iterator / (double)numberOfReplications) * 100;
+                progress = ((double)_iterator / (double)NumberOfReplications) * 100;
 
-                while (timeActual <= maxTime && eventCalendar.Any<Event>() && condition())
+                while (TimeActual <= MaxTime && _eventCalendar.Any<Event>() && Condition())
                 {
-                    lock (Constants.gate)
+                    lock (Constants.Gate)
                     {
-                        actualEvent = eventCalendar.First();
-                        eventCalendar.RemoveAt(0);
-                        timeActual = actualEvent.Time();
-                        if (timeActual <= maxTime)
+                        actualEvent = _eventCalendar.First();
+                        _eventCalendar.RemoveAt(0);
+                        TimeActual = actualEvent.Time();
+                        if (TimeActual <= MaxTime)
                         {
-                            actualEvent.execute();
+                            actualEvent.Execute();
                         }
                     }
 
-                    Constants.doneEvent.WaitOne(Timeout.Infinite);
-                    if (isVisualized)
+                    Constants.DoneEvent.WaitOne(Timeout.Infinite);
+                    if (IsVisualized)
                     {
-                        worker.ReportProgress(Convert.ToInt32(progress));
-                        if (!isRefreshed)
+                        Worker.ReportProgress(Convert.ToInt32(progress));
+                        if (!IsRefreshed)
                         {
-                            isRefreshed = true;
-                            addRefresh();
+                            IsRefreshed = true;
+                            AddRefresh();
                         }
                     }
                 }
-                if (!isVisualized)
+                if (!IsVisualized)
                 {
-                    worker.ReportProgress(Convert.ToInt32(progress));
+                    Worker.ReportProgress(Convert.ToInt32(progress));
                 }
-                postSetup();
-                iterator++;
+                PostSetup();
+                _iterator++;
             }
-            if (!condition())
+            if (!Condition())
             {
-                worker.ReportProgress(0);
+                Worker.ReportProgress(0);
             }
             else
             {
-                worker.ReportProgress(100);
+                Worker.ReportProgress(100);
             }
 
-            isFinished = true;
-            postPostSetup();
+            IsFinished = true;
+            PostPostSetup();
         }
 
-        public virtual void postSetup()
+        public virtual void PostSetup()
         {
 
         }
 
         // vypis statistik na konci simulacie
-        public virtual void postPostSetup()
+        public virtual void PostPostSetup()
         {
 
         }
 
-        public virtual void addRefresh()
+        public virtual void AddRefresh()
         {
 
         }
 
-        private void resetVariables()
+        private void ResetVariables()
         {
-            eventCalendar = new List<Event>();
-            timeActual = 0.0;
+            _eventCalendar = new List<Event>();
+            TimeActual = 0.0;
         }
 
-        public void updateEventCalendar(Event evt)
+        public void UpdateEventCalendar(Event evt)
         {
-            // prida ho na koniec
-            eventCalendar.Add(evt);
-            // to do orderovanie
-            //eventCalendar.Sort((x, y) => x.Time().CompareTo(y.Time()));
-
+            _eventCalendar.Add(evt);
             List<Event> sortedList = new List<Event>();
-            sortedList = eventCalendar.OrderBy(x => x.timeExecution).ThenBy(x => x.eventNumber).ToList();
-
-            eventCalendar = sortedList;
-
-            // vlastna compare to funkcia, ktora to usortuje podla casu ale aj podla toho, kedy bola ktora aktivita vytvorena
-            // dat do eventu integer a pri vytvarani eventov nech ma event integer priradeny z nejakeho countra
-            // potom tu zavolat iba moju funkciu compare to event, event 
-
+            sortedList = _eventCalendar.OrderBy(x => x.TimeExecution).ThenBy(x => x.EventNumber).ToList();
+            _eventCalendar = sortedList;
         }
 
-        public virtual void preSetup()
+        public virtual void PreSetup()
         {
-            updateEventCalendar(init);
+            UpdateEventCalendar(Init);
         }
 
-        public virtual bool condition()
+        public virtual bool Condition()
         {
             return true;
         }
 
-        public void setSpeed(int scrolledValue)
+        public void SetSpeed(int scrolledValue)
         {
             Console.WriteLine("scrolledValue: " + scrolledValue);
             /*if(scrolledValue != 10)
@@ -170,28 +158,28 @@ namespace Automobilka.Simulations
             {
                 this.speed = 10;
             }*/
-            this.speed = scrolledValue;
-            Console.WriteLine("speed: " + speed);
+            this.Speed = scrolledValue;
+            Console.WriteLine("speed: " + Speed);
         }
 
-        public int getSpeed()
+        public int GetSpeed()
         {
-            return speed;
+            return Speed;
         }
 
-        public int getRepeatTime()
+        public int GetRepeatTime()
         {
-            return repeateTime;
+            return RepeateTime;
         }
 
-        public double getSimTime()
+        public double GetSimTime()
         {
-            return timeActual;
+            return TimeActual;
         }
 
-        public int getActualReplication()
+        public int GetActualReplication()
         {
-            return iterator;
+            return _iterator;
         }
     }
 }

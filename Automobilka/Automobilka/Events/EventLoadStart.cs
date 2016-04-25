@@ -1,48 +1,44 @@
 ﻿using Automobilka.Vehicles;
 using Automobilka.Readonly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Automobilka.Simulations;
 
 namespace Automobilka
 {
     class EventLoadStart : Event
     {
-        private SimulationCore core;
-        private double time;
-        private Vehicle car;
-        private double speedOfLoading = Constants.loadMachinePerformance;
+        private SimulationCore _core;
+        private double _time;
+        private Vehicle _car;
+        private double _speedOfLoading = Constants.LoadMachinePerformance;
         public EventLoadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car)
-            : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
+            : base(actualSimulation, scheduledTime, actualSimulation.NumberOfEvents)
         {
-            this.core = actualSimulation;
-            this.time = scheduledTime;
-            this.car = car;
-            actualSimulation.numberOfEvents++;
+            this._core = actualSimulation;
+            this._time = scheduledTime;
+            this._car = car;
+            actualSimulation.NumberOfEvents++;
         }
-        public override void execute()
+        public override void Execute()
         {
-            this.core.carAtLoader = car;
-            double volumeToLoad = (core.materialA <= car.getVolume()) ? core.materialA : car.getVolume();
+            this._core.CarAtLoader = _car;
+            double volumeToLoad = (_core.MaterialA <= _car.GetVolume()) ? _core.MaterialA : _car.GetVolume();
 
-            core.materialToLoad = volumeToLoad;
-            core.timeLoadingStart = time;
+            _core.MaterialToLoad = volumeToLoad;
+            _core.TimeLoadingStart = _time;
 
-            core.materialA -= volumeToLoad;
+            _core.MaterialA -= volumeToLoad;
 
-            double timeOfLoading = volumeToLoad / speedOfLoading;
+            double timeOfLoading = volumeToLoad / _speedOfLoading;
 
-            car.realVolume = volumeToLoad;
+            _car.RealVolume = volumeToLoad;
 
-            core.loadMachineWorking = true;
+            _core.LoadMachineWorking = true;
 
-            car.setEndOfWaitingOnDepo(time);
+            _car.SetEndOfWaitingOnDepo(_time);
 
-            Event loadEnd = new EventLoadFinish(core, timeOfLoading + time, car);
+            Event loadEnd = new EventLoadFinish(_core, timeOfLoading + _time, _car);
 
-            core.updateEventCalendar(loadEnd);
+            _core.UpdateEventCalendar(loadEnd);
         }
     }
 }

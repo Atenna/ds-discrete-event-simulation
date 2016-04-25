@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace Automobilka.Responsivity
 {
     public abstract class ResponsiveCore
     {
-        public BackgroundWorker worker { get; }
+        public BackgroundWorker Worker { get; }
         public ResponsiveCore(BackgroundWorker worker)
         {
-            this.worker = worker;
+            this.Worker = worker;
         }
 
-        public abstract void backgroundProcess();
+        public abstract void BackgroundProcess();
 
     }
 }

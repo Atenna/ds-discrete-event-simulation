@@ -1,36 +1,31 @@
-﻿using Automobilka.Vehicles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
+using Automobilka.Simulations;
 
 namespace Automobilka.Events
 {
     class Refresh : Event
     {
 
-        private SimulationCore core;
-        private double time;
+        private SimulationCore _core;
+        private double _time;
 
-        public Refresh(SimulationCore actualSimulation, double scheduledTime) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
+        public Refresh(SimulationCore actualSimulation, double scheduledTime) : base(actualSimulation, scheduledTime, actualSimulation.NumberOfEvents)
         {
-            this.core = actualSimulation;
-            this.time = scheduledTime;
-            actualSimulation.numberOfEvents++;
+            this._core = actualSimulation;
+            this._time = scheduledTime;
+            actualSimulation.NumberOfEvents++;
         }
 
-        public override void execute()
+        public override void Execute()
         {
-            Thread.Sleep(core.getSpeed());
-            if (core.isVisualized)
+            Thread.Sleep(_core.GetSpeed());
+            if (_core.IsVisualized)
             {
-                core.updateEventCalendar(new Refresh(core, time + core.getRepeatTime()));
+                _core.UpdateEventCalendar(new Refresh(_core, _time + _core.GetRepeatTime()));
             }
             else
             {
-                core.isRefreshed = false;
+                _core.IsRefreshed = false;
             }
         }
     }

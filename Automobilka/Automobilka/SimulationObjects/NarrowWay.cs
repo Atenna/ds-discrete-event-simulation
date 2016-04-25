@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Automobilka.SimulationObjects
+﻿namespace Automobilka.SimulationObjects
 {
     public class NarrowWay
     {
-        private double timeOfArrival;
+        private double _timeOfArrival;
         public NarrowWay()
         {
-            timeOfArrival = 0;
+            _timeOfArrival = 0;
         }
         // najdlhsi cas prichodu aktualnych aut na ceste
-        public double realTime(double expectedTime)
+        public double RealTime(double expectedTime)
         {
-            if (expectedTime < timeOfArrival)
+            if (expectedTime < _timeOfArrival)
             {
-                return timeOfArrival;
+                return _timeOfArrival;
             }
-            timeOfArrival = expectedTime;
+            _timeOfArrival = expectedTime;
             return expectedTime;
         }
     }

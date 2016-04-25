@@ -1,4 +1,5 @@
 ﻿using Automobilka.Readonly;
+using Automobilka.Simulations;
 using Automobilka.Vehicles;
 
 namespace Automobilka
@@ -6,40 +7,40 @@ namespace Automobilka
     class EventUnloadStart : Event
     {
 
-        private SimulationCore core;
-        private double time;
-        private Vehicle car;
-        private double speedOfUnloading = Constants.unloadMachinePerformance;
-        public EventUnloadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
+        private SimulationCore _core;
+        private double _time;
+        private Vehicle _car;
+        private double _speedOfUnloading = Constants.UnloadMachinePerformance;
+        public EventUnloadStart(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.NumberOfEvents)
         {
-            this.core = actualSimulation;
-            this.time = scheduledTime;
-            this.car = car;
-            actualSimulation.numberOfEvents++;
+            this._core = actualSimulation;
+            this._time = scheduledTime;
+            this._car = car;
+            actualSimulation.NumberOfEvents++;
         }
 
-        public override void execute()
+        public override void Execute()
         {
-            this.core.carAtUnloader = car;
+            this._core.CarAtUnloader = _car;
             // nastavi nakladac ze pracuje
-            core.unloadMachineWorking = true;
+            _core.UnloadMachineWorking = true;
 
             // guicko 
-            core.materialToUnload = car.realVolume;
-            core.timeUnloadingStart = time;
+            _core.MaterialToUnload = _car.RealVolume;
+            _core.TimeUnloadingStart = _time;
 
             // nastavi cas koniec cakania v rade
-            car.setEndOfWaitingOnBuilding(time);
+            _car.SetEndOfWaitingOnBuilding(_time);
 
             // TO-DO vypocita cas nakladania
-            double timeOfUnloading = car.realVolume / speedOfUnloading; // v minutach
-            car.realVolume = 0;
+            double timeOfUnloading = _car.RealVolume / _speedOfUnloading; // v minutach
+            _car.RealVolume = 0;
 
             // vytvori koniec nakladania
-            Event unloadEnd = new EventUnloadFinish(core, timeOfUnloading + time, car);
+            Event unloadEnd = new EventUnloadFinish(_core, timeOfUnloading + _time, _car);
 
             // prida koniec nakladania do kalendata udalosti
-            core.updateEventCalendar(unloadEnd);
+            _core.UpdateEventCalendar(unloadEnd);
         }
     }
 }

@@ -1,78 +1,75 @@
 ﻿using Automobilka.Vehicles;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Automobilka.SimulationObjects
 {
     public class Queue
     {
-        private List<Vehicle> queue;
-        private double sumOfTime; // in queue * number of cars
-        private double lastChange;
+        private List<Vehicle> _queue;
+        private double _sumOfTime; // in queue * number of cars
+        private double _lastChange;
 
         public Queue()
         {
-            queue = new List<Vehicle>();
-            sumOfTime = 0.0;
-            lastChange = 0.0;
+            _queue = new List<Vehicle>();
+            _sumOfTime = 0.0;
+            _lastChange = 0.0;
         }
 
-        public void addVehicleToEnd(Vehicle car, double simulationTime)
+        public void AddVehicleToEnd(Vehicle car, double simulationTime)
         {
-            updateQueue(simulationTime);
-            queue.Add(car);
+            UpdateQueue(simulationTime);
+            _queue.Add(car);
         }
 
-        public Vehicle getVehicleFromQueue(double simulationTime)
+        public Vehicle GetVehicleFromQueue(double simulationTime)
         {
-            updateQueue(simulationTime);
+            UpdateQueue(simulationTime);
 
-            if (queue.Any())
+            if (_queue.Any())
             {
-                Vehicle toReturn = queue.First();
+                Vehicle toReturn = _queue.First();
 
-                queue.RemoveAt(0);
+                _queue.RemoveAt(0);
                 return toReturn;
             }
             else return null;
 
         }
 
-        public void updateQueue(double simulationTime)
+        public void UpdateQueue(double simulationTime)
         {
-            sumOfTime += (simulationTime - lastChange) * queue.Count();
-            lastChange = simulationTime;
+            _sumOfTime += (simulationTime - _lastChange) * _queue.Count();
+            _lastChange = simulationTime;
         }
 
-        public int getSize()
+        public int GetSize()
         {
-            return queue.Count();
+            return _queue.Count();
         }
 
-        public double getMeanQueueLength(double simulationTime)
+        public double GetMeanQueueLength(double simulationTime)
         {
-            updateQueue(simulationTime);
-            return (sumOfTime / simulationTime);
+            UpdateQueue(simulationTime);
+            return (_sumOfTime / simulationTime);
         }
 
-        public void reset()
+        public void Reset()
         {
-            queue = new List<Vehicle>();
-            sumOfTime = 0.0;
-            lastChange = 0.0;
+            _queue = new List<Vehicle>();
+            _sumOfTime = 0.0;
+            _lastChange = 0.0;
         }
 
-        public Vehicle getAt(int i)
+        public Vehicle GetAt(int i)
         {
-            return queue.ElementAt(i);
+            return _queue.ElementAt(i);
         }
 
-        public List<Vehicle> getList()
+        public List<Vehicle> GetList()
         {
-            return queue;
+            return _queue;
         }
     }
 }

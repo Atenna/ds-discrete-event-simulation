@@ -1,60 +1,61 @@
 ﻿using Automobilka.Readonly;
+using Automobilka.Simulations;
 using Automobilka.Vehicles;
 
 namespace Automobilka
 {
     class EventUnloadFinish : Event
     {
-        private SimulationCore core;
-        private double time;
-        private Vehicle car;
-        private int lengthOfWay;
+        private SimulationCore _core;
+        private double _time;
+        private Vehicle _car;
+        private int _lengthOfWay;
 
-        public EventUnloadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.numberOfEvents)
+        public EventUnloadFinish(SimulationCore actualSimulation, double scheduledTime, Vehicle car) : base(actualSimulation, scheduledTime, actualSimulation.NumberOfEvents)
         {
-            this.core = actualSimulation;
-            this.time = scheduledTime;
-            this.car = car;
-            this.lengthOfWay = Constants.BCLength;
-            actualSimulation.numberOfEvents++;
+            this._core = actualSimulation;
+            this._time = scheduledTime;
+            this._car = car;
+            this._lengthOfWay = Constants.BcLength;
+            actualSimulation.NumberOfEvents++;
         }
-        public override void execute()
+        public override void Execute()
         {
-            this.core.carAtUnloader = null;
-            double expectedTime = (lengthOfWay / (car.getSpeed() / 60.0)) + time; // ocakavany cas - kolko autu trava cesta
+            this._core.CarAtUnloader = null;
+            double expectedTime = (_lengthOfWay / (_car.GetSpeed() / 60.0)) + _time; // ocakavany cas - kolko autu trava cesta
 
-            core.timeUnloadingStart = 0.0;
-            core.materialToUnload = 0.0;
+            _core.TimeUnloadingStart = 0.0;
+            _core.MaterialToUnload = 0.0;
 
             // poruchovost
-            if (car.hasFailed())
+            if (_car.HasFailed())
             {
-                expectedTime += car.getTimeOfRepair();
+                expectedTime += _car.GetTimeOfRepair();
             }
 
-            core.materialB += car.getVolume();
-            if (core.materialB >= Constants.materialToLoad)
+            _core.MaterialB += _car.GetVolume();
+            if (_core.MaterialB >= Constants.MaterialToLoad)
             {
-                core.materialB = Constants.materialToLoad;
+                _core.MaterialB = Constants.MaterialToLoad;
                 return;
             }
 
-            lock (Constants.gateF)
+            lock (Constants.GateF)
             {
-                this.core.getCarsBC().Add(car);
+                this._core.GetCarsBc().Add(_car);
             }
-            Event arrivalC = new EventArrivalToC(core, expectedTime, car);
-            core.updateEventCalendar(arrivalC);
+            Event arrivalC = new EventArrivalToC(_core, expectedTime, _car);
+            _core.UpdateEventCalendar(arrivalC);
 
-            Vehicle carInFront = core.getFirstBeforeBuilding();
+            Vehicle carInFront = _core.GetFirstBeforeBuilding();
             if (carInFront != null)
             {
-                Event unloadStart = new EventUnloadStart(core, time, carInFront);
-                core.updateEventCalendar(unloadStart);
+                Event unloadStart = new EventUnloadStart(_core, _time, carInFront);
+                _core.UpdateEventCalendar(unloadStart);
             }
             else
             {
-                core.unloadMachineWorking = false;
+                _core.UnloadMachineWorking = false;
             }
         }
     }

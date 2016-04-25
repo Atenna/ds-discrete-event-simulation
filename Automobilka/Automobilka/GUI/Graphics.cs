@@ -1,34 +1,30 @@
-﻿using Automobilka.SimulationObjects;
-using Automobilka.Vehicles;
-using System;
+﻿using Automobilka.Vehicles;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms.DataVisualization.Charting;
+using Automobilka.Simulations;
 
 namespace Automobilka.GUI
 {
     public class Graphics
     {
         // prekresluje GUIcko
-        public static void repaint(SimulationCore simulation, Form1 form)
+        public static void Repaint(SimulationCore simulation, Form1 form)
         {
-            form.label12.Text = "Material: " + simulation.materialA;
-            form.label13.Text = "Material: " + simulation.materialB;
-            form.label19.Text = "Actual time: " + (simulation.getSimTime() / 60).ToString("#.000");
+            form.label12.Text = "Material: " + simulation.MaterialA;
+            form.label13.Text = "Material: " + simulation.MaterialB;
+            form.label19.Text = "Actual time: " + (simulation.GetSimTime() / 60).ToString("#.000");
             // nastavenie dlzky radu pred depom a budovou
 
-            repaintQueueListA(simulation, form);
-            repaintQueueListB(simulation, form);
-            repaintLoad(simulation, form);
-            repaintUnload(simulation, form);
-            repaintAB(simulation, form);
-            repaintBC(simulation, form);
-            repaintCA(simulation, form);
+            RepaintQueueListA(simulation, form);
+            RepaintQueueListB(simulation, form);
+            RepaintLoad(simulation, form);
+            RepaintUnload(simulation, form);
+            RepaintAb(simulation, form);
+            RepaintBc(simulation, form);
+            RepaintCa(simulation, form);
         }
 
-        public static void repaintClear(Form1 form)
+        public static void RepaintClear(Form1 form)
         {
             form.label12.Text = "Material: " + 5000;
             form.label13.Text = "Material: " + 0;
@@ -42,10 +38,10 @@ namespace Automobilka.GUI
             form.label9.Text = "A-B ";
         }
 
-        private static void repaintCA(SimulationCore simulation, Form1 form)
+        private static void RepaintCa(SimulationCore simulation, Form1 form)
         {
             string text = "C-A ";
-            List<Vehicle> ca = simulation.getCarsCA();
+            List<Vehicle> ca = simulation.GetCarsCa();
 
             if (ca.Count == 0)
             {
@@ -59,10 +55,10 @@ namespace Automobilka.GUI
             form.label11.Text = text;
         }
 
-        private static void repaintBC(SimulationCore simulation, Form1 form)
+        private static void RepaintBc(SimulationCore simulation, Form1 form)
         {
             string text = "B-C ";
-            List<Vehicle> bc = simulation.getCarsBC();
+            List<Vehicle> bc = simulation.GetCarsBc();
             if (bc.Count == 0)
             {
                 form.label10.Text = text;
@@ -75,15 +71,15 @@ namespace Automobilka.GUI
             form.label10.Text = text;
         }
 
-        private static void repaintUnload(SimulationCore simulation, Form1 form)
+        private static void RepaintUnload(SimulationCore simulation, Form1 form)
         {
-            Vehicle car = simulation.carAtUnloader;
+            Vehicle car = simulation.CarAtUnloader;
             if (car != null)
             {
-                double[] unloadProgress = simulation.getProgressOfUnloading();
-                form.label17.Text = car.name + ": [" +
+                double[] unloadProgress = simulation.GetProgressOfUnloading();
+                form.label17.Text = car.Name + ": [" +
                     unloadProgress[0].ToString("#.0") + " / " +
-                    unloadProgress[1].ToString("#.0") + "], " + car.speed;
+                    unloadProgress[1].ToString("#.0") + "], " + car.Speed;
             }
             else
             {
@@ -91,14 +87,14 @@ namespace Automobilka.GUI
             }
         }
 
-        private static void repaintLoad(SimulationCore simulation, Form1 form)
+        private static void RepaintLoad(SimulationCore simulation, Form1 form)
         {
-            Vehicle car = simulation.carAtLoader;
+            Vehicle car = simulation.CarAtLoader;
             if (car != null)
             {
-                form.label16.Text = car.name + ": [" +
-                    (simulation.getProgressOfLoading()[0]).ToString("#.0") +
-                    " / " + car.volume + "], " + car.speed;
+                form.label16.Text = car.Name + ": [" +
+                    (simulation.GetProgressOfLoading()[0]).ToString("#.0") +
+                    " / " + car.Volume + "], " + car.Speed;
             }
             else
             {
@@ -106,10 +102,10 @@ namespace Automobilka.GUI
             }
         }
 
-        private static void repaintQueueListA(SimulationCore simulation, Form1 form)
+        private static void RepaintQueueListA(SimulationCore simulation, Form1 form)
         {
             form.listBox1.Items.Clear();
-            List<Vehicle> frontA = simulation.getQueueDepo().getList();
+            List<Vehicle> frontA = simulation.GetQueueDepo().GetList();
             if (frontA.Count() > 0)
             {
                 for (int i = 0; i < frontA.Count(); i++)
@@ -119,10 +115,10 @@ namespace Automobilka.GUI
             }
         }
 
-        private static void repaintQueueListB(SimulationCore simulation, Form1 form)
+        private static void RepaintQueueListB(SimulationCore simulation, Form1 form)
         {
             form.listBox2.Items.Clear();
-            List<Vehicle> frontB = simulation.getQueueBuilding().getList();
+            List<Vehicle> frontB = simulation.GetQueueBuilding().GetList();
             if (frontB.Count() > 0)
             {
                 for (int i = 0; i < frontB.Count(); i++)
@@ -132,10 +128,10 @@ namespace Automobilka.GUI
             }
         }
 
-        private static void repaintAB(SimulationCore simulation, Form1 form)
+        private static void RepaintAb(SimulationCore simulation, Form1 form)
         {
             string text = "A-B ";
-            List<Vehicle> ab = simulation.getCarsAB();
+            List<Vehicle> ab = simulation.GetCarsAb();
 
             if (ab.Count == 0)
             {
